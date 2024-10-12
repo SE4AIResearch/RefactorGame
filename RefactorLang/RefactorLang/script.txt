@@ -1,3 +1,3 @@
-num x = 10
-num y = 40
-num z = x + y
+num x = 10 ;
+num y = 40 ;
+num z = 50 + 40 ;
