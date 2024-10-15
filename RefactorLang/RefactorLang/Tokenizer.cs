@@ -9,10 +9,27 @@ namespace RefactorLang
     enum Symbol
     {
         TNUM,   // num (int declaration)
+        TBOOL,  // bool (bool declaration)
+        TSTR,   // str (string declaration)
+        TVOID,  // void (return type)
+
+        TRUE,   // true (boolean)
+        FALSE,  // false (boolean)
+
         EQ,     // =
+        EQEQ,   // ==
+        NEQ,    // !=
         PLUS,   // +
         DASH,   // -
-        SEMI    // ;
+        SEMI,   // ;
+
+        LBRACE, // {
+        RBRACE, // }
+        LPAREN, // (
+        RPAREN, // )
+
+        IF,     // if
+        ELSE,   // else
     }
     record Token : IExp
     {
@@ -29,13 +46,30 @@ namespace RefactorLang
             Dictionary<string, Symbol> tokenLookup = new Dictionary<string, Symbol>
             {
                 { "num", Symbol.TNUM },
+                { "bool", Symbol.TBOOL },
+                { "str", Symbol.TSTR },
+                { "void", Symbol.TVOID },
+
+                { "true", Symbol.TRUE },
+                { "false", Symbol.FALSE },
+
                 { "=", Symbol.EQ },
+                { "==", Symbol.EQEQ },
+                { "!=", Symbol.NEQ },
                 { "+", Symbol.PLUS },
                 { "-", Symbol.DASH },
-                { ";", Symbol.SEMI }
+                { ";", Symbol.SEMI },
+
+                { "{", Symbol.LBRACE },
+                { "}", Symbol.RBRACE },
+                { "(", Symbol.LPAREN },
+                { ")", Symbol.RPAREN },
+
+                { "if", Symbol.IF },
+                { "else", Symbol.ELSE },
             };
 
-            string[] words = text.Replace("\r\n", "\r").Split(new char[] { ' ', '\r' });
+            string[] words = text.Replace("\r\n", "\r").Replace("\t", "").Split(new char[] { ' ', '\r' });
             foreach (string word in words)
             {
                 if (tokenLookup.TryGetValue(word, out Symbol symbol))
@@ -46,7 +80,7 @@ namespace RefactorLang
                 {
                     output.Add(new Token.TokenNumber(number));
                 }
-                else
+                else if (word != "")
                 {
                     output.Add(new Token.TokenIdent(word));
                 }

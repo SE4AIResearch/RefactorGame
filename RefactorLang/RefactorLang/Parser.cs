@@ -8,8 +8,13 @@ using System.Threading.Tasks;
 
 namespace RefactorLang
 {
-    public enum Type { Number }
-    public enum BinaryOperator { Add, Sub }
+    public enum Type { Number, Boolean, String }
+    record RType : IExp
+    {
+        public record RNonVoid(Type type) : RType();
+        public record RVoid() : RType();
+    }
+    public enum BinaryOperator { Add, Sub, Equals, NotEquals }
     public interface IExp { }
     record Terminal : IExp
     {   
@@ -20,11 +25,24 @@ namespace RefactorLang
     record Expression : IExp
     {
         public record CNum(int Number) : Expression();
+        public record CBool(bool Bool) : Expression();
+        public record CStr(string Str) : Expression();
         public record CVar(string Ident) : Expression();
         public record Binop(Terminal.TBinaryOperator BinaryOperator, Expression ExpressionLeft, Expression ExpressionRight) : Expression();
     }
 
     record VDecl(Type Type, string Name, Expression Value) : IExp;
+
+    record Stmt : IExp
+    {
+        public record Decl(VDecl VDecl) : Stmt();
+        public record StmtList(List<Stmt> Stmts) : Stmt();
+        public record IfStmt(Expression Exp, Block IfBlock, Block ElseBlock) : Stmt();
+    }
+
+    record Block(List<Stmt> Stmts) : IExp;
+
+    record GFDecl(RType RType, string Name, Block Body) : IExp;
 
     internal class Parser
     {
@@ -32,7 +50,7 @@ namespace RefactorLang
         {
             List<Func<IExp[], IEnumerable<IExp>>> ParseSteps = new List<Func<IExp[], IEnumerable<IExp>>>
             {
-                ParseSimples, ParseBinaryOperators, ParseExpressions, ParseVDecl
+                ParseSimples, ParseBinaryOperators, ParseExpressions, ParseVDecl, ParseStmt, ParseBlock, ParseIfStmt, ParseStmt
             };
 
             IEnumerable<IExp> newExp = atoms;
@@ -64,6 +82,8 @@ namespace RefactorLang
         public static IEnumerable<IExp> ParseSimples(IExp[] atoms) => atoms.ToArray() switch
         {
             [Token.TokenSymbol(Symbol.TNUM), .. var end] => end.Prepend(new Terminal.TType(Type.Number)),
+            [Token.TokenSymbol(Symbol.TBOOL), .. var end] => end.Prepend(new Terminal.TType(Type.Boolean)),
+            [Token.TokenSymbol(Symbol.TSTR), .. var end] => end.Prepend(new Terminal.TType(Type.String)),
             _ => atoms
         };
 
@@ -71,12 +91,16 @@ namespace RefactorLang
         {
             [Token.TokenSymbol(Symbol.PLUS), .. var end] => end.Prepend(new Terminal.TBinaryOperator(BinaryOperator.Add)),
             [Token.TokenSymbol(Symbol.DASH), .. var end] => end.Prepend(new Terminal.TBinaryOperator(BinaryOperator.Sub)),
+            [Token.TokenSymbol(Symbol.EQEQ), .. var end] => end.Prepend(new Terminal.TBinaryOperator(BinaryOperator.Equals)),
+            [Token.TokenSymbol(Symbol.NEQ), .. var end] => end.Prepend(new Terminal.TBinaryOperator(BinaryOperator.NotEquals)),
             _ => atoms
         };
 
         public static IEnumerable<IExp> ParseExpressions(IExp[] atoms) => atoms.ToArray() switch
         {
             [Token.TokenNumber num, .. var end] => end.Prepend(new Expression.CNum(num.Number)),
+            [Token.TokenSymbol(Symbol.TRUE), .. var end] => end.Prepend(new Expression.CBool(true)),
+            [Token.TokenSymbol(Symbol.FALSE), .. var end] => end.Prepend(new Expression.CBool(false)),
             [Expression exp1, Terminal.TBinaryOperator bo, Expression exp2, .. var end] =>
                 end.Prepend(new Expression.Binop(bo, exp1, exp2)),
             _ => atoms
@@ -86,6 +110,36 @@ namespace RefactorLang
         {
             [Terminal.TType type, Token.TokenIdent ident, Token.TokenSymbol(Symbol.EQ), Expression exp, .. var end] =>
                end.Prepend(new VDecl(type.Type, ident.Ident, exp)),
+            _ => atoms
+        };
+
+        public static IEnumerable<IExp> ParseStmt(IExp[] atoms) => atoms.ToArray() switch
+        {
+            [VDecl vdecl, Token.TokenSymbol(Symbol.SEMI), .. var end] =>
+                end.Prepend(new Stmt.Decl(vdecl)),
+            [Stmt.StmtList stmts, Stmt stmt, .. var end] =>
+                end.Prepend(new Stmt.StmtList(stmts.Stmts.Append(stmt).ToList())),
+            [Stmt stmt1, Stmt stmt2, .. var end] =>
+                end.Prepend(new Stmt.StmtList(new List<Stmt> { stmt1, stmt2 })),
+            _ => atoms
+        };
+
+        public static IEnumerable<IExp> ParseBlock(IExp[] atoms) => atoms.ToArray() switch
+        {
+            [Token.TokenSymbol(Symbol.LBRACE), Stmt.StmtList stmts, Token.TokenSymbol(Symbol.RBRACE), .. var end] =>
+                end.Prepend(new Block(stmts.Stmts)),
+            [Token.TokenSymbol(Symbol.LBRACE), Stmt stmt, Token.TokenSymbol(Symbol.RBRACE), .. var end] =>
+                end.Prepend(new Block(new List<Stmt> { stmt })),
+            _ => atoms
+        };
+
+        public static IEnumerable<IExp> ParseIfStmt(IExp[] atoms) => atoms.ToArray() switch
+        {
+            [Token.TokenSymbol(Symbol.IF), Token.TokenSymbol(Symbol.LPAREN), Expression exp, Token.TokenSymbol(Symbol.RPAREN),
+                Block block1, Token.TokenSymbol(Symbol.ELSE), Block block2, .. var end] =>
+                end.Prepend(new Stmt.IfStmt(exp, block1, block2)),
+            [Token.TokenSymbol(Symbol.IF), Token.TokenSymbol(Symbol.LPAREN), Expression exp, Token.TokenSymbol(Symbol.RPAREN),
+                Block block, .. var end] => end.Prepend(new Stmt.IfStmt(exp, block, new Block(new List<Stmt>()))),
             _ => atoms
         };
     }

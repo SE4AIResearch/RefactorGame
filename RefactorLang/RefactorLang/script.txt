@@ -1,3 +1,10 @@
 num x = 10 ;
 num y = 40 ;
 num z = 50 + 40 ;
+
+if ( 10 == 11 ) {
+	num a = 40 ;
+	num b = 1 ;
+} else {
+	num c = 2 ;
+}
