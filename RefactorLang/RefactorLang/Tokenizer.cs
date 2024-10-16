@@ -8,10 +8,9 @@ namespace RefactorLang
 {
     enum Symbol
     {
-        TNUM,   // num (int declaration)
-        TBOOL,  // bool (bool declaration)
-        TSTR,   // str (string declaration)
-        TVOID,  // void (return type)
+        VAR,    // var (variable declaration)
+        FUNC,   // func (function declaration)
+        CLASS,  // class (class declaration)
 
         TRUE,   // true (boolean)
         FALSE,  // false (boolean)
@@ -21,7 +20,7 @@ namespace RefactorLang
         NEQ,    // !=
         PLUS,   // +
         DASH,   // -
-        SEMI,   // ;
+        EOL,    // <eol>
 
         LBRACE, // {
         RBRACE, // }
@@ -45,10 +44,9 @@ namespace RefactorLang
 
             Dictionary<string, Symbol> tokenLookup = new Dictionary<string, Symbol>
             {
-                { "num", Symbol.TNUM },
-                { "bool", Symbol.TBOOL },
-                { "str", Symbol.TSTR },
-                { "void", Symbol.TVOID },
+                { "var", Symbol.VAR },
+                { "func", Symbol.FUNC },
+                { "class", Symbol.CLASS },
 
                 { "true", Symbol.TRUE },
                 { "false", Symbol.FALSE },
@@ -58,7 +56,7 @@ namespace RefactorLang
                 { "!=", Symbol.NEQ },
                 { "+", Symbol.PLUS },
                 { "-", Symbol.DASH },
-                { ";", Symbol.SEMI },
+                { "\r\n", Symbol.EOL },
 
                 { "{", Symbol.LBRACE },
                 { "}", Symbol.RBRACE },
@@ -69,7 +67,7 @@ namespace RefactorLang
                 { "else", Symbol.ELSE },
             };
 
-            string[] words = text.Replace("\r\n", "\r").Replace("\t", "").Split(new char[] { ' ', '\r' });
+            string[] words = text.Replace("\t", "").Replace("\r\n", " \r\n ").Split(new char[] { ' ' });
             foreach (string word in words)
             {
                 if (tokenLookup.TryGetValue(word, out Symbol symbol))

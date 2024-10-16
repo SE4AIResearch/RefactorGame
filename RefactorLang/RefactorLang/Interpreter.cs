@@ -8,12 +8,10 @@ namespace RefactorLang
 {
     class Variable
     {
-        public Type Type { get; set; }
         public dynamic Value { get; set; }
 
-        public Variable(Type type, dynamic value)
+        public Variable(dynamic value)
         {
-            Type = type;
             Value = value;
         }
 
@@ -33,11 +31,11 @@ namespace RefactorLang
             Prog = prog;
         }
 
-        void DeclareVariable(Type type, string name, dynamic value)
+        void DeclareVariable(string name, dynamic value)
         {
             if (!VariableState.TryGetValue(name, out Variable? variable))
             {
-                VariableState.Add(name, new Variable(type, value));
+                VariableState.Add(name, new Variable(value));
             }
             else throw new ArgumentException(name + " is already defined.");
         }
@@ -49,8 +47,8 @@ namespace RefactorLang
                 case Stmt.StmtList list:
                     foreach (Stmt stmt in list.Stmts) InterpretStmt(stmt);
                     break;
-                case Stmt.Decl(VDecl(Type type, string name, Expression value)):
-                    this.DeclareVariable(type, name, InterpretExp(value));
+                case Stmt.Decl(VDecl(string name, Expression value)):
+                    this.DeclareVariable(name, InterpretExp(value));
                     break;
                 case Stmt.IfStmt(Expression ifExp, Block ifBlock, Block elseBlock):
                     if (InterpretExp(ifExp))
