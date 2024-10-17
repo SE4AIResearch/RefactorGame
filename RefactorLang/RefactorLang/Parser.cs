@@ -6,15 +6,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/*
+ *      The Parser is provided with a list of tokens and recursively builds an AST (abstract syntax tree) out of them.
+ *      The AST specification is also found in the companion document.
+ *      NOTE: This AST-building technique kind of needs an overhaul, which is the next thing I'm going to do. -DVH
+*/
+
 namespace RefactorLang
 {
     public enum BinaryOperator { Add, Sub, Equals, NotEquals }
+    
+    // The IExp interface binds all of the following expressions to make them work with a single root parsing function.
     public interface IExp { }
+
+    // A Terminal is an endpoint of the recursive function, that can't be parsed any further.
     record Terminal : IExp
     {   
         public record TBinaryOperator(BinaryOperator BinaryOperator) : Terminal();
     }
 
+    // An Expression is a bit of code that can be evaluated in-line but that doesn't constitute a whole Statement.
     record Expression : IExp
     {
         public record CNum(int Number) : Expression();
@@ -26,6 +37,7 @@ namespace RefactorLang
 
     record VDecl(string Name, Expression Value) : IExp;
 
+    // A Statement is the smallest bit of code that can stand on its own.
     record Stmt : IExp
     {
         public record Decl(VDecl VDecl) : Stmt();
@@ -34,6 +46,7 @@ namespace RefactorLang
         public record IfStmt(Expression Exp, Block IfBlock, Block ElseBlock) : Stmt();
     }
 
+    // A Block is a collection of Statements.
     record Block(List<Stmt> Stmts) : IExp;
 
     internal class Parser

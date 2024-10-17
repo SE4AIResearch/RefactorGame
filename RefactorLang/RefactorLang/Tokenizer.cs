@@ -4,8 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/*
+ *      The Tokenizer goes through the provided code in the form of a script and converts the concrete syntax
+ *      provided into the abstract syntax defined in the RefactorLang Specification document.
+*/
+
 namespace RefactorLang
 {
+    // Defines all of the reserved symbols and words required for the language.
     enum Symbol
     {
         VAR,    // var (variable declaration)
@@ -20,7 +26,9 @@ namespace RefactorLang
         NEQ,    // !=
         PLUS,   // +
         DASH,   // -
+
         EOL,    // <eol>
+        EOF,    // <eof>
 
         LBRACE, // {
         RBRACE, // }
@@ -30,6 +38,9 @@ namespace RefactorLang
         IF,     // if
         ELSE,   // else
     }
+
+    // Defines the different tokens that can be expected by the Parser.
+    // Note: Ident refers to Identifier, which can refer to the names of variables, classes, functions, etc.
     record Token : IExp
     {
         public record TokenSymbol(Symbol Symbol) : Token();
@@ -38,10 +49,12 @@ namespace RefactorLang
     }
     internal class Tokenizer
     {
+        // Attempts to "tokenize" a line of RefactorLang by converting words and symbols into a list of tokens.
         public static List<Token> TokenizeLine(string text)
         {
             List<Token> output = new();
 
+            // Conversion list from concrete syntax to Symbols.
             Dictionary<string, Symbol> tokenLookup = new Dictionary<string, Symbol>
             {
                 { "var", Symbol.VAR },
@@ -56,6 +69,7 @@ namespace RefactorLang
                 { "!=", Symbol.NEQ },
                 { "+", Symbol.PLUS },
                 { "-", Symbol.DASH },
+
                 { "\r\n", Symbol.EOL },
 
                 { "{", Symbol.LBRACE },
