@@ -8,9 +8,7 @@ namespace RefactorLang
         {
             string text = File.ReadAllText("./script.txt");
             List<Token> tokens = Tokenizer.TokenizeLine(text);
-            IExp[] expressions = Parser.Parse(tokens.ToArray());
-            Interpreter interpreter = new(expressions.ToList());
-            interpreter.InterpretStmt((Stmt)expressions[0]);
+            Prog prog = Parser.Parse(tokens);
         }
     }
 }

@@ -37,6 +37,9 @@ namespace RefactorLang
 
         IF,     // if
         ELSE,   // else
+
+        STATIC, // static
+        FIELD,  // field
     }
 
     // Defines the different tokens that can be expected by the Parser.
@@ -79,6 +82,9 @@ namespace RefactorLang
 
                 { "if", Symbol.IF },
                 { "else", Symbol.ELSE },
+
+                { "static", Symbol.STATIC },
+                { "field", Symbol.FIELD },
             };
 
             string[] words = text.Replace("\t", "").Replace("\r\n", " \r\n ").Split(new char[] { ' ' });
@@ -98,7 +104,7 @@ namespace RefactorLang
                 }
             }
 
-            return output;
+            return output.Append(new Token.TokenSymbol(Symbol.EOF)).ToList();
         }
     }
 }

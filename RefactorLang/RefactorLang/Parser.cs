@@ -1,152 +1,146 @@
-﻿using Microsoft.VisualBasic;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
 /*
  *      The Parser is provided with a list of tokens and recursively builds an AST (abstract syntax tree) out of them.
  *      The AST specification is also found in the companion document.
- *      NOTE: This AST-building technique kind of needs an overhaul, which is the next thing I'm going to do. -DVH
 */
 
 namespace RefactorLang
 {
-    public enum BinaryOperator { Add, Sub, Equals, NotEquals }
-    
     // The IExp interface binds all of the following expressions to make them work with a single root parsing function.
     public interface IExp { }
 
-    // A Terminal is an endpoint of the recursive function, that can't be parsed any further.
-    record Terminal : IExp
-    {   
-        public record TBinaryOperator(BinaryOperator BinaryOperator) : Terminal();
-    }
+    record IExpList<T>(List<T> IExps) : IExp;
 
-    // An Expression is a bit of code that can be evaluated in-line but that doesn't constitute a whole Statement.
-    record Expression : IExp
+    record Prog(IExpList<Class> Classes) : IExp;
+
+    record Class(string Ident, IExpList<Decl> Decls) : IExp;
+
+    record Decl : IExp
     {
-        public record CNum(int Number) : Expression();
-        public record CBool(bool Bool) : Expression();
-        public record CStr(string Str) : Expression();
-        public record CVar(string Ident) : Expression();
-        public record Binop(Terminal.TBinaryOperator BinaryOperator, Expression ExpressionLeft, Expression ExpressionRight) : Expression();
+        public record MethodDecl(bool Inst, string Ident, List<string> Args, Block Block) : Decl();
+
+        public record FieldDecl(bool Inst, string Ident) : Decl();
     }
 
-    record VDecl(string Name, Expression Value) : IExp;
+    record Block(List<Stmt> Stmts) : IExp;
 
-    // A Statement is the smallest bit of code that can stand on its own.
     record Stmt : IExp
     {
-        public record Decl(VDecl VDecl) : Stmt();
-        public record Assn(string Name, Expression Value) : Stmt;
-        public record StmtList(List<Stmt> Stmts) : Stmt();
-        public record IfStmt(Expression Exp, Block IfBlock, Block ElseBlock) : Stmt();
+        public record VDecl(string Ident, Exp Value) : Stmt();
+        public record Assn(string Ident, Exp Value) : Stmt();
+        public record IfStmt(Exp IfExp, Block IfBlock) : Stmt();
     }
 
-    // A Block is a collection of Statements.
-    record Block(List<Stmt> Stmts) : IExp;
+    record Exp : IExp
+    {
+        public record CNum(int Number) : Exp();
+        public record CBool(bool Bool) : Exp();
+        public record CVar(string Ident) : Exp();
+        public record Binop(BinaryOperator Bop, Exp Left, Exp Right) : Exp();
+    }
+
+    public enum BinaryOperator { Add, Sub, Equals, NotEquals }
+
+    // A Terminal is an endpoint of the recursive function, that can't be parsed any further.
+    record Terminal : IExp
+    {
+        public record TBop(BinaryOperator Bop) : Terminal();
+    }
 
     internal class Parser
     {
-        public static IExp[] Parse(IExp[] atoms)
+        // The Emit function pushes one token at a time into the defined "matcher" function, which will eventually match
+        // its expected pattern. It will return the new matched token, and update the tokens array to remove all matched tokens.
+        // If all tokens are pushed and it fails to match, the matcher should throw ArgumentOutOfRangeException, to be catched here.
+        public static T Emit<T>(ref IExp[] tokens, Func<IExp[], T> matcher) where T : IExp
         {
-            List<Func<IExp[], IEnumerable<IExp>>> ParseSteps = new List<Func<IExp[], IEnumerable<IExp>>>
-            {
-                ParseSimples, ParseBinaryOperators, ParseExpressions, 
-                ParseVDecl, ParseStmt, ParseBlock, ParseIfStmt, ParseStmt
-            };
+            Queue<IExp> partition = new();
+            Queue<IExp> rest = new(tokens);
 
-            IEnumerable<IExp> newExp = atoms;
-
-            foreach (var action in ParseSteps)
+            hijack:
+            try
             {
-                newExp = ParseSingle(action, newExp.ToArray(), Array.Empty<IExp>());
+                partition.Enqueue(rest.Dequeue());
+                tokens = rest.ToArray();
+                return matcher(partition.ToArray());
             }
-
-            return newExp.ToArray();
-        }
-
-        public static IExp[] ParseSingle(Func<IExp[], IEnumerable<IExp>> parser, IExp[] front, IExp[] back)
-        {
-            if (front.Length == 0)
-                return back;
-
-            IExp[] newExp = parser(front).ToArray();
-            if (!newExp.SequenceEqual(front))
+            catch (ArgumentOutOfRangeException e)
             {
-                return ParseSingle(parser, back.Concat(newExp).ToArray(), new IExp[0]);
-            }
-            else
-            {
-                return ParseSingle(parser, newExp.Skip(1).ToArray(), back.Append(newExp[0]).ToArray());
+                if (rest.ToList().Count == 0)
+                {
+                    tokens = partition.ToArray();
+                    throw e;
+                }
+                goto hijack;
             }
         }
 
-        public static IEnumerable<IExp> ParseSimples(IExp[] atoms) => atoms.ToArray() switch
+        // EmitList does something similar to Emit, except it will keep going after it has matched once, continuing to match.
+        // It can also return an empty list.
+        // "separators" is a list of possible symbols that are allowed to be found in-between instances of the searched token.
+        public static IExpList<T> EmitList<T>(ref IExp[] tokens, Func<IExp[], T> matcher, List<Symbol>? separators = null) where T : IExp
         {
-            _ => atoms
+            List<T> result = new();
+
+            liststep:
+            try
+            {
+                while (tokens.Length > 0)
+                {
+                    T token = Emit<T>(ref tokens, matcher);
+                    result.Add(token);
+                    goto liststep;
+                }
+                return new IExpList<T>(result);
+            } 
+            catch (ArgumentOutOfRangeException)
+            {
+                if (separators is not null && tokens is [Token.TokenSymbol(Symbol symbol), .. var rest] && separators.Contains(symbol)) {
+                    tokens = tokens.Skip(1).ToArray();
+                    goto liststep;
+                }
+                return new IExpList<T>(result);
+            }
+        }
+
+        // This function will begin the recursive build of the AST, starting with the root node (Prog).
+        public static Prog Parse(List<Token> tokens)
+        {
+            IExp[] tokensArray = tokens.ToArray();
+            Prog prog = Emit(ref tokensArray, MatchProg);
+
+            return prog;
+        }
+
+        private static Prog MatchProg(IExp[] tokens) => tokens switch
+        {
+            [.. var body, Token.TokenSymbol(Symbol.EOF)] =>
+                new Prog(EmitList(ref body, MatchClass, new List<Symbol> { Symbol.EOL })),
+            _ => throw new ArgumentOutOfRangeException()
         };
 
-        public static IEnumerable<IExp> ParseBinaryOperators(IExp[] atoms) => atoms.ToArray() switch
+        private static Class MatchClass(IExp[] tokens) => tokens switch
         {
-            [Token.TokenSymbol(Symbol.PLUS), .. var end] => end.Prepend(new Terminal.TBinaryOperator(BinaryOperator.Add)),
-            [Token.TokenSymbol(Symbol.DASH), .. var end] => end.Prepend(new Terminal.TBinaryOperator(BinaryOperator.Sub)),
-            [Token.TokenSymbol(Symbol.EQEQ), .. var end] => end.Prepend(new Terminal.TBinaryOperator(BinaryOperator.Equals)),
-            [Token.TokenSymbol(Symbol.NEQ), .. var end] => end.Prepend(new Terminal.TBinaryOperator(BinaryOperator.NotEquals)),
-            _ => atoms
+            [Token.TokenSymbol(Symbol.CLASS), Token.TokenIdent id, Token.TokenSymbol(Symbol.LBRACE), .. var decls, Token.TokenSymbol(Symbol.RBRACE)] =>
+                new Class(id.Ident, EmitList(ref decls, MatchDecl, new List<Symbol> { Symbol.EOL })),
+            _ => throw new ArgumentOutOfRangeException()
         };
 
-        public static IEnumerable<IExp> ParseExpressions(IExp[] atoms) => atoms.ToArray() switch
+        private static Decl MatchDecl(IExp[] tokens) => tokens switch
         {
-            [Token.TokenNumber num, .. var end] => end.Prepend(new Expression.CNum(num.Number)),
-            [Token.TokenSymbol(Symbol.TRUE), .. var end] => end.Prepend(new Expression.CBool(true)),
-            [Token.TokenSymbol(Symbol.FALSE), .. var end] => end.Prepend(new Expression.CBool(false)),
-            [Expression exp1, Terminal.TBinaryOperator bo, Expression exp2, .. var end] =>
-                end.Prepend(new Expression.Binop(bo, exp1, exp2)),
-            _ => atoms
-        };
-
-        public static IEnumerable<IExp> ParseVDecl(IExp[] atoms) => atoms.ToArray() switch
-        {
-            [Token.TokenSymbol(Symbol.VAR), Token.TokenIdent ident, Token.TokenSymbol(Symbol.EQ), Expression exp, .. var end] =>
-               end.Prepend(new VDecl(ident.Ident, exp)),
-            _ => atoms
-        };
-
-        public static IEnumerable<IExp> ParseStmt(IExp[] atoms) => atoms.ToArray() switch
-        {
-            [VDecl vdecl, Token.TokenSymbol(Symbol.EOL), .. var end] =>
-                end.Prepend(new Stmt.Decl(vdecl)),
-            [Token.TokenIdent id, Token.TokenSymbol(Symbol.EQ), Expression exp, Token.TokenSymbol(Symbol.EOL), .. var end] =>
-                end.Prepend(new Stmt.Assn(id.Ident, exp)),
-            [Stmt.StmtList stmts, Stmt stmt, .. var end] =>
-                end.Prepend(new Stmt.StmtList(stmts.Stmts.Append(stmt).ToList())),
-            [Stmt stmt1, Stmt stmt2, .. var end] =>
-                end.Prepend(new Stmt.StmtList(new List<Stmt> { stmt1, stmt2 })),
-            [Token.TokenSymbol(Symbol.EOL), .. var end] => end,
-            _ => atoms
-        };
-
-        public static IEnumerable<IExp> ParseBlock(IExp[] atoms) => atoms.ToArray() switch
-        {
-            [Token.TokenSymbol(Symbol.LBRACE), Stmt.StmtList stmts, Token.TokenSymbol(Symbol.RBRACE), .. var end] =>
-                end.Prepend(new Block(stmts.Stmts)),
-            [Token.TokenSymbol(Symbol.LBRACE), Stmt stmt, Token.TokenSymbol(Symbol.RBRACE), .. var end] =>
-                end.Prepend(new Block(new List<Stmt> { stmt })),
-            _ => atoms
-        };
-
-        public static IEnumerable<IExp> ParseIfStmt(IExp[] atoms) => atoms.ToArray() switch
-        {
-            [Token.TokenSymbol(Symbol.IF), Token.TokenSymbol(Symbol.LPAREN), Expression exp, Token.TokenSymbol(Symbol.RPAREN),
-                Block block1, Token.TokenSymbol(Symbol.ELSE), Block block2, .. var end] =>
-                end.Prepend(new Stmt.IfStmt(exp, block1, block2)),
-            [Token.TokenSymbol(Symbol.IF), Token.TokenSymbol(Symbol.LPAREN), Expression exp, Token.TokenSymbol(Symbol.RPAREN),
-                Block block, .. var end] => end.Prepend(new Stmt.IfStmt(exp, block, new Block(new List<Stmt>()))),
-            _ => atoms
+            [Token.TokenSymbol(Symbol.STATIC), Token.TokenSymbol(Symbol.FIELD), Token.TokenIdent id, Token.TokenSymbol(Symbol.EOL)] =>
+                new Decl.FieldDecl(true, id.Ident),
+            [Token.TokenSymbol(Symbol.FIELD), Token.TokenIdent id, Token.TokenSymbol(Symbol.EOL)] =>
+                new Decl.FieldDecl(false, id.Ident),
+            [Token.TokenSymbol(Symbol.FUNC), Token.TokenIdent id, Token.TokenSymbol(Symbol.LPAREN), .. var rest]
+            _ => throw new ArgumentOutOfRangeException()
         };
     }
 }
