@@ -100,8 +100,8 @@ namespace RefactorLang
             // Applies a regex that matches words, numbers, commas (), [], {}
             // Splitting them into an array
             // Note: Accounts for floats, even if not fully implemented
-            // Experiment with / Learn about regex used: https://regex101.com/r/xy5jWL/1
-            string[] words = Regex.Matches(replaced, @"([a-zA-Z0-9]+(\.[0-9]+)?|[\(\)\[\]{}]|\S+(?:,\S+)*)")
+            // Experiment with / Learn about regex used: https://regex101.com/r/4zzBu2/1
+            string[] words = Regex.Matches(replaced, @"([a-zA-Z0-9]+(\.[0-9]+)?|[\(\)\[\]\{\}]|\S+?(?:,\S+?)*)")
                 .Cast<Match>()
                 .Select(m => m.Value)
                 .ToArray();
