@@ -118,6 +118,12 @@ namespace RefactorLang
             }
         }
 
+        private static BinaryOperator? InlineBop(Symbol symbol) => symbol switch
+        {
+            Symbol.PLUS => BinaryOperator.Add,
+            _ => null
+        };
+
         // This function will begin the recursive build of the AST, starting with the root node (Prog).
         public static Prog Parse(List<Token> tokens)
         {
@@ -138,11 +144,11 @@ namespace RefactorLang
         private static Class MatchClass(IExp[] tokens)
         {
             switch (tokens) {
-                case [Token.TokenSymbol(Symbol.CLASS), Token.TokenIdent id, Token.TokenSymbol(Symbol.LBRACE), .. var rest]:
+                case [Token.TokenSymbol(Symbol.CLASS), Token.TokenIdent(string id), Token.TokenSymbol(Symbol.LBRACE), .. var rest]:
                     IExpList<Decl> decls = EmitList(ref rest, MatchDecl, new List<Symbol> { Symbol.EOL });
                     if (rest.Where(x => x is not Token.TokenSymbol(Symbol.EOL)).ToArray() is not [Token.TokenSymbol(Symbol.RBRACE)])
                         throw new ArgumentOutOfRangeException();
-                    return new Class(id.Ident, decls);
+                    return new Class(id, decls);
                 default:
                     throw new ArgumentOutOfRangeException();
              }
@@ -156,16 +162,22 @@ namespace RefactorLang
 
         private static Decl MatchDecl(IExp[] tokens)
         {
+            IExpList<Token.TokenIdent> ids;
             switch (tokens)
             {
-                case [Token.TokenSymbol(Symbol.STATIC), Token.TokenSymbol(Symbol.FIELD), Token.TokenIdent id, Token.TokenSymbol(Symbol.EOL)]:
-                    return new Decl.FieldDecl(true, id.Ident);
-                case [Token.TokenSymbol(Symbol.FIELD), Token.TokenIdent id, Token.TokenSymbol(Symbol.EOL)]:
-                    return new Decl.FieldDecl(false, id.Ident);
-                case [Token.TokenSymbol(Symbol.FUNC), Token.TokenIdent id, Token.TokenSymbol(Symbol.LPAREN), .. var rest]:
-                    IExpList<Token.TokenIdent> ids = EmitList(ref rest, MatchArg, new List<Symbol> { Symbol.COMMA });
+                case [Token.TokenSymbol(Symbol.STATIC), Token.TokenSymbol(Symbol.FIELD), Token.TokenIdent(string id), Token.TokenSymbol(Symbol.EOL)]:
+                    return new Decl.FieldDecl(true, id);
+                case [Token.TokenSymbol(Symbol.FIELD), Token.TokenIdent(string id), Token.TokenSymbol(Symbol.EOL)]:
+                    return new Decl.FieldDecl(false, id);
+                case [Token.TokenSymbol(Symbol.FUNC), Token.TokenIdent(string id), Token.TokenSymbol(Symbol.LPAREN), .. var rest]:
+                    ids = EmitList(ref rest, MatchArg, new List<Symbol> { Symbol.COMMA });
                     if (rest is [Token.TokenSymbol(Symbol.RPAREN), .. var block])
-                        return new Decl.MethodDecl(false, id.Ident, ids.IExps.Select(x => x.Ident).ToList(), Emit(ref block, MatchBlock));
+                        return new Decl.MethodDecl(false, id, ids.IExps.Select(x => x.Ident).ToList(), Emit(ref block, MatchBlock));
+                    else throw new ArgumentOutOfRangeException();
+                case [Token.TokenSymbol(Symbol.STATIC), Token.TokenSymbol(Symbol.FUNC), Token.TokenIdent(string id), Token.TokenSymbol(Symbol.LPAREN), .. var rest]:
+                    ids = EmitList(ref rest, MatchArg, new List<Symbol> { Symbol.COMMA });
+                    if (rest is [Token.TokenSymbol(Symbol.RPAREN), .. var blockS])
+                        return new Decl.MethodDecl(true, id, ids.IExps.Select(x => x.Ident).ToList(), Emit(ref blockS, MatchBlock));
                     else throw new ArgumentOutOfRangeException();
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -193,6 +205,28 @@ namespace RefactorLang
             {
                 case [Token.TokenSymbol(Symbol.RETURN), Token.TokenSymbol(Symbol.EOL)]:
                     return new Stmt.Return();
+                case [Token.TokenSymbol(Symbol.RETURN), .. var exp, Token.TokenSymbol(Symbol.EOL)]:
+                    return new Stmt.ReturnExp(MatchExp(exp));
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private static Exp MatchExp(IExp[] tokens)
+        {
+            switch (tokens)
+            {
+                case [Token.TokenNumber(int num)]:
+                    return new Exp.CNum(num);
+                case [Token.TokenIdent(string id)]:
+                    return new Exp.CVar(id);
+                case [Token.TokenSymbol(Symbol.TRUE)]:
+                    return new Exp.CBool(true);
+                case [Token.TokenSymbol(Symbol.FALSE)]:
+                    return new Exp.CBool(false);
+                case [Exp exp1, Token.TokenSymbol(Symbol s), Exp exp2]:
+                    BinaryOperator bop = InlineBop(s) ?? throw new ArgumentOutOfRangeException();
+                    return new Exp.Binop(bop, exp1, exp2);
                 default:
                     throw new ArgumentOutOfRangeException();
             }

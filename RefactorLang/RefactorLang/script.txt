@@ -1,6 +1,6 @@
 class TestClass { 
 	func add ( a , b ) { 
-		return
+		return a + b
 	}
 } 
 
