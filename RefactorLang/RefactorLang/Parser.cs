@@ -8,16 +8,22 @@ using System.Threading.Tasks;
 
 /*
  *      The Parser is provided with a list of tokens and recursively builds an AST (abstract syntax tree) out of them.
+ *      Companion Document:
+ *      https://stevens0-my.sharepoint.com/:w:/r/personal/dvanhise_stevens_edu/_layouts/15/doc2.aspx?sourcedoc=%7B8e3cb7d8-9aa1-48bd-b697-407ddcaaab71%7D
  *      The AST specification is also found in the companion document.
+ *      The root node of the AST is defined as Prog.
 */
 
 namespace RefactorLang
 {
     // The IExp interface binds all of the following expressions to make them work with a single root parsing function.
+    // The list of tokens is interpreted as an IExp[] and simplified recursively.
     public interface IExp { }
 
+    // IExpList binds a group of a single kind of IExp together as a single IExp.
     record IExpList<T>(List<T> IExps) : IExp;
 
+    // The following records are interpretations of the Grammar section in the companion document.
     record Prog(IExpList<Class> Classes) : IExp;
 
     record Class(string Ident, IExpList<Decl> Decls) : IExp;
@@ -29,13 +35,15 @@ namespace RefactorLang
         public record FieldDecl(bool Inst, string Ident) : Decl();
     }
 
-    record Block(List<Stmt> Stmts) : IExp;
+    record Block(IExpList<Stmt> Stmts) : IExp;
 
     record Stmt : IExp
     {
         public record VDecl(string Ident, Exp Value) : Stmt();
         public record Assn(string Ident, Exp Value) : Stmt();
         public record IfStmt(Exp IfExp, Block IfBlock) : Stmt();
+        public record ReturnExp(Exp Exp) : Stmt();
+        public record Return() : Stmt();
     }
 
     record Exp : IExp
@@ -71,12 +79,12 @@ namespace RefactorLang
                 tokens = rest.ToArray();
                 return matcher(partition.ToArray());
             }
-            catch (ArgumentOutOfRangeException e)
+            catch (Exception e) when (e is InvalidOperationException || e is ArgumentOutOfRangeException)
             {
                 if (rest.ToList().Count == 0)
                 {
                     tokens = partition.ToArray();
-                    throw e;
+                    throw;
                 }
                 goto hijack;
             }
@@ -119,6 +127,7 @@ namespace RefactorLang
             return prog;
         }
 
+        // The following functions will recursively match more granular parts of the language.
         private static Prog MatchProg(IExp[] tokens) => tokens switch
         {
             [.. var body, Token.TokenSymbol(Symbol.EOF)] =>
@@ -133,14 +142,52 @@ namespace RefactorLang
             _ => throw new ArgumentOutOfRangeException()
         };
 
-        private static Decl MatchDecl(IExp[] tokens) => tokens switch
+        private static Token.TokenIdent MatchArg(IExp[] tokens) => tokens switch
         {
-            [Token.TokenSymbol(Symbol.STATIC), Token.TokenSymbol(Symbol.FIELD), Token.TokenIdent id, Token.TokenSymbol(Symbol.EOL)] =>
-                new Decl.FieldDecl(true, id.Ident),
-            [Token.TokenSymbol(Symbol.FIELD), Token.TokenIdent id, Token.TokenSymbol(Symbol.EOL)] =>
-                new Decl.FieldDecl(false, id.Ident),
-            [Token.TokenSymbol(Symbol.FUNC), Token.TokenIdent id, Token.TokenSymbol(Symbol.LPAREN), .. var rest]
+            [Token.TokenIdent id, .. var rest] => id,
             _ => throw new ArgumentOutOfRangeException()
         };
+
+        private static Decl MatchDecl(IExp[] tokens)
+        {
+            switch (tokens)
+            {
+                case [Token.TokenSymbol(Symbol.STATIC), Token.TokenSymbol(Symbol.FIELD), Token.TokenIdent id, Token.TokenSymbol(Symbol.EOL)]:
+                    return new Decl.FieldDecl(true, id.Ident);
+                case [Token.TokenSymbol(Symbol.FIELD), Token.TokenIdent id, Token.TokenSymbol(Symbol.EOL)]:
+                    return new Decl.FieldDecl(false, id.Ident);
+                case [Token.TokenSymbol(Symbol.FUNC), Token.TokenIdent id, Token.TokenSymbol(Symbol.LPAREN), .. var rest]:
+                    IExpList<Token.TokenIdent> ids = EmitList(ref rest, MatchArg, new List<Symbol> { Symbol.COMMA });
+                    if (rest is [Token.TokenSymbol(Symbol.RPAREN), .. var block])
+                        return new Decl.MethodDecl(false, id.Ident, ids.IExps.Select(x => x.Ident).ToList(), Emit(ref block, MatchBlock));
+                    else throw new ArgumentOutOfRangeException();
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private static Block MatchBlock(IExp[] tokens)
+        {
+            if (tokens is not [Token.TokenSymbol(Symbol.LBRACE), .. var rest])
+                throw new ArgumentOutOfRangeException();
+
+            IExpList<Stmt> stmts = EmitList(ref rest, MatchStmt, new List<Symbol> { Symbol.EOL });
+
+            if (rest is not [Token.TokenSymbol(Symbol.RBRACE)])
+                throw new ArgumentOutOfRangeException();
+
+            return new Block(stmts);
+        }
+
+        private static Stmt MatchStmt(IExp[] tokens)
+        {
+            switch (tokens)
+            {
+                case [Token.TokenSymbol(Symbol.RETURN), Token.TokenSymbol(Symbol.EOL)]:
+                    return new Stmt.Return();
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
     }
 }

@@ -1,5 +1,7 @@
 class TestClass { 
-
+	func add ( a , b ) { 
+		return
+	}
 } 
 
 class OtherTestClass { 

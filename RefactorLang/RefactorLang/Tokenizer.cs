@@ -40,6 +40,9 @@ namespace RefactorLang
 
         STATIC, // static
         FIELD,  // field
+        RETURN, // return
+
+        COMMA,  // ,
     }
 
     // Defines the different tokens that can be expected by the Parser.
@@ -85,6 +88,9 @@ namespace RefactorLang
 
                 { "static", Symbol.STATIC },
                 { "field", Symbol.FIELD },
+                { "return", Symbol.RETURN },
+
+                { ",", Symbol.COMMA },
             };
 
             string[] words = text.Replace("\t", "").Replace("\r\n", " \r\n ").Split(new char[] { ' ' });
