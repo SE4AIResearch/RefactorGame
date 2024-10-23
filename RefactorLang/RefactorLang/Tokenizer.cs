@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 /*
@@ -93,7 +94,18 @@ namespace RefactorLang
                 { ",", Symbol.COMMA },
             };
 
-            string[] words = text.Replace("\t", "").Replace("\r\n", " \r\n ").Split(new char[] { ' ' });
+            // Modifies tabs or \r\n's
+            string replaced = text.Replace("\t", "").Replace("\r\n", " \r\n ");
+
+            // Applies a regex that matches words, numbers, commas (), [], {}
+            // Splitting them into an array
+            // Note: Accounts for floats, even if not fully implemented
+            // Experiment with / Learn about regex used: https://regex101.com/r/4zzBu2/1
+            string[] words = Regex.Matches(replaced, @"([a-zA-Z0-9]+(\.[0-9]+)?|[\(\)\[\]\{\}]|\S+?(?:,\S+?)*)")
+                .Cast<Match>()
+                .Select(m => m.Value)
+                .ToArray();
+
             foreach (string word in words)
             {
                 if (tokenLookup.TryGetValue(word, out Symbol symbol))
