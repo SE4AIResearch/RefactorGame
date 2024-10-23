@@ -135,12 +135,18 @@ namespace RefactorLang
             _ => throw new ArgumentOutOfRangeException()
         };
 
-        private static Class MatchClass(IExp[] tokens) => tokens switch
+        private static Class MatchClass(IExp[] tokens)
         {
-            [Token.TokenSymbol(Symbol.CLASS), Token.TokenIdent id, Token.TokenSymbol(Symbol.LBRACE), .. var decls, Token.TokenSymbol(Symbol.RBRACE)] =>
-                new Class(id.Ident, EmitList(ref decls, MatchDecl, new List<Symbol> { Symbol.EOL })),
-            _ => throw new ArgumentOutOfRangeException()
-        };
+            switch (tokens) {
+                case [Token.TokenSymbol(Symbol.CLASS), Token.TokenIdent id, Token.TokenSymbol(Symbol.LBRACE), .. var rest]:
+                    IExpList<Decl> decls = EmitList(ref rest, MatchDecl, new List<Symbol> { Symbol.EOL });
+                    if (rest.Where(x => x is not Token.TokenSymbol(Symbol.EOL)).ToArray() is not [Token.TokenSymbol(Symbol.RBRACE)])
+                        throw new ArgumentOutOfRangeException();
+                    return new Class(id.Ident, decls);
+                default:
+                    throw new ArgumentOutOfRangeException();
+             }
+        }
 
         private static Token.TokenIdent MatchArg(IExp[] tokens) => tokens switch
         {
@@ -168,12 +174,14 @@ namespace RefactorLang
 
         private static Block MatchBlock(IExp[] tokens)
         {
-            if (tokens is not [Token.TokenSymbol(Symbol.LBRACE), .. var rest])
+            if (tokens.Where(x => x is not Token.TokenSymbol(Symbol.EOL)).ToArray() is not [Token.TokenSymbol(Symbol.LBRACE), ..])
                 throw new ArgumentOutOfRangeException();
+
+            IExp[] rest = tokens.SkipWhile(x => x is Token.TokenSymbol(Symbol.EOL)).Skip(1).ToArray();
 
             IExpList<Stmt> stmts = EmitList(ref rest, MatchStmt, new List<Symbol> { Symbol.EOL });
 
-            if (rest is not [Token.TokenSymbol(Symbol.RBRACE)])
+            if (rest.Where(x => x is not Token.TokenSymbol(Symbol.EOL)).ToArray() is not [Token.TokenSymbol(Symbol.RBRACE)])
                 throw new ArgumentOutOfRangeException();
 
             return new Block(stmts);
