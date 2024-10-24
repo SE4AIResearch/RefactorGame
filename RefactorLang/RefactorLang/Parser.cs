@@ -6,6 +6,8 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
+using RefactorLib;
+
 /*
  *      The Parser is provided with a list of tokens and recursively builds an AST (abstract syntax tree) out of them.
  *      Companion Document:
@@ -16,9 +18,6 @@ using System.Threading.Tasks;
 
 namespace RefactorLang
 {
-    // The IExp interface binds all of the following expressions to make them work with a single root parsing function.
-    // The list of tokens is interpreted as an IExp[] and simplified recursively.
-    public interface IExp { }
 
     // IExpList binds a group of a single kind of IExp together as a single IExp.
     record IExpList<T>(List<T> IExps) : IExp;

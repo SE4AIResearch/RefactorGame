@@ -1,6 +1,11 @@
 ﻿using System.Linq;
 
-namespace RefactorLang
+using RefactorLib;
+using ParserLibrary;
+using RefactorLang;
+using Microsoft.FSharp.Collections;
+
+namespace RefactorLangConsole
 {
     internal class Program
     {
@@ -8,7 +13,8 @@ namespace RefactorLang
         {
             string text = File.ReadAllText("./script.txt");
             List<Token> tokens = Tokenizer.TokenizeLine(text);
-            Prog prog = Parser.Parse(tokens);
+
+            Parser.prog result = ParserLibrary.Parser.parse(ListModule.OfSeq(tokens));
         }
     }
 }

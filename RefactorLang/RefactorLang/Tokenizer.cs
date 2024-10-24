@@ -5,6 +5,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+using RefactorLib;
+
 /*
  *      The Tokenizer goes through the provided code in the form of a script and converts the concrete syntax
  *      provided into the abstract syntax defined in the RefactorLang Specification document.
@@ -13,48 +15,8 @@ using System.Threading.Tasks;
 namespace RefactorLang
 {
     // Defines all of the reserved symbols and words required for the language.
-    public enum Symbol
-    {
-        VAR,    // var (variable declaration)
-        FUNC,   // func (function declaration)
-        CLASS,  // class (class declaration)
-
-        TRUE,   // true (boolean)
-        FALSE,  // false (boolean)
-
-        EQ,     // =
-        EQEQ,   // ==
-        NEQ,    // !=
-        PLUS,   // +
-        DASH,   // -
-
-        EOL,    // <eol>
-        EOF,    // <eof>
-
-        LBRACE, // {
-        RBRACE, // }
-        LPAREN, // (
-        RPAREN, // )
-
-        IF,     // if
-        ELSE,   // else
-
-        STATIC, // static
-        FIELD,  // field
-        RETURN, // return
-
-        COMMA,  // ,
-    }
-
-    // Defines the different tokens that can be expected by the Parser.
-    // Note: Ident refers to Identifier, which can refer to the names of variables, classes, functions, etc.
-    public record Token : IExp
-    {
-        public record TokenSymbol(Symbol Symbol) : Token();
-        public record TokenIdent(string Ident) : Token();
-        public record TokenNumber(int Number) : Token();
-    }
-    internal class Tokenizer
+    
+    public class Tokenizer
     {
         // Attempts to "tokenize" a line of RefactorLang by converting words and symbols into a list of tokens.
         public static List<Token> TokenizeLine(string text)

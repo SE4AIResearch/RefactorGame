@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-	<ProjectReference Include="..\RefactorLang\RefactorLang.csproj" />
+    <ProjectReference Include="..\RefactorLib\RefactorLib.csproj" />
   </ItemGroup>
 
 </Project>
