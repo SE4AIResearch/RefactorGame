@@ -9,6 +9,7 @@
   <ItemGroup>
     <Compile Remove="Interpreter.cs" />
     <Compile Remove="OldParser.cs" />
+    <Compile Remove="Parser.cs" />
   </ItemGroup>
 
   <ItemGroup>

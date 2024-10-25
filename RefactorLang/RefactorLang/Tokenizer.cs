@@ -16,7 +16,7 @@ namespace RefactorLang
 {
     // Defines all of the reserved symbols and words required for the language.
     
-    public class Tokenizer
+    public partial class Tokenizer
     {
         // Attempts to "tokenize" a line of RefactorLang by converting words and symbols into a list of tokens.
         public static List<Token> TokenizeLine(string text)
@@ -24,7 +24,7 @@ namespace RefactorLang
             List<Token> output = new();
 
             // Conversion list from concrete syntax to Symbols.
-            Dictionary<string, Symbol> tokenLookup = new Dictionary<string, Symbol>
+            Dictionary<string, Symbol> tokenLookup = new()
             {
                 { "var", Symbol.VAR },
                 { "func", Symbol.FUNC },
@@ -63,7 +63,7 @@ namespace RefactorLang
             // Splitting them into an array
             // Note: Accounts for floats, even if not fully implemented
             // Experiment with / Learn about regex used: https://regex101.com/r/4zzBu2/2
-            string[] words = Regex.Matches(replaced, @"(\n|[a-zA-Z0-9]+(\.[0-9]+)?|[\(\)\[\]\{\}]|\S+?(?:,\S+?)*)")
+            string[] words = ParserRegex().Matches(replaced)
                 .Cast<Match>()
                 .Select(m => m.Value == "\n" ? "\r\n" : m.Value)
                 .ToArray();
@@ -86,5 +86,8 @@ namespace RefactorLang
 
             return output.Append(new Token.TokenSymbol(Symbol.EOF)).ToList();
         }
+
+        [GeneratedRegex("(\\n|[a-zA-Z0-9]+(\\.[0-9]+)?|[\\(\\)\\[\\]\\{\\}]|\\S+?(?:,\\S+?)*)")]
+        private static partial Regex ParserRegex();
     }
 }

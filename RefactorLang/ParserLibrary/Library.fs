@@ -18,14 +18,18 @@ module Parser =
     | Parser of (token list -> result<'a>)
 
     type binop =
-    | Add | Sub | Eq | Neq
-
-    type exp =
+    | Add of exp * exp
+    | Sub of exp * exp
+    | Mul of exp * exp
+    | Div of exp * exp
+    | Eq  of exp * exp
+    | Neq of exp * exp
+    and exp =
     | CNum of float
     | CBool of bool
     | CVar of id
     | CStr of string
-    | Bop of binop * exp * exp
+    | Binop of binop
 
     type stmt =
     | Ret
@@ -85,17 +89,6 @@ module Parser =
             | [] -> Failure "No more input."
             | TokenIdent ti :: t -> Success (ti, t)
             | _ -> Failure "todo: write better error message"
-        Parser parseHelper 
-
-    let parseBinop : parser<binop> =
-        let parseHelper (stream: token list) =
-            match stream with
-            | [] -> Failure "No more input."
-            | TokenSymbol ts :: t when ts = Symbol.PLUS -> Success (Add, t)
-            | TokenSymbol ts :: t when ts = Symbol.DASH -> Success (Sub, t)
-            | TokenSymbol ts :: t when ts = Symbol.EQEQ -> Success (Eq, t)
-            | TokenSymbol ts :: t when ts = Symbol.NEQ  -> Success (Neq, t)
-            | _ -> Failure "todo: write better error message"
         Parser parseHelper
     
     let run (parser: parser<'a>) (stream: token list) : result<'a> =
@@ -104,6 +97,13 @@ module Parser =
     let returnP (x: 'a) : parser<'a> =
         let parseHelper (stream: token list) =
             Success(x, stream)
+        Parser parseHelper
+
+    let bindP (f: 'a -> parser<'b>) (p: parser<'a>) : parser<'b> =
+        let parseHelper (stream: token list) =
+            match run p stream with
+            | Failure err -> Failure err
+            | Success (v, tl) -> run (f v) tl
         Parser parseHelper
 
     let andThen (parser1: parser<'a>) (parser2: parser<'b>) : parser<'a * 'b> =
@@ -156,6 +156,7 @@ module Parser =
 
         Parser parseHelper, parserRef
 
+    let ( >>= ) p f = bindP f p
     let ( .>>. ) = andThen
     let ( <|> ) = orElse
     let ( <!> ) = mapP
@@ -180,6 +181,13 @@ module Parser =
     let sep (p: parser<'a>) (sep: parser<'b>) : parser<'a list> =
         sepBy1 p sep <|> returnP []
 
+    let rec chainl1 (p: parser<'a>) (op: parser<'a -> 'a -> 'a>) : parser<'a> =
+        let rec rest (acc: 'a) : parser<'a> =
+            (op >>= fun f ->
+                p >>= fun v ->
+                    rest (f acc v)) <|> returnP acc
+        p >>= rest
+
     let newlines = many (parseSymbol Symbol.EOL)
 
     let parseStatic : parser<inst> = 
@@ -192,20 +200,25 @@ module Parser =
     let parseExp, parseExpRef = createParserForwardedToRef<exp>()
 
     parseExpRef.Value <-
-        choice [
-        parseAnyNumber |>> CNum
-        //parseExp .>>. parseBinop .>>. parseExp |>> fun ((e1, b), e2) -> Bop (b, e1, e2)
-        parseAnyBool |>> CBool
-        parseAnyIdent |>> CVar
-        betweenSymbols Symbol.LPAREN parseExp Symbol.RPAREN
+        let parseTerm = choice [
+            parseAnyNumber |>> CNum
+            parseAnyBool |>> CBool
+            parseAnyIdent |>> CVar
+            betweenSymbols Symbol.LPAREN parseExp Symbol.RPAREN
         ]
+        let retBinop (s: Symbol) (e: exp * exp -> binop) : parser<exp -> exp -> exp> = parseSymbol s >>. returnP (fun x y -> Binop (e (x, y)))
+        let parseBinop = choice [
+            retBinop Symbol.PLUS Add
+            retBinop Symbol.DASH Sub
+        ]
+        chainl1 parseTerm parseBinop
 
     let parseStmt : parser<stmt> =
         let parseRetExp = newlines >>. betweenSymbols Symbol.RETURN parseExp Symbol.EOL .>> newlines
         let parseRet = newlines >>. parseSymbol Symbol.RETURN >>. parseSymbol Symbol.EOL .>> newlines
         choice [
             parseRetExp |>> RetExp
-            parseRet |>> fun (_) -> Ret
+            parseRet >>. returnP Ret
         ]
   
     let parseBlock : parser<block> = 
