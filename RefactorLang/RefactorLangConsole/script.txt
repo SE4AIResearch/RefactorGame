@@ -1,10 +1,16 @@
-class TestClass { 
-	func add (a, b) { 
-		return a + b + b
+class testClass {
+	func testFunc(a) {
+		if (a == 5) {
+			return (a + 1)
+		}
+		else if (a == 4) {
+			return a + a
+		}
+		else if (a == 0) {
+			return a
+		}
+		else {
+			return a + 2
+		}
 	}
-} 
-
-class OtherTestClass { 
-	static field y
-	field z
 }
