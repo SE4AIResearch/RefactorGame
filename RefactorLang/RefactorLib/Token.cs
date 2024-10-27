@@ -14,6 +14,8 @@
         NEQ,    // !=
         PLUS,   // +
         DASH,   // -
+        AND, // &&
+        OR, // ||
 
         EOL,    // <eol>
         EOF,    // <eof>
