@@ -42,6 +42,8 @@ namespace RefactorLang
                 { "and", Symbol.AND },
                 { "||", Symbol.OR },
                 { "or", Symbol.OR },
+                { "!", Symbol.NOT },
+                { "not", Symbol.NOT },
 
                 { "\r\n", Symbol.EOL },
 
@@ -91,7 +93,7 @@ namespace RefactorLang
             return output.Append(new Token.TokenSymbol(Symbol.EOF)).ToList();
         }
 
-        [GeneratedRegex("(\\n|[a-zA-Z0-9]+(\\.[0-9]+)?|[\\(\\)\\[\\]\\{\\}]|==|!=|=|&&|\\|\\||\\S+?(?:,\\S+?)*)")]
+        [GeneratedRegex("(\\n|[a-zA-Z0-9]+(\\.[0-9]+)?|[\\(\\)\\[\\]\\{\\}]|==|!=|=|&&|\\|\\||!|\\S+?(?:,\\S+?)*)")]
         private static partial Regex ParserRegex();
     }
 }
