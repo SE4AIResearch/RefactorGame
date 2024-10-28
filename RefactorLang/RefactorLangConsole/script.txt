@@ -1,9 +1,5 @@
 class testClass {
 	func testFunc() {
-		var a = 0
-		while (a == 4) {
-			a = a + 1
-		}
-		return a
+		var b = testFunc(8, a, 3 + 4)
 	}
 }

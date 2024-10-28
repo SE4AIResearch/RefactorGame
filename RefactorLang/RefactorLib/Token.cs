@@ -14,9 +14,12 @@
         NEQ,    // !=
         PLUS,   // +
         DASH,   // -
-        AND, // &&, "and"
-        OR, // ||, "or"
-        NOT, // !, "not"
+        STAR,   // *
+        FSLASH, // /
+        MOD,    // %
+        AND,    // &&, "and"
+        OR,     // ||, "or"
+        NOT,    // !, "not"
 
         EOL,    // <eol>
         EOF,    // <eof>

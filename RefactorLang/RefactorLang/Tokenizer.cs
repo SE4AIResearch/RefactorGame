@@ -34,10 +34,14 @@ namespace RefactorLang
                 { "false", Symbol.FALSE },
 
                 { "=", Symbol.EQ },
+
                 { "==", Symbol.EQEQ },
                 { "!=", Symbol.NEQ },
                 { "+", Symbol.PLUS },
                 { "-", Symbol.DASH },
+                { "*", Symbol.STAR },
+                { "/", Symbol.FSLASH },
+                { "%", Symbol.MOD },
                 { "&&", Symbol.AND },
                 { "and", Symbol.AND },
                 { "||", Symbol.OR },
