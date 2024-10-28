@@ -38,9 +38,10 @@ module Parser =
     type stmt =
     | Ret
     | RetExp of exp
-    | Decl of id * exp
+    | VDecl of id * exp
     | Assn of id * exp
     | IfThenElse of exp * block * (exp * block) list * block option
+    | While of exp * block
     and block = stmt list
 
     type inst =
@@ -262,10 +263,16 @@ module Parser =
         let parseIf = parseSymbol Symbol.IF >>. betweenSymbols Symbol.LPAREN parseExp Symbol.RPAREN .>>. parseBlock
         let parseElseIf = parseSymbol Symbol.ELSE >>. parseIf
         let parseITE = parseIf .>>. (many parseElseIf) .>>. opt (parseSymbol Symbol.ELSE >>. parseBlock)
+        let parseWhile = parseSymbol Symbol.WHILE >>. betweenSymbols Symbol.LPAREN parseExp Symbol.RPAREN .>>. parseBlock
+        let parseAssn = parseAnyIdent .>> parseSymbol Symbol.EQ .>>. parseExp
+        let parseVDecl = parseSymbol Symbol.VAR >>. parseAssn
         let parseRetExp = betweenSymbols Symbol.RETURN parseExp Symbol.EOL
         let parseRet = parseSymbol Symbol.RETURN >>. parseSymbol Symbol.EOL
         choice [
+            betweenNewlines parseVDecl |>> VDecl
+            betweenNewlines parseAssn |>> Assn
             betweenNewlines parseITE |>> fun (((ie, bl), eiebs), ebl) -> IfThenElse (ie, bl, eiebs, ebl)
+            betweenNewlines parseWhile |>> While
             betweenNewlines parseRetExp |>> RetExp
             betweenNewlines parseRet >>. returnP Ret
         ]

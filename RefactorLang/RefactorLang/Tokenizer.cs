@@ -53,6 +53,9 @@ namespace RefactorLang
                 { "if", Symbol.IF },
                 { "else", Symbol.ELSE },
 
+                { "while", Symbol.WHILE },
+                { "for", Symbol.FOR },
+
                 { "static", Symbol.STATIC },
                 { "field", Symbol.FIELD },
                 { "return", Symbol.RETURN },

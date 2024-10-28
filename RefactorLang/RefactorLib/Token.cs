@@ -28,6 +28,9 @@
         IF,     // if
         ELSE,   // else
 
+        WHILE,  // while
+        FOR,    // for
+
         STATIC, // static
         FIELD,  // field
         RETURN, // return

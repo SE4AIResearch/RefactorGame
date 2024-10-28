@@ -1,16 +1,9 @@
 class testClass {
-	func testFunc(a) {
-		if (a == 5) {
-			return (a + 1)
+	func testFunc() {
+		var a = 0
+		while (a == 4) {
+			a = a + 1
 		}
-		else if (a == 4) {
-			return a + a
-		}
-		else if (a == 0) {
-			return a
-		}
-		else {
-			return a + 2
-		}
+		return a
 	}
 }
