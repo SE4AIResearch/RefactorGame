@@ -26,22 +26,26 @@ namespace RefactorLang
             // Conversion list from concrete syntax to Symbols.
             Dictionary<string, Symbol> tokenLookup = new()
             {
+                // Declarations
                 { "var", Symbol.VAR },
                 { "func", Symbol.FUNC },
                 { "class", Symbol.CLASS },
+                { "static", Symbol.STATIC },
+                { "field", Symbol.FIELD },
 
+                // Assignment
+                { "=", Symbol.EQ },
+
+                // Return
+                { "return", Symbol.RETURN },
+
+                // Booleans
                 { "true", Symbol.TRUE },
                 { "false", Symbol.FALSE },
 
-                { "=", Symbol.EQ },
-
+                // Boolean Operators
                 { "==", Symbol.EQEQ },
                 { "!=", Symbol.NEQ },
-                { "+", Symbol.PLUS },
-                { "-", Symbol.DASH },
-                { "*", Symbol.STAR },
-                { "/", Symbol.FSLASH },
-                { "%", Symbol.MOD },
                 { "&&", Symbol.AND },
                 { "and", Symbol.AND },
                 { "||", Symbol.OR },
@@ -49,25 +53,36 @@ namespace RefactorLang
                 { "!", Symbol.NOT },
                 { "not", Symbol.NOT },
 
-                { "\r\n", Symbol.EOL },
+                // Numeric Operators
+                { "+", Symbol.PLUS },
+                { "-", Symbol.DASH },
+                { "*", Symbol.STAR },
+                { "/", Symbol.FSLASH },
+                { "%", Symbol.MOD },
 
+                // Containers
                 { "{", Symbol.LBRACE },
                 { "}", Symbol.RBRACE },
                 { "(", Symbol.LPAREN },
                 { ")", Symbol.RPAREN },
+                { "[", Symbol.LBRACK },
+                { "]", Symbol.RBRACK },
 
+                // Conditional Statements
                 { "if", Symbol.IF },
                 { "else", Symbol.ELSE },
 
+                // Loops
                 { "while", Symbol.WHILE },
                 { "for", Symbol.FOR },
+                { "in", Symbol.IN },
 
-                { "static", Symbol.STATIC },
-                { "field", Symbol.FIELD },
-                { "return", Symbol.RETURN },
-
+                // Puncuation
                 { ",", Symbol.COMMA },
-                { ".", Symbol.DOT }
+                { ".", Symbol.DOT },
+
+                // EOL
+                { "\r\n", Symbol.EOL }
             };
 
             // Modifies tabs or \r\n's
@@ -76,7 +91,7 @@ namespace RefactorLang
             // Applies a regex that matches words, numbers, commas (), [], {}
             // Splitting them into an array
             // Note: Accounts for floats, even if not fully implemented
-            // Experiment with / Learn about regex used: https://regex101.com/r/4zzBu2/4
+            // Experiment with / Learn about regex used: https://regex101.com/r/4zzBu2/5
             string[] words = ParserRegex().Matches(replaced)
                 .Cast<Match>()
                 .Select(m => m.Value == "\n" ? "\r\n" : m.Value)

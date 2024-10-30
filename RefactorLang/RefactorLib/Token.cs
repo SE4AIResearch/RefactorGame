@@ -2,45 +2,61 @@
 {
     public enum Symbol
     {
+        // Declarations
         VAR,    // var (variable declaration)
         FUNC,   // func (function declaration)
         CLASS,  // class (class declaration)
+        STATIC, // static
+        FIELD,  // field
 
+        // Assignment
+        EQ,     // =
+
+        // Return
+        RETURN, // return
+
+        // Booleans
         TRUE,   // true (boolean)
         FALSE,  // false (boolean)
 
-        EQ,     // =
+        // Boolean Operators
         EQEQ,   // ==
         NEQ,    // !=
+        AND,    // &&, "and"
+        OR,     // ||, "or"
+        NOT,    // !, "not"
+
+        // Numeric Operators
         PLUS,   // +
         DASH,   // -
         STAR,   // *
         FSLASH, // /
         MOD,    // %
-        AND,    // &&, "and"
-        OR,     // ||, "or"
-        NOT,    // !, "not"
 
-        EOL,    // <eol>
-        EOF,    // <eof>
-
+        // Containers
         LBRACE, // {
         RBRACE, // }
         LPAREN, // (
         RPAREN, // )
+        LBRACK, // [
+        RBRACK, // ]
 
+        // Conditionals
         IF,     // if
         ELSE,   // else
 
+        // Loops
         WHILE,  // while
         FOR,    // for
+        IN, // in
 
-        STATIC, // static
-        FIELD,  // field
-        RETURN, // return
-
+        // Puncuation
         COMMA,  // ,
         DOT,    // .
+
+        // End-Of Tokens
+        EOL,    // <eol>
+        EOF,    // <eof>
     }
 
     // Defines the different tokens that can be expected by the Parser.
