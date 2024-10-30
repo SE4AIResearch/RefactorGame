@@ -132,3 +132,11 @@ module Parser =
                 p >>= fun v ->
                     rest (f acc v)) <|> returnP acc
         p >>= rest
+
+    let rec chainl1ab (p1: parser<'a>) (op: parser<'a -> 'b -> 'a>) (p2: parser<'b>) : parser<'a> =
+        let rec loop acc =
+            (op .>>. p2) >>= fun (f, x) ->
+                let result = f acc x
+                loop result
+                <|> returnP result
+        p1 >>= loop

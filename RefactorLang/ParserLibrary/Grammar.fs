@@ -31,6 +31,7 @@ module Grammar =
     | Binop of binop
     | Unop of unop
     | FCall of id * exp list
+    | Proj of exp * id
 
     type stmt =
     | Ret

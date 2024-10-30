@@ -67,6 +67,7 @@ namespace RefactorLang
                 { "return", Symbol.RETURN },
 
                 { ",", Symbol.COMMA },
+                { ".", Symbol.DOT }
             };
 
             // Modifies tabs or \r\n's

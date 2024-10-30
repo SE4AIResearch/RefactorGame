@@ -4,7 +4,7 @@ open RefactorLib
 open Grammar
 open Parser
 
-module Parser =
+module RefactorLangParser =
     let stringOfToken (token: token) : string =
         match token with
         | TokenIdent id -> id
@@ -75,6 +75,7 @@ module Parser =
 
     parseExpRef.Value <-
         let retBinop (s: Symbol) (e: exp * exp -> binop) : parser<exp -> exp -> exp> = parseSymbol s >>. returnP (fun x y -> Binop (e (x, y)))
+        let retProj : parser<exp -> id -> exp> = parseSymbol Symbol.DOT >>. returnP (fun x y -> Proj (x, y))
         let parseBinop = choice [
             retBinop Symbol.PLUS Add
             retBinop Symbol.DASH Sub
@@ -84,7 +85,6 @@ module Parser =
             retBinop Symbol.AND And
             retBinop Symbol.OR Or
             retBinop Symbol.EQEQ Eq
-            
         ]
         let parseUnop = choice [
             parseSymbol Symbol.DASH >>. returnP Neg
@@ -98,7 +98,9 @@ module Parser =
             parseUnop .>>. parseExp |>> fun (x, y) -> Unop (x (y))
             betweenSymbols Symbol.LPAREN parseExp Symbol.RPAREN
         ]
-        chainl1 parseTerm parseBinop
+        let andProj = chainl1ab parseTerm retProj parseAnyIdent
+        let andBinop = chainl1 parseTerm parseBinop
+        andProj <|> andBinop
 
     let parseBlock : parser<block> = 
         betweenSymbols Symbol.LBRACE (many parseStmt) Symbol.RBRACE .>> newlines
@@ -136,6 +138,6 @@ module Parser =
     let parseProg : parser<prog> =
         betweenNewlines (many parseClass) .>> parseSymbol Symbol.EOF |>> Prog
 
-    let parse (tokens: List<Token>) = 
+    let parse (tokens: List<Token>) : string = 
         let result = (run parseProg (convertSymbols tokens))
         sprintf "%s" (printResult result)

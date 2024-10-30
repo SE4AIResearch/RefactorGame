@@ -40,6 +40,7 @@
         RETURN, // return
 
         COMMA,  // ,
+        DOT,    // .
     }
 
     // Defines the different tokens that can be expected by the Parser.

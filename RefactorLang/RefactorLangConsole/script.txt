@@ -1,5 +1,5 @@
 class testClass {
 	func testFunc() {
-		var b = testFunc(8, a, 3 + 4)
+		var x = (1 + 2).b
 	}
 }
