@@ -6,7 +6,7 @@ module Grammar =
     type id = string
 
     type token =
-    | TokenNumber of float
+    | TokenNumber of float32
     | TokenIdent of id
     | TokenSymbol of Symbol
 
@@ -24,7 +24,7 @@ module Grammar =
     | Not of exp
     | Neg of exp
     and exp =
-    | CNum of float
+    | CNum of float32
     | CBool of bool
     | CVar of id
     | CStr of string

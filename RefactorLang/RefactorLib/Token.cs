@@ -61,11 +61,33 @@
 
     // Defines the different tokens that can be expected by the Parser.
     // Note: Ident refers to Identifier, which can refer to the names of variables, classes, functions, etc.
-    public record Token : IExp
+    public interface Token : IExp { }
+
+    public class TokenSymbol : Token
     {
-        public record TokenSymbol(Symbol Symbol) : Token();
-        public record TokenIdent(string Ident) : Token();
-        public record TokenNumber(int Number) : Token();
+        public Symbol Symbol;
+        public TokenSymbol(Symbol symbol)
+        {
+            Symbol = symbol;
+        }
+    }
+
+    public class TokenIdent : Token
+    {
+        public string Ident;
+        public TokenIdent(string ident)
+        {
+            Ident = ident;
+        }
+    }
+
+    public class TokenNumber : Token
+    {
+        public float Number;
+        public TokenNumber(float number)
+        {
+            Number = number;
+        }
     }
 
 

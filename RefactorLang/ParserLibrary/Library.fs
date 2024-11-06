@@ -14,9 +14,9 @@ module RefactorLangParser =
     let rec convertSymbols (tokens: Token list) : token list =
         match tokens with
         | [] -> []
-        | :? Token.TokenSymbol as ts :: t -> TokenSymbol ts.Symbol :: convertSymbols t
-        | :? Token.TokenNumber as tn :: t -> TokenNumber tn.Number :: convertSymbols t
-        | :? Token.TokenIdent as ti :: t -> TokenIdent ti.Ident :: convertSymbols t
+        | :? TokenSymbol as ts :: t -> TokenSymbol ts.Symbol :: convertSymbols t
+        | :? TokenNumber as tn :: t -> TokenNumber tn.Number :: convertSymbols t
+        | :? TokenIdent as ti :: t -> TokenIdent ti.Ident :: convertSymbols t
         | _ -> raise (System.Exception "convertSymbols failed to match")
 
     let parseSymbol (symbol: Symbol) : parser<token> =
@@ -34,7 +34,7 @@ module RefactorLangParser =
     let newlines = many (parseSymbol Symbol.EOL)
     let betweenNewlines p = newlines >>. p .>> newlines
 
-    let parseAnyNumber : parser<float> =
+    let parseAnyNumber : parser<float32> =
         let label = "number"
         let parseHelper (stream: token list) =
             match stream with

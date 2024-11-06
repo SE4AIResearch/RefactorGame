@@ -1,3 +1,11 @@
 bin/
 obj/
 .vs/
+
+# Unity Stuff
+Library/
+Temp/
+Logs/
+UserSettings/
+SwitchIL2CPPCache/
+SwitchIL2CPPStats/

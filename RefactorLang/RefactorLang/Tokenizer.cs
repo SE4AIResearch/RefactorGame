@@ -21,10 +21,10 @@ namespace RefactorLang
         // Attempts to "tokenize" a line of RefactorLang by converting words and symbols into a list of tokens.
         public static List<Token> TokenizeLine(string text)
         {
-            List<Token> output = new();
+            List<Token> output = new List<Token>();
 
             // Conversion list from concrete syntax to Symbols.
-            Dictionary<string, Symbol> tokenLookup = new()
+            Dictionary<string, Symbol> tokenLookup = new Dictionary<string, Symbol>()
             {
                 // Declarations
                 { "var", Symbol.VAR },
@@ -88,11 +88,13 @@ namespace RefactorLang
             // Modifies tabs or \r\n's
             string replaced = text.Replace("\t", "").Replace("\r\n", " \r\n ");
 
+            Regex ParserRegex = new Regex("(\\n|[a-zA-Z0-9]+(\\.[0-9]+)?|[\\(\\)\\[\\]\\{\\}]|==|!=|=|&&|\\|\\||!|\\S+?(?:,\\S+?)*)");
+
             // Applies a regex that matches words, numbers, commas (), [], {}
             // Splitting them into an array
             // Note: Accounts for floats, even if not fully implemented
             // Experiment with / Learn about regex used: https://regex101.com/r/4zzBu2/5
-            string[] words = ParserRegex().Matches(replaced)
+            string[] words = ParserRegex.Matches(replaced)
                 .Cast<Match>()
                 .Select(m => m.Value == "\n" ? "\r\n" : m.Value)
                 .ToArray();
@@ -101,22 +103,19 @@ namespace RefactorLang
             {
                 if (tokenLookup.TryGetValue(word, out Symbol symbol))
                 {
-                    output.Add(new Token.TokenSymbol(symbol));
+                    output.Add(new TokenSymbol(symbol));
                 }
                 else if (int.TryParse(word, out int number))
                 {
-                    output.Add(new Token.TokenNumber(number));
+                    output.Add(new TokenNumber(number));
                 }
                 else if (word != "")
                 {
-                    output.Add(new Token.TokenIdent(word));
+                    output.Add(new TokenIdent(word));
                 }
             }
 
-            return output.Append(new Token.TokenSymbol(Symbol.EOF)).ToList();
+            return output.Append(new TokenSymbol(Symbol.EOF)).ToList();
         }
-
-        [GeneratedRegex("(\\n|[a-zA-Z0-9]+(\\.[0-9]+)?|[\\(\\)\\[\\]\\{\\}]|==|!=|=|&&|\\|\\||!|\\S+?(?:,\\S+?)*)")]
-        private static partial Regex ParserRegex();
     }
 }

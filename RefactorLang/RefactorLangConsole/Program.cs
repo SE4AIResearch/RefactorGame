@@ -4,6 +4,9 @@ using RefactorLib;
 using ParserLibrary;
 using RefactorLang;
 using Microsoft.FSharp.Collections;
+using System.IO;
+using System.Collections.Generic;
+using System;
 
 namespace RefactorLangConsole
 {
