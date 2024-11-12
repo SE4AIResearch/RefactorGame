@@ -90,8 +90,7 @@ namespace RefactorLang
 
             // Applies a regex that matches words, numbers, commas (), [], {}
             // Splitting them into an array
-            // Note: Accounts for floats, even if not fully implemented
-            // Experiment with / Learn about regex used: https://regex101.com/r/4zzBu2/5
+            // Experiment with / Learn about regex used: https://regex101.com/r/4zzBu2/6
             string[] words = ParserRegex().Matches(replaced)
                 .Cast<Match>()
                 .Select(m => m.Value == "\n" ? "\r\n" : m.Value)
@@ -107,6 +106,10 @@ namespace RefactorLang
                 {
                     output.Add(new Token.TokenNumber(number));
                 }
+                else if (word.StartsWith("\"") && word.EndsWith("\""))
+                {
+                    output.Add(new Token.TokenString(word.Remove(word.Length - 1).Remove(0,1)));
+                }
                 else if (word != "")
                 {
                     output.Add(new Token.TokenIdent(word));
@@ -116,7 +119,7 @@ namespace RefactorLang
             return output.Append(new Token.TokenSymbol(Symbol.EOF)).ToList();
         }
 
-        [GeneratedRegex("(\\n|[a-zA-Z0-9]+(\\.[0-9]+)?|[\\(\\)\\[\\]\\{\\}]|==|!=|=|&&|\\|\\||!|\\S+?(?:,\\S+?)*)")]
+        [GeneratedRegex("((\".*?\")|\\n|[a-zA-Z0-9_]+(\\.[0-9]+)?|[\\(\\)\\[\\]\\{\\}]|==|!=|=|&&|\\|\\||!|\\S+?(?:,\\S+?)*)")]
         private static partial Regex ParserRegex();
     }
 }

@@ -66,6 +66,7 @@
         public record TokenSymbol(Symbol Symbol) : Token();
         public record TokenIdent(string Ident) : Token();
         public record TokenNumber(int Number) : Token();
+        public record TokenString(string String): Token();
     }
 
 

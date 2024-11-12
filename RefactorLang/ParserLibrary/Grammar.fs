@@ -9,6 +9,7 @@ module Grammar =
     | TokenNumber of float
     | TokenIdent of id
     | TokenSymbol of Symbol
+    | TokenString of string
 
     type binop =
     | Add of exp * exp

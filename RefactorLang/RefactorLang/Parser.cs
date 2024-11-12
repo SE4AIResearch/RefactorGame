@@ -47,6 +47,7 @@ namespace RefactorLang
 
     record Exp : IExp
     {
+        public record CString(string String): Exp();
         public record CNum(int Number) : Exp();
         public record CBool(bool Bool) : Exp();
         public record CVar(string Ident) : Exp();
@@ -215,6 +216,8 @@ namespace RefactorLang
         {
             switch (tokens)
             {
+                case [Token.TokenString(string str)]:
+                    return new Exp.CString(str);
                 case [Token.TokenNumber(int num)]:
                     return new Exp.CNum(num);
                 case [Token.TokenIdent(string id)]:

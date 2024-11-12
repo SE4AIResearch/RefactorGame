@@ -63,6 +63,7 @@ namespace RefactorLang
 
         public dynamic InterpretExp(Expression exp) => exp switch
         {
+            Expression.CString(string str) => str,
             Expression.CNum(int number) => number,
             Expression.CBool(true) => true,
             Expression.CBool(false) => false,

@@ -10,6 +10,7 @@ module RefactorLangParser =
         | TokenIdent id -> id
         | TokenSymbol s -> s.ToString()
         | TokenNumber n -> n.ToString()
+        | TokenString s -> s
 
     let rec convertSymbols (tokens: Token list) : token list =
         match tokens with
@@ -17,6 +18,7 @@ module RefactorLangParser =
         | :? Token.TokenSymbol as ts :: t -> TokenSymbol ts.Symbol :: convertSymbols t
         | :? Token.TokenNumber as tn :: t -> TokenNumber tn.Number :: convertSymbols t
         | :? Token.TokenIdent as ti :: t -> TokenIdent ti.Ident :: convertSymbols t
+        | :? Token.TokenString as tstr :: t -> TokenString tstr.String :: convertSymbols t
         | _ -> raise (System.Exception "convertSymbols failed to match")
 
     let parseSymbol (symbol: Symbol) : parser<token> =
@@ -62,6 +64,15 @@ module RefactorLangParser =
             | h :: _ -> Failure (label, (sprintf "unexpected '%s'" (stringOfToken h)))
         { parserFn = parseHelper; label = label }
 
+    let parseAnyString : parser<string> =
+        let label = "string"
+        let parseHelper (stream: token list) =
+            match stream with
+            | [] -> Failure (label, "No more input.")
+            | TokenString s :: t -> Success (s, t)
+            | h :: _ -> Failure (label, (sprintf "unexpected '%s'" (stringOfToken h)))
+        { parserFn = parseHelper; label = label }
+
     let parseStatic : parser<inst> = 
         let label = "static"
         let parseHelper (stream: token list) =
@@ -92,6 +103,7 @@ module RefactorLangParser =
         ]
         let parseTerm = choice [
             parseAnyIdent .>>. betweenSymbols Symbol.LPAREN (sep parseExp (parseSymbol Symbol.COMMA)) Symbol.RPAREN |>> FCall
+            parseAnyString |>> CStr
             parseAnyNumber |>> CNum
             parseAnyBool |>> CBool
             parseAnyIdent |>> CVar
