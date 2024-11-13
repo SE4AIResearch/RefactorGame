@@ -1,6 +1,6 @@
 class testClass {
 	field x
 	func add() {
-		return
+		return "Hello"
 	}
 }

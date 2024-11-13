@@ -1,5 +1,5 @@
 class testClass {
-	func testFunc() {
-		var x = (1 + 2).b
+	func test_func() {
+		var x = "Hello, world"
 	}
 }

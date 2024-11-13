@@ -6,6 +6,7 @@ module Grammar =
     type id = string
 
     type token =
+    | TokenString of string
     | TokenNumber of float32
     | TokenIdent of id
     | TokenSymbol of Symbol

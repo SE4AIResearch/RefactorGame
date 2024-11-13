@@ -90,6 +90,14 @@
         }
     }
 
+    public class TokenString : Token
+    {
+        public string String;
+        public TokenString(string str)
+        {
+            String = str;
+        }
+    }
 
     // The IExp interface binds all of the following expressions to make them work with a single root parsing function.
     // The list of tokens is interpreted as an IExp[] and simplified recursively.
