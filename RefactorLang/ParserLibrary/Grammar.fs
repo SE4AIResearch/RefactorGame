@@ -10,6 +10,7 @@ module Grammar =
     | TokenNumber of float32
     | TokenIdent of id
     | TokenSymbol of Symbol
+    | TokenKeyword of Keyword
 
     type binop =
     | Add of exp * exp
@@ -33,6 +34,7 @@ module Grammar =
     | Unop of unop
     | FCall of id * exp list
     | Proj of exp * id
+    | Idx of id * exp
 
     type stmt =
     | Ret
@@ -41,15 +43,7 @@ module Grammar =
     | Assn of id * exp
     | IfThenElse of exp * block * (exp * block) list * block option
     | While of exp * block
+    | KCall of Keyword * exp list
     and block = stmt list
 
-    type inst =
-    | Static | NonStatic
-
-    type decl =
-    | GDecl of inst * id
-    | FDecl of inst * id * (id list) * block
-
-    type clas = Class of id * (decl list)
-
-    type prog = Prog of clas list
+    type prog = Prog of stmt list

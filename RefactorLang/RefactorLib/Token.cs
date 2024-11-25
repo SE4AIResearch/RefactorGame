@@ -59,6 +59,16 @@
         EOF,    // <eof>
     }
 
+    public enum Keyword
+    {
+        GOTO,
+        GET,
+        POTADD,
+        POTREMOVE,
+        BOIL,
+        DELIVER
+    }
+
     // Defines the different tokens that can be expected by the Parser.
     // Note: Ident refers to Identifier, which can refer to the names of variables, classes, functions, etc.
     public interface Token : IExp { }
@@ -96,6 +106,15 @@
         public TokenString(string str)
         {
             String = str;
+        }
+    }
+
+    public class TokenKeyword : Token
+    {
+        public Keyword Keyword;
+        public TokenKeyword(Keyword keyword)
+        {
+            Keyword = keyword;
         }
     }
 

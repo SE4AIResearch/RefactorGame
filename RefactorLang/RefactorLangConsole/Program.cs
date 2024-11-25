@@ -17,7 +17,7 @@ namespace RefactorLangConsole
             string text = File.ReadAllText("./script.txt");
             List<Token> tokens = Tokenizer.TokenizeLine(text);
 
-            string result = RefactorLangParser.parse(ListModule.OfSeq(tokens));
+            string result = RefactorLangParser.parseToString(ListModule.OfSeq(tokens));
             Console.WriteLine(result);
         }
     }

@@ -85,6 +85,17 @@ namespace RefactorLang
                 { "\r\n", Symbol.EOL }
             };
 
+            // Conversion list from concrete syntax to Symbols.
+            Dictionary<string, Keyword> keywordLookup = new Dictionary<string, Keyword>()
+            {
+                { "GOTO", Keyword.GOTO },
+                { "GET", Keyword.GET },
+                { "POTADD", Keyword.POTADD },
+                { "POTREMOVE", Keyword.POTREMOVE },
+                { "BOIL", Keyword.BOIL },
+                { "DELIVER", Keyword.DELIVER },
+            };
+
             // Modifies tabs or \r\n's
             string replaced = text.Replace("\t", "").Replace("\r\n", " \r\n ");
 
@@ -104,6 +115,10 @@ namespace RefactorLang
                 if (tokenLookup.TryGetValue(word, out Symbol symbol))
                 {
                     output.Add(new TokenSymbol(symbol));
+                }
+                else if (keywordLookup.TryGetValue(word, out Keyword keyword))
+                {
+                    output.Add(new TokenKeyword(keyword));
                 }
                 else if (word.StartsWith("\"") && word.EndsWith("\""))
                 {
