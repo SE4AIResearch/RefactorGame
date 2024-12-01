@@ -1,18 +1,12 @@
-if (orders[0] == "boiled pasta") {
-    GOTO("Pantry")
-    GET("pasta")
-    GOTO("Stove1")
-    POTADD(0) 
-    BOIL(0)
-    POTREMOVE(0)
-    DELIVER()
+GOTO("Pantry")
+if (1 + 1 == 2) {
+    GET("Pasta")
 }
-if (orders[0] == "boiled potato") {
-    GOTO("Pantry")
-    GET("potato")
-    GOTO("Stove1")
-    POTADD(0) 
-    BOIL(0)
-    POTREMOVE(0)
-    DELIVER()
+else {
+    GET("Potato")
 }
+GOTO("Stove")
+POTADD(0) 
+BOIL(0)
+POTREMOVE(0)
+DELIVER()
