@@ -36,8 +36,6 @@ public class ScriptCompiler : MonoBehaviour
         Debug.Log(result);
 
         Grammar.prog prog = RefactorLangParser.parseToProg(ListModule.OfSeq(tokens));
-
-        
     }
 
     // Update is called once per frame
