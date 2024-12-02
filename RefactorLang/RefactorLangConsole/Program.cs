@@ -7,6 +7,7 @@ using Microsoft.FSharp.Collections;
 using System.IO;
 using System.Collections.Generic;
 using System;
+using C5;
 
 namespace RefactorLangConsole
 {
@@ -21,7 +22,15 @@ namespace RefactorLangConsole
             Console.WriteLine(result);
 
             Grammar.prog prog = RefactorLangParser.parseToProg(ListModule.OfSeq(tokens));
-            Interpreter.Interpret(prog, new List<FoodItem> { FoodItem.BoiledPotato });
+
+            try 
+            {
+                Interpreter.Interpret(prog, new List<FoodItem> { FoodItem.BoiledPasta }, new HashBag<FoodItem> { FoodItem.Pasta, FoodItem.Sauce });
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }

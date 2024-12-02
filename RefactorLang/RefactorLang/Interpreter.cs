@@ -17,15 +17,19 @@ namespace RefactorLang
 
     public enum FoodItem
     {
-        None, Garbage, Pasta, BoiledPasta, Potato, BoiledPotato
+        None, Garbage, Pasta, BoiledPasta, Sauce, PastaWithSauce, Potato, BoiledPotato
     }
 
+    /*
+     *  The ExpValue class handles all possible variable values that can be used in the game.
+     *  Each ExpValue holds the Type (for typechecking purposes), as well as the Value.
+     */
     public class ExpValue
     {
         public enum Type { Bool, Str, Num }
 
-        public object Value { get; set; }
         public Type ExpType { get; set; }
+        public object Value { get; set; }
 
         public ExpValue(Type type, object value)
         {
@@ -54,33 +58,62 @@ namespace RefactorLang
         }
     }
 
+    /*
+     *  The State class holds all of the information that is used by the game to maintain the current puzzle state.
+     *  The current information needed is:
+     *      - The orders that must be fulfilled by the program (the test case)
+     *      - The orders that have been fulfilled by the program so far (the current output)
+     *      - The current contents of the pantry shelf
+     *      - A map relating names of declared variables to their values
+     *      - A map relating bags of ingredients to their resulting food items for each method of cooking (so far, just boiling)
+     *      - The current location of the Chef
+     *      - The food item currently held by the Chef
+     *      - The contents of each appliance (so far, just one stove with three burners)
+     */
     public class State
     {
         public List<FoodItem> Orders { get; }
         public List<FoodItem> DeliveredOrders { get; set; } = new List<FoodItem>();
+        public HashBag<FoodItem> Shelf { get; set; }
 
         public Dictionary<string, object> VariableMap { get; set; } = new Dictionary<string, object>();
 
-        public Dictionary<FoodItem, FoodItem> BoilRecipes { get; } = new Dictionary<FoodItem, FoodItem>()
+        public Dictionary<HashBag<FoodItem>, FoodItem> BoilRecipes { get; } = new Dictionary<HashBag<FoodItem>, FoodItem>()
         {
-            { FoodItem.None, FoodItem.None },
-            { FoodItem.Pasta, FoodItem.BoiledPasta },
-            { FoodItem.Potato, FoodItem.BoiledPotato },
+            { new HashBag<FoodItem> { }, FoodItem.None },
+            { new HashBag<FoodItem> { FoodItem.Pasta }, FoodItem.BoiledPasta },
+            { new HashBag<FoodItem> { FoodItem.Pasta, FoodItem.Sauce }, FoodItem.PastaWithSauce },
+            { new HashBag<FoodItem> { FoodItem.Potato }, FoodItem.BoiledPotato },
         };
 
         public ChefLocation ChefLocation { get; set; } = ChefLocation.Pantry;
         public FoodItem ChefHands { get; set; } = FoodItem.None;
 
-        public FoodItem[] StoveContents { get; set; } = new FoodItem[3] { FoodItem.None, FoodItem.None, FoodItem.None };
+        public HashBag<FoodItem>[] StoveContents { get; set; } = new HashBag<FoodItem>[3] { new HashBag<FoodItem>(), new HashBag<FoodItem>(), new HashBag<FoodItem>() };
 
-        public State(List<FoodItem> orders)
+        public FoodItem RecipeLookup(HashBag<FoodItem> ingredients)
+        {
+            foreach (KeyValuePair<HashBag<FoodItem>, FoodItem> kv in BoilRecipes)
+            {
+                if (kv.Key.SequenceEqual(ingredients))
+                {
+                    return kv.Value;
+                }
+            }
+
+            return FoodItem.Garbage;
+        }
+
+        public State(List<FoodItem> orders, HashBag<FoodItem> shelf)
         {
             Orders = orders;
+            Shelf = shelf;
             VariableMap.Add("orders", orders.Select(x => x.ToString()).ToList());
         }
 
         public override string ToString()
         {
+            // TODO: pretty-print current state
             return base.ToString();
         }
     }
@@ -98,6 +131,7 @@ namespace RefactorLang
 
             switch (binop.Item)
             {  
+                // TODO: this repeated code is pretty dismal but i'm not really sure how to shorten it :)
                 case Grammar.binop.Add b:
                     inp1 = InterpretExp(b.Item1, state);
                     inp2 = InterpretExp(b.Item2, state);
@@ -128,7 +162,7 @@ namespace RefactorLang
                     if (!state.VariableMap.TryGetValue(v.Item1, out var value))
                         throw new ArgumentOutOfRangeException("no variable by that name exists");
                     if (!(value is List<string>))
-                        throw new ArgumentOutOfRangeException("that variable is not a list");
+                        throw new ArgumentOutOfRangeException("that variable is not a list of strings");
                     return new ExpValue(ExpValue.Type.Str, ((List<string>)value)[(int)InterpretExp(v.Item2, state).TypeCheckNum()]);
 
                 default:
@@ -195,8 +229,11 @@ namespace RefactorLang
                             throw new ArgumentException("chef not at pantry, can't GET");
                         if (!FoodItem.TryParse(args[0].TypeCheckString(), out FoodItem food))
                             throw new ArgumentException("expected a food string for GET, failed");
+                        if (!state.Shelf.Contains(food))
+                            throw new ArgumentException("pantry does not contain " + food + ", can't GET");
 
                         state.ChefHands = food;
+                        state.Shelf.Remove(food);
                         RecordAction("Chef picks up " + food);
 
                         break;
@@ -228,7 +265,7 @@ namespace RefactorLang
 
                         string currentFood = state.ChefHands.ToString();
                         int potNum = (int)args[0].TypeCheckNum();
-                        state.StoveContents[potNum] = state.ChefHands;
+                        state.StoveContents[potNum].Add(state.ChefHands);
                         state.ChefHands = FoodItem.None;
                         RecordAction("Chef deposits " + currentFood + " into stove pot #" + potNum);
 
@@ -238,15 +275,27 @@ namespace RefactorLang
                     {
                         CheckArguments(1);
                         if (state.ChefLocation != ChefLocation.Stove)
-                            throw new ArgumentException("chef not at stove, can't POTADD");
+                            throw new ArgumentException("chef not at stove, can't POTREMOVE");
                         if (!new List<float> { 0f, 1f, 2f }.Contains(args[0].TypeCheckNum()))
                             throw new ArgumentException("must add to pot 0, 1, or 2");
 
-
                         int potNum = (int)args[0].TypeCheckNum();
-                        state.ChefHands = state.StoveContents[potNum];
-                        state.StoveContents[potNum] = FoodItem.None;
-                        RecordAction("Chef takes " + state.ChefHands + " out of stove pot #" + potNum);
+
+                        if (!state.StoveContents[potNum].Any())
+                            throw new ArgumentException("pot #" + potNum + "doesn't have anything in it, can't POTREMOVE");
+
+                        if (state.StoveContents[potNum].Count == 1)
+                        {
+                            state.ChefHands = state.StoveContents[potNum].Last();
+                            state.StoveContents[potNum] = new HashBag<FoodItem>();
+                            RecordAction("Chef takes " + state.ChefHands + " out of stove pot #" + potNum);
+                        }
+                        else
+                        {
+                            state.StoveContents[potNum] = new HashBag<FoodItem>();
+                            RecordAction("Everything in pot #" + potNum + " fell on the floor!");
+                        }
+                        
 
                         break;
                     }
@@ -260,10 +309,10 @@ namespace RefactorLang
 
 
                         int potNum = (int)args[0].TypeCheckNum();
-                        if (state.BoilRecipes.TryGetValue(state.StoveContents[potNum], out FoodItem newFood))
-                            state.StoveContents[potNum] = newFood;
-                        else
-                            state.StoveContents[potNum] = FoodItem.Garbage;
+                        HashBag<FoodItem> ingredients = new HashBag<FoodItem>();
+                        ingredients.AddAll(state.StoveContents[potNum]);
+
+                        state.StoveContents[potNum] = new HashBag<FoodItem> { state.RecipeLookup(ingredients) };
                         RecordAction("Chef boils pot #" + potNum);
 
 
@@ -302,9 +351,10 @@ namespace RefactorLang
                 InterpretAllStmts(stmt.Item4.Value.ToList(), state);
         }
 
-        public static void Interpret(Grammar.prog prog, List<FoodItem> orders)
+        // Front-facing entry point for interpreting a program
+        public static void Interpret(Grammar.prog prog, List<FoodItem> orders, HashBag<FoodItem> shelf)
         {
-            State state = new State(orders);
+            State state = new State(orders, shelf);
 
             InterpretAllStmts(prog.Item.ToList(), state);
 

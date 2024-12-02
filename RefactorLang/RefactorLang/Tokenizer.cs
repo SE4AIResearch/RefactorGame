@@ -128,7 +128,8 @@ namespace RefactorLang
                 {
                     output.Add(new TokenNumber(number));
                 }
-                else if (word != "")
+                // do NOT delete the second condition, it's not actually an empty string
+                else if (word != "" && word != "​")
                 {
                     output.Add(new TokenIdent(word));
                 }
