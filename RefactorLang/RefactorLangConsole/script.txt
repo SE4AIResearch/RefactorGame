@@ -1,5 +1,5 @@
 GOTO("Pantry")
-if (1 + 1 == 2) {
+if (orders[0] == "BoiledPasta") {
     GET("Pasta")
 }
 else {

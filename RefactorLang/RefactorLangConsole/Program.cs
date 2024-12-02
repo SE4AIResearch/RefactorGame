@@ -21,7 +21,7 @@ namespace RefactorLangConsole
             Console.WriteLine(result);
 
             Grammar.prog prog = RefactorLangParser.parseToProg(ListModule.OfSeq(tokens));
-            Interpreter.Interpret(prog, new List<FoodItem> { FoodItem.BoiledPasta });
+            Interpreter.Interpret(prog, new List<FoodItem> { FoodItem.BoiledPotato });
         }
     }
 }

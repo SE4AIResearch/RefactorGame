@@ -59,6 +59,8 @@ namespace RefactorLang
         public List<FoodItem> Orders { get; }
         public List<FoodItem> DeliveredOrders { get; set; } = new List<FoodItem>();
 
+        public Dictionary<string, object> VariableMap { get; set; } = new Dictionary<string, object>();
+
         public Dictionary<FoodItem, FoodItem> BoilRecipes { get; } = new Dictionary<FoodItem, FoodItem>()
         {
             { FoodItem.None, FoodItem.None },
@@ -74,6 +76,7 @@ namespace RefactorLang
         public State(List<FoodItem> orders)
         {
             Orders = orders;
+            VariableMap.Add("orders", orders.Select(x => x.ToString()).ToList());
         }
 
         public override string ToString()
@@ -88,7 +91,7 @@ namespace RefactorLang
             Console.WriteLine(action);
         }
 
-        private static ExpValue InterpretBinop(Grammar.exp.Binop binop)
+        private static ExpValue InterpretBinop(Grammar.exp.Binop binop, State state)
         {
             ExpValue inp1;
             ExpValue inp2;
@@ -96,19 +99,19 @@ namespace RefactorLang
             switch (binop.Item)
             {  
                 case Grammar.binop.Add b:
-                    inp1 = InterpretExp(b.Item1);
-                    inp2 = InterpretExp(b.Item2);
+                    inp1 = InterpretExp(b.Item1, state);
+                    inp2 = InterpretExp(b.Item2, state);
                     return new ExpValue(ExpValue.Type.Num, inp1.TypeCheckNum() + inp2.TypeCheckNum());
                 case Grammar.binop.Eq b:
-                    inp1 = InterpretExp(b.Item1);
-                    inp2 = InterpretExp(b.Item2);
+                    inp1 = InterpretExp(b.Item1, state);
+                    inp2 = InterpretExp(b.Item2, state);
                     return new ExpValue(ExpValue.Type.Bool, (inp1.ExpType == inp2.ExpType) && inp1.Value.Equals(inp2.Value));
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
-        private static ExpValue InterpretExp(Grammar.exp exp)
+        private static ExpValue InterpretExp(Grammar.exp exp, State state)
         {
             switch (exp)
             {
@@ -119,7 +122,15 @@ namespace RefactorLang
                 case Grammar.exp.CNum v:
                     return new ExpValue(ExpValue.Type.Num, v.Item);
                 case Grammar.exp.Binop b:
-                    return InterpretBinop(b);
+                    return InterpretBinop(b, state);
+                case Grammar.exp.Idx v:
+                    //TODO: simplified to only work with string lists for now
+                    if (!state.VariableMap.TryGetValue(v.Item1, out var value))
+                        throw new ArgumentOutOfRangeException("no variable by that name exists");
+                    if (!(value is List<string>))
+                        throw new ArgumentOutOfRangeException("that variable is not a list");
+                    return new ExpValue(ExpValue.Type.Str, ((List<string>)value)[(int)InterpretExp(v.Item2, state).TypeCheckNum()]);
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -158,7 +169,7 @@ namespace RefactorLang
                 List<ExpValue> output = new List<ExpValue>();
                 foreach (Grammar.exp exp in stmt.Item2)
                 {
-                    output.Add(InterpretExp(exp));
+                    output.Add(InterpretExp(exp, state));
                 }
                 return output;
             }
@@ -264,7 +275,7 @@ namespace RefactorLang
         private static void InterpretITE(Grammar.stmt.IfThenElse stmt, State state)
         {
             // if block
-            ExpValue condition = InterpretExp(stmt.Item1);
+            ExpValue condition = InterpretExp(stmt.Item1, state);
             bool conditionResult = condition.TypeCheckBool();
 
             if (conditionResult)
@@ -276,7 +287,7 @@ namespace RefactorLang
             // elseif blocks
             foreach (var item in stmt.Item3)
             {
-                ExpValue elseCondition = InterpretExp(item.Item1);
+                ExpValue elseCondition = InterpretExp(item.Item1, state);
                 bool elseConditionResult = elseCondition.TypeCheckBool();
 
                 if (elseConditionResult)
