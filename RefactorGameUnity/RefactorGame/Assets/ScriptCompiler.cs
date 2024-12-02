@@ -10,37 +10,14 @@ using System.IO;
 
 public class ScriptCompiler : MonoBehaviour
 {
-    enum Location
+
+    public static void Compile(string input)
     {
-        Pantry,
-        Stove1,
-        Stove2,
-        Counter
-    }
-
-    Dictionary<string, object> VariableMap = new Dictionary<string, object>();
-    Location ChefLocation = Location.Pantry;
-
-    List<string> Orders = new List<string>();
-    List<string> PantryContents = new List<string>();
-    List<string> TestCaseOutput = new List<string>();
-    List<string> CurrentOutput = new List<string>();
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        string text = File.ReadAllText("./Assets/script.txt");
-        List<Token> tokens = Tokenizer.TokenizeLine(text);
+        List<Token> tokens = Tokenizer.TokenizeLine(input);
 
         string result = RefactorLangParser.parseToString(ListModule.OfSeq(tokens));
         Debug.Log(result);
 
         Grammar.prog prog = RefactorLangParser.parseToProg(ListModule.OfSeq(tokens));
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
