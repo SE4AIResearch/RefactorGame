@@ -354,13 +354,14 @@ namespace RefactorLang
         }
 
         private static void InterpretWhile(Grammar.stmt.While stmt, State state) {
+            WhileFlag:
             ExpValue condition = InterpretExp(stmt.Item1, state);
             bool conditionResult = condition.TypeCheckBool();
 
             if (conditionResult)
             {
                 InterpretAllStmts(stmt.Item2.ToList(), state);
-                return;
+                goto WhileFlag;
             }
         }
 

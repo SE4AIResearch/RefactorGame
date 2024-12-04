@@ -35,20 +35,18 @@ module RefactorLangParser =
     let parseBlock : parser<block> =
         betweenSymbols Symbol.LBRACE (many parseStmt) Symbol.RBRACE .>> newlines
 
-    let parseInExp : parser<exp> =
-        (parseAnyIdent .>>. (parseSymbol Symbol.IN >>. parseAnyIdent)) |>> In
-
     parseStmtRef.Value <-
         let parseIf = parseSymbol Symbol.IF >>. betweenSymbols Symbol.LPAREN parseExp Symbol.RPAREN .>>. parseBlock
         let parseElseIf = parseSymbol Symbol.ELSE >>. parseIf
         let parseITE = parseIf .>>. (many parseElseIf) .>>. opt (parseSymbol Symbol.ELSE >>. parseBlock)
         let parseWhile = parseSymbol Symbol.WHILE >>. betweenSymbols Symbol.LPAREN parseExp Symbol.RPAREN .>>. parseBlock
-        let parseForEach = parseSymbol Symbol.FOREACH >>. betweenSymbols Symbol.LPAREN parseInExp Symbol.RPAREN .>>. parseBlock
+        let parseIn = parseAnyIdent .>> parseSymbol Symbol.IN .>>. parseAnyIdent
+        let parseForEach = parseSymbol Symbol.FOREACH >>. betweenSymbols Symbol.LPAREN parseIn Symbol.RPAREN .>>. parseBlock
         let parseKeywordStmt = parseAnyKeyword .>>. betweenSymbols Symbol.LPAREN (sep parseExp (parseSymbol Symbol.COMMA)) Symbol.RPAREN
         choice [
             betweenNewlines parseKeywordStmt |>> fun (kw, ps) -> match kw with TokenKeyword k -> KCall(k, ps)
             betweenNewlines parseITE |>> fun (((ie, bl), eiebs), ebl) -> IfThenElse (ie, bl, eiebs, ebl)
-            betweenNewlines parseForEach |>> fun (e, bl) -> ForEach (e, bl)
+            betweenNewlines parseForEach |>> fun ((id1, id2), bl) -> ForEach (id1, id2, bl)
             betweenNewlines parseWhile |>> fun (exp, bl) -> While(exp, bl)
         ]
 

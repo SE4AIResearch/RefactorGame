@@ -35,15 +35,12 @@ module Grammar =
     | FCall of id * exp list
     | Proj of exp * id
     | Idx of id * exp
-    | In of id * id // Assumes identites only
 
     type stmt =
-    | Ret
-    | RetExp of exp
     | VDecl of id * exp
     | Assn of id * exp
     | IfThenElse of exp * block * (exp * block) list * block option
-    | ForEach of exp * block
+    | ForEach of id * id * block
     | While of exp * block
     | KCall of Keyword * exp list
     and block = stmt list
