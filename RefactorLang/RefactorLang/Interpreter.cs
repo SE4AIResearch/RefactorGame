@@ -141,7 +141,7 @@ namespace RefactorLang
                     inp2 = InterpretExp(b.Item2, state);
                     return new ExpValue(ExpValue.Type.Bool, (inp1.ExpType == inp2.ExpType) && inp1.Value.Equals(inp2.Value));
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException("BINOP NOT SUPPORTED");
             }
         }
 
@@ -165,7 +165,7 @@ namespace RefactorLang
                         throw new ArgumentOutOfRangeException("that variable is not a list of strings");
                     return new ExpValue(ExpValue.Type.Str, ((List<string>)value)[(int)InterpretExp(v.Item2, state).TypeCheckNum()]);
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException("EXP NOT SUPPORTED");
             }
         }
 
@@ -183,7 +183,7 @@ namespace RefactorLang
                     InterpretWhile(wh, state);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException("STMT NOT SUPPORTED");
             }
         }
 
@@ -320,6 +320,8 @@ namespace RefactorLang
 
                         break;
                     }
+                default:
+                    throw new ArgumentOutOfRangeException("KCALL NOT SUPPORTED");
             }
         }
 
