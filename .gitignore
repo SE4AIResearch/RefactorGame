@@ -3,6 +3,8 @@ obj/
 .vs/
 .DS_Store
 
+.vscode/
+
 # Unity Stuff
 Library/
 Temp/
@@ -11,3 +13,4 @@ UserSettings/
 SwitchIL2CPPCache/
 SwitchIL2CPPStats/
 RefactorGameUnity/RefactorGame/Assembly-CSharp.csproj
+/.vscode
