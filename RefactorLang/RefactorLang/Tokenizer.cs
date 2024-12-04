@@ -75,6 +75,7 @@ namespace RefactorLang
                 // Loops
                 { "while", Symbol.WHILE },
                 { "for", Symbol.FOR },
+                { "foreach", Symbol.FOREACH },
                 { "in", Symbol.IN },
 
                 // Puncuation

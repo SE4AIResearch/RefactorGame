@@ -164,7 +164,6 @@ namespace RefactorLang
                     if (!(value is List<string>))
                         throw new ArgumentOutOfRangeException("that variable is not a list of strings");
                     return new ExpValue(ExpValue.Type.Str, ((List<string>)value)[(int)InterpretExp(v.Item2, state).TypeCheckNum()]);
-
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -179,6 +178,9 @@ namespace RefactorLang
                     break;
                 case Grammar.stmt.IfThenElse ite:
                     InterpretITE(ite, state);
+                    break;
+                case Grammar.stmt.While wh:
+                    InterpretWhile(wh, state);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -349,6 +351,17 @@ namespace RefactorLang
             // else block
             if (stmt.Item4 != null)
                 InterpretAllStmts(stmt.Item4.Value.ToList(), state);
+        }
+
+        private static void InterpretWhile(Grammar.stmt.While stmt, State state) {
+            ExpValue condition = InterpretExp(stmt.Item1, state);
+            bool conditionResult = condition.TypeCheckBool();
+
+            if (conditionResult)
+            {
+                InterpretAllStmts(stmt.Item2.ToList(), state);
+                return;
+            }
         }
 
         // Front-facing entry point for interpreting a program

@@ -1,14 +1,3 @@
-﻿GOTO("Pantry")​
-GET("Pasta")​
-GOTO("Stove")​
-POTADD(0)​
-if (orders[0] == "PastaWithSauce") {​
- GOTO("Pantry")​
- GET("Sauce")​
- GOTO("Stove")​
- POTADD(0)​
-
-}​
-BOIL(0)​
-POTREMOVE(0)​
-DELIVER()
+﻿foreach (order in list) {
+	print(order)
+}

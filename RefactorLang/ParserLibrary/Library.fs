@@ -44,6 +44,9 @@ module RefactorLangParserLib =
     let betweenSymbols (s1: Symbol) (p: parser<'a>) (s2: Symbol) : parser<'a> =
         parseSymbol s1 >>. p .>> parseSymbol s2
 
+    let betweenParsers (p1: parser<'a>) (s: Symbol) (p2: parser<'a>) : parser<'a> =
+        p1 .>>. parseSymbol s >>. p2
+
     let newlines = many (parseSymbol Symbol.EOL)
     let betweenNewlines p = newlines >>. p .>> newlines
 
