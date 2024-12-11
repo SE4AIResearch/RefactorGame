@@ -15,7 +15,7 @@ namespace RefactorLangConsole
     {
         static void Main(string[] args)
         {
-            string text = File.ReadAllText("./script.txt");
+            string text = File.ReadAllText("./RefactorLang/RefactorLangConsole/script.txt");
             List<Token> tokens = Tokenizer.TokenizeLine(text);
 
             string result = RefactorLangParser.parseToString(ListModule.OfSeq(tokens));

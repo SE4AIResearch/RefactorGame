@@ -124,22 +124,52 @@ namespace RefactorLang
             Console.WriteLine(action);
         }
 
+        private static ExpValue InterpretBinopExpression(Grammar.exp exp1, Grammar.exp exp2, State state, Func<ExpValue, ExpValue, ExpValue> operation) {
+            ExpValue inp1 = InterpretExp(exp1, state);
+            ExpValue inp2 = InterpretExp(exp2, state);
+            return operation(inp1, inp2);
+        }
+
         private static ExpValue InterpretBinop(Grammar.exp.Binop binop, State state)
         {
-            ExpValue inp1;
-            ExpValue inp2;
-
             switch (binop.Item)
-            {  
-                // TODO: this repeated code is pretty dismal but i'm not really sure how to shorten it :)
+            { 
                 case Grammar.binop.Add b:
-                    inp1 = InterpretExp(b.Item1, state);
-                    inp2 = InterpretExp(b.Item2, state);
-                    return new ExpValue(ExpValue.Type.Num, inp1.TypeCheckNum() + inp2.TypeCheckNum());
+                    return InterpretBinopExpression(b.Item1, b.Item2, state,
+                        (x, y) => new ExpValue(ExpValue.Type.Num, x.TypeCheckNum() + y.TypeCheckNum())
+                    );
+                case Grammar.binop.Sub b:
+                    return InterpretBinopExpression(b.Item1, b.Item2, state,
+                        (x, y) => new ExpValue(ExpValue.Type.Num, x.TypeCheckNum() - y.TypeCheckNum())
+                    );
+                case Grammar.binop.Mul b:
+                    return InterpretBinopExpression(b.Item1, b.Item2, state,
+                        (x, y) => new ExpValue(ExpValue.Type.Num, x.TypeCheckNum() * y.TypeCheckNum())
+                    );
+                case Grammar.binop.Div b:
+                    return InterpretBinopExpression(b.Item1, b.Item2, state,
+                        (x, y) => new ExpValue(ExpValue.Type.Num, x.TypeCheckNum() / y.TypeCheckNum())
+                    );
+                case Grammar.binop.Mod b:
+                    return InterpretBinopExpression(b.Item1, b.Item2, state,
+                        (x, y) => new ExpValue(ExpValue.Type.Num, x.TypeCheckNum() % y.TypeCheckNum())
+                    );
+                case Grammar.binop.And b:
+                    return InterpretBinopExpression(b.Item1, b.Item2, state,
+                        (x, y) => new ExpValue(ExpValue.Type.Bool, x.TypeCheckBool() && y.TypeCheckBool())
+                    );  
+                case Grammar.binop.Or b:
+                    return InterpretBinopExpression(b.Item1, b.Item2, state,
+                        (x, y) => new ExpValue(ExpValue.Type.Bool, x.TypeCheckBool() || y.TypeCheckBool())
+                    );   
                 case Grammar.binop.Eq b:
-                    inp1 = InterpretExp(b.Item1, state);
-                    inp2 = InterpretExp(b.Item2, state);
-                    return new ExpValue(ExpValue.Type.Bool, (inp1.ExpType == inp2.ExpType) && inp1.Value.Equals(inp2.Value));
+                    return InterpretBinopExpression(b.Item1, b.Item2, state,
+                        (x, y) => new ExpValue(ExpValue.Type.Bool, (x.ExpType == y.ExpType) && x.Value.Equals(y.Value))
+                    );
+                case Grammar.binop.Neq b:
+                    return InterpretBinopExpression(b.Item1, b.Item2, state,
+                        (x, y) => new ExpValue(ExpValue.Type.Bool, (x.ExpType == y.ExpType) && !x.Value.Equals(y.Value))
+                    );
                 default:
                     throw new ArgumentOutOfRangeException("BINOP NOT SUPPORTED");
             }
