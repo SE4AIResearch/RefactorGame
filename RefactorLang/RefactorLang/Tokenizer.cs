@@ -115,28 +115,28 @@ namespace RefactorLang
             {
                 if (tokenLookup.TryGetValue(word, out Symbol symbol))
                 {
-                    output.Add(new TokenSymbol(symbol));
+                    output.Add(new Token.TokenSymbol(symbol));
                 }
                 else if (keywordLookup.TryGetValue(word, out Keyword keyword))
                 {
-                    output.Add(new TokenKeyword(keyword));
+                    output.Add(new Token.TokenKeyword(keyword));
                 }
                 else if (word.StartsWith("\"") && word.EndsWith("\""))
                 {
-                    output.Add(new TokenString(word.Remove(word.Length - 1).Remove(0,1)));
+                    output.Add(new Token.TokenString(word.Remove(word.Length - 1).Remove(0,1)));
                 }
                 else if (int.TryParse(word, out int number))
                 {
-                    output.Add(new TokenNumber(number));
+                    output.Add(new Token.TokenNumber(number));
                 }
                 // do NOT delete the second condition, it's not actually an empty string
                 else if (word != "" && word != "​")
                 {
-                    output.Add(new TokenIdent(word));
+                    output.Add(new Token.TokenIdent(word));
                 }
             }
 
-            return output.Append(new TokenSymbol(Symbol.EOF)).ToList();
+            return output.Append(new Token.TokenSymbol(Symbol.EOF)).ToList();
         }
     }
 }

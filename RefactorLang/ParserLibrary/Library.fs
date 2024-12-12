@@ -16,11 +16,11 @@ module RefactorLangParserLib =
     let rec convertSymbols (tokens: Token list) : token list =
         match tokens with
         | [] -> []
-        | :? TokenSymbol as ts :: t -> TokenSymbol ts.Symbol :: convertSymbols t
-        | :? TokenNumber as tn :: t -> TokenNumber tn.Number :: convertSymbols t
-        | :? TokenIdent as ti :: t -> TokenIdent ti.Ident :: convertSymbols t
-        | :? TokenString as ts :: t -> TokenString ts.String :: convertSymbols t
-        | :? TokenKeyword as tk :: t -> TokenKeyword tk.Keyword :: convertSymbols t
+        | :? Token.TokenSymbol as ts :: t -> TokenSymbol ts.Symbol :: convertSymbols t
+        | :? Token.TokenNumber as tn :: t -> TokenNumber tn.Number :: convertSymbols t
+        | :? Token.TokenIdent as ti :: t -> TokenIdent ti.Ident :: convertSymbols t
+        | :? Token.TokenString as ts :: t -> TokenString ts.String :: convertSymbols t
+        | :? Token.TokenKeyword as tk :: t -> TokenKeyword tk.Keyword :: convertSymbols t
         | _ -> raise (System.Exception "convertSymbols failed to match")
 
     let parseSymbol (symbol: Symbol) : parser<token> =
