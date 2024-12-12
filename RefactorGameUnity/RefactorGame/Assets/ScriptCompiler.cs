@@ -7,6 +7,7 @@ using RefactorLib;
 using Microsoft.FSharp.Collections;
 using System;
 using System.IO;
+using C5;
 
 public class ScriptCompiler : MonoBehaviour
 {
@@ -19,5 +20,14 @@ public class ScriptCompiler : MonoBehaviour
         Debug.Log(result);
 
         Grammar.prog prog = RefactorLangParser.parseToProg(ListModule.OfSeq(tokens));
+
+        try
+        {
+            Interpreter.Interpret(prog, new List<FoodItem> { FoodItem.BoiledPasta }, new HashBag<FoodItem> { FoodItem.Pasta, FoodItem.Sauce });
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 }

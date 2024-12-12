@@ -405,7 +405,8 @@ namespace RefactorLang
             InterpretAllStmts(prog.Item.ToList(), state);
 
             if (Enumerable.SequenceEqual(state.Orders, state.DeliveredOrders))
-                Console.WriteLine("Success!");
+                RecordAction("Success!");
+            else RecordAction("Failure...");
         }
     }
 }
