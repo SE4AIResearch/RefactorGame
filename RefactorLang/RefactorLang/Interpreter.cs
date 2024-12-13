@@ -20,6 +20,18 @@ namespace RefactorLang
         None, Garbage, Pasta, BoiledPasta, Sauce, PastaWithSauce, Potato, BoiledPotato
     }
 
+    public record UnityPackage(UnityAction Action, string Message);
+    
+    public record UnityAction
+    {
+        public record ChefMove(ChefLocation Destination) : UnityAction;
+        public record PickUp(FoodItem Food) : UnityAction;
+        public record Use() : UnityAction;
+        public record PutDown() : UnityAction;
+        public record DropOnFloor() : UnityAction;
+        public record NoAction() : UnityAction;
+    }
+
     /*
      *  The ExpValue class handles all possible variable values that can be used in the game.
      *  Each ExpValue holds the Type (for typechecking purposes), as well as the Value.
@@ -120,15 +132,25 @@ namespace RefactorLang
     public class Interpreter
     {
         private State State;
+        public List<UnityPackage> OutputLog { get; }
 
         public Interpreter(List<FoodItem> orders, HashBag<FoodItem> shelf)
         {
             State = new State(orders, shelf);
+            OutputLog = new List<UnityPackage>();
         }
 
-        private void RecordAction(string action)
+        public void PrintOutput()
         {
-            Console.WriteLine(action);
+            foreach(UnityPackage package in this.OutputLog)
+            {
+                Console.WriteLine(package.Message);
+            }
+        }
+
+        private void RecordAction(UnityAction action, string message)
+        {
+            this.OutputLog.Add(new UnityPackage(action, message));
         }
 
         private ExpValue InterpretBinop(Grammar.exp.Binop binop)
@@ -248,7 +270,7 @@ namespace RefactorLang
                             throw new ArgumentException("expected a location string for GOTO, failed");
 
                         this.State.ChefLocation = newLocation;
-                        RecordAction("Chef goes to " + newLocation);
+                        RecordAction(new UnityAction.ChefMove(newLocation), "Chef goes to " + newLocation);
 
                         break;
                     }
@@ -264,7 +286,7 @@ namespace RefactorLang
 
                         this.State.ChefHands = food;
                         this.State.Shelf.Remove(food);
-                        RecordAction("Chef picks up " + food);
+                        RecordAction(new UnityAction.PickUp(food), "Chef picks up " + food);
 
                         break;
                     }
@@ -276,11 +298,11 @@ namespace RefactorLang
                         if (this.State.ChefLocation != ChefLocation.Window)
                         {
                             this.State.ChefLocation = ChefLocation.Window;
-                            RecordAction("Chef goes to " + ChefLocation.Window);
+                            RecordAction(new UnityAction.ChefMove(ChefLocation.Window), "Chef goes to " + ChefLocation.Window);
                         }
 
                         this.State.DeliveredOrders.Add(this.State.ChefHands);
-                        RecordAction("Chef delivers " + this.State.ChefHands);
+                        RecordAction(new UnityAction.PutDown(), "Chef delivers " + this.State.ChefHands);
                         this.State.ChefHands = FoodItem.None;
 
                         break;
@@ -297,7 +319,7 @@ namespace RefactorLang
                         int potNum = (int)args[0].TypeCheckNum();
                         this.State.StoveContents[potNum].Add(this.State.ChefHands);
                         this.State.ChefHands = FoodItem.None;
-                        RecordAction("Chef deposits " + currentFood + " into stove pot #" + potNum);
+                        RecordAction(new UnityAction.PutDown(), "Chef deposits " + currentFood + " into stove pot #" + potNum);
 
                         break;
                     }
@@ -318,12 +340,12 @@ namespace RefactorLang
                         {
                             this.State.ChefHands = this.State.StoveContents[potNum].Last();
                             this.State.StoveContents[potNum] = new HashBag<FoodItem>();
-                            RecordAction("Chef takes " + this.State.ChefHands + " out of stove pot #" + potNum);
+                            RecordAction(new UnityAction.PickUp(this.State.ChefHands), "Chef takes " + this.State.ChefHands + " out of stove pot #" + potNum);
                         }
                         else
                         {
                             this.State.StoveContents[potNum] = new HashBag<FoodItem>();
-                            RecordAction("Everything in pot #" + potNum + " fell on the floor!");
+                            RecordAction(new UnityAction.DropOnFloor(), "Everything in pot #" + potNum + " fell on the floor!");
                         }
                         
 
@@ -343,7 +365,7 @@ namespace RefactorLang
                         ingredients.AddAll(this.State.StoveContents[potNum]);
 
                         this.State.StoveContents[potNum] = new HashBag<FoodItem> { this.State.RecipeLookup(ingredients) };
-                        RecordAction("Chef boils pot #" + potNum);
+                        RecordAction(new UnityAction.Use(), "Chef boils pot #" + potNum);
 
 
                         break;
@@ -401,8 +423,8 @@ namespace RefactorLang
             InterpretAllStmts(prog.Item.ToList());
 
             if (Enumerable.SequenceEqual(this.State.Orders, this.State.DeliveredOrders))
-                RecordAction("Success!");
-            else RecordAction("Failure...");
+                RecordAction(new UnityAction.NoAction(), "Success!");
+            else RecordAction(new UnityAction.NoAction(), "Failure...");
         }
     }
 }
