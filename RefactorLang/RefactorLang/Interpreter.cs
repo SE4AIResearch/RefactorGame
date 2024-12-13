@@ -119,63 +119,61 @@ namespace RefactorLang
     }
     public class Interpreter
     {
-        private static void RecordAction(string action)
+        private State State;
+
+        public Interpreter(List<FoodItem> orders, HashBag<FoodItem> shelf)
+        {
+            State = new State(orders, shelf);
+        }
+
+        private void RecordAction(string action)
         {
             Console.WriteLine(action);
         }
 
-        private static ExpValue InterpretBinopExpression(Grammar.exp exp1, Grammar.exp exp2, State state, Func<ExpValue, ExpValue, ExpValue> operation) {
-            ExpValue inp1 = InterpretExp(exp1, state);
-            ExpValue inp2 = InterpretExp(exp2, state);
-            return operation(inp1, inp2);
-        }
-
-        private static ExpValue InterpretBinop(Grammar.exp.Binop binop, State state)
+        private ExpValue InterpretBinop(Grammar.exp.Binop binop)
         {
-            switch (binop.Item)
-            { 
-                case Grammar.binop.Add b:
-                    return InterpretBinopExpression(b.Item1, b.Item2, state,
-                        (x, y) => new ExpValue(ExpValue.Type.Num, x.TypeCheckNum() + y.TypeCheckNum())
-                    );
-                case Grammar.binop.Sub b:
-                    return InterpretBinopExpression(b.Item1, b.Item2, state,
-                        (x, y) => new ExpValue(ExpValue.Type.Num, x.TypeCheckNum() - y.TypeCheckNum())
-                    );
-                case Grammar.binop.Mul b:
-                    return InterpretBinopExpression(b.Item1, b.Item2, state,
-                        (x, y) => new ExpValue(ExpValue.Type.Num, x.TypeCheckNum() * y.TypeCheckNum())
-                    );
-                case Grammar.binop.Div b:
-                    return InterpretBinopExpression(b.Item1, b.Item2, state,
-                        (x, y) => new ExpValue(ExpValue.Type.Num, x.TypeCheckNum() / y.TypeCheckNum())
-                    );
-                case Grammar.binop.Mod b:
-                    return InterpretBinopExpression(b.Item1, b.Item2, state,
-                        (x, y) => new ExpValue(ExpValue.Type.Num, x.TypeCheckNum() % y.TypeCheckNum())
-                    );
-                case Grammar.binop.And b:
-                    return InterpretBinopExpression(b.Item1, b.Item2, state,
-                        (x, y) => new ExpValue(ExpValue.Type.Bool, x.TypeCheckBool() && y.TypeCheckBool())
-                    );  
-                case Grammar.binop.Or b:
-                    return InterpretBinopExpression(b.Item1, b.Item2, state,
-                        (x, y) => new ExpValue(ExpValue.Type.Bool, x.TypeCheckBool() || y.TypeCheckBool())
-                    );   
-                case Grammar.binop.Eq b:
-                    return InterpretBinopExpression(b.Item1, b.Item2, state,
-                        (x, y) => new ExpValue(ExpValue.Type.Bool, (x.ExpType == y.ExpType) && x.Value.Equals(y.Value))
-                    );
-                case Grammar.binop.Neq b:
-                    return InterpretBinopExpression(b.Item1, b.Item2, state,
-                        (x, y) => new ExpValue(ExpValue.Type.Bool, (x.ExpType == y.ExpType) && !x.Value.Equals(y.Value))
-                    );
-                default:
-                    throw new ArgumentOutOfRangeException("BINOP NOT SUPPORTED");
+            ExpValue InterpretBinopExpression(Grammar.exp exp1, Grammar.exp exp2, Func<ExpValue, ExpValue, ExpValue> operation)
+            {
+                ExpValue inp1 = InterpretExp(exp1);
+                ExpValue inp2 = InterpretExp(exp2);
+                return operation(inp1, inp2);
             }
+
+            return binop.Item switch
+            {
+                Grammar.binop.Add b => InterpretBinopExpression(b.Item1, b.Item2,
+                                        (x, y) => new ExpValue(ExpValue.Type.Num, x.TypeCheckNum() + y.TypeCheckNum())
+                                    ),
+                Grammar.binop.Sub b => InterpretBinopExpression(b.Item1, b.Item2,
+                                        (x, y) => new ExpValue(ExpValue.Type.Num, x.TypeCheckNum() - y.TypeCheckNum())
+                                    ),
+                Grammar.binop.Mul b => InterpretBinopExpression(b.Item1, b.Item2,
+                                        (x, y) => new ExpValue(ExpValue.Type.Num, x.TypeCheckNum() * y.TypeCheckNum())
+                                    ),
+                Grammar.binop.Div b => InterpretBinopExpression(b.Item1, b.Item2,
+                                        (x, y) => new ExpValue(ExpValue.Type.Num, x.TypeCheckNum() / y.TypeCheckNum())
+                                    ),
+                Grammar.binop.Mod b => InterpretBinopExpression(b.Item1, b.Item2,
+                                        (x, y) => new ExpValue(ExpValue.Type.Num, x.TypeCheckNum() % y.TypeCheckNum())
+                                    ),
+                Grammar.binop.And b => InterpretBinopExpression(b.Item1, b.Item2,
+                                        (x, y) => new ExpValue(ExpValue.Type.Bool, x.TypeCheckBool() && y.TypeCheckBool())
+                                    ),
+                Grammar.binop.Or b => InterpretBinopExpression(b.Item1, b.Item2,
+                                        (x, y) => new ExpValue(ExpValue.Type.Bool, x.TypeCheckBool() || y.TypeCheckBool())
+                                    ),
+                Grammar.binop.Eq b => InterpretBinopExpression(b.Item1, b.Item2,
+                                        (x, y) => new ExpValue(ExpValue.Type.Bool, (x.ExpType == y.ExpType) && x.Value.Equals(y.Value))
+                                    ),
+                Grammar.binop.Neq b => InterpretBinopExpression(b.Item1, b.Item2,
+                                        (x, y) => new ExpValue(ExpValue.Type.Bool, (x.ExpType == y.ExpType) && !x.Value.Equals(y.Value))
+                                    ),
+                _ => throw new ArgumentOutOfRangeException("BINOP NOT SUPPORTED"),
+            };
         }
 
-        private static ExpValue InterpretExp(Grammar.exp exp, State state)
+        private ExpValue InterpretExp(Grammar.exp exp)
         {
             switch (exp)
             {
@@ -186,44 +184,44 @@ namespace RefactorLang
                 case Grammar.exp.CNum v:
                     return new ExpValue(ExpValue.Type.Num, v.Item);
                 case Grammar.exp.Binop b:
-                    return InterpretBinop(b, state);
+                    return InterpretBinop(b);
                 case Grammar.exp.Idx v:
                     //TODO: simplified to only work with string lists for now
-                    if (!state.VariableMap.TryGetValue(v.Item1, out var value))
+                    if (!this.State.VariableMap.TryGetValue(v.Item1, out var value))
                         throw new ArgumentOutOfRangeException("no variable by that name exists");
-                    if (!(value is List<string>))
+                    if (value is not List<string>)
                         throw new ArgumentOutOfRangeException("that variable is not a list of strings");
-                    return new ExpValue(ExpValue.Type.Str, ((List<string>)value)[(int)InterpretExp(v.Item2, state).TypeCheckNum()]);
+                    return new ExpValue(ExpValue.Type.Str, ((List<string>)value)[(int)InterpretExp(v.Item2).TypeCheckNum()]);
                 default:
                     throw new ArgumentOutOfRangeException("EXP NOT SUPPORTED");
             }
         }
 
-        private static void InterpretStmt(Grammar.stmt stmt, State state)
+        private void InterpretStmt(Grammar.stmt stmt)
         {
             switch (stmt)
             {
                 case Grammar.stmt.KCall kCall:
-                    InterpretKCall(kCall, state);
+                    InterpretKCall(kCall);
                     break;
                 case Grammar.stmt.IfThenElse ite:
-                    InterpretITE(ite, state);
+                    InterpretITE(ite);
                     break;
                 case Grammar.stmt.While wh:
-                    InterpretWhile(wh, state);
+                    InterpretWhile(wh);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("STMT NOT SUPPORTED");
             }
         }
 
-        private static void InterpretAllStmts(List<Grammar.stmt> stmts, State state)
+        private void InterpretAllStmts(List<Grammar.stmt> stmts)
         {
             foreach (Grammar.stmt stmt in stmts)
-                InterpretStmt(stmt, state);
+                InterpretStmt(stmt);
         }
 
-        private static void InterpretKCall(Grammar.stmt.KCall stmt, State state)
+        private void InterpretKCall(Grammar.stmt.KCall stmt)
         {
             void CheckArguments(int num)
             {
@@ -235,7 +233,7 @@ namespace RefactorLang
                 List<ExpValue> output = new List<ExpValue>();
                 foreach (Grammar.exp exp in stmt.Item2)
                 {
-                    output.Add(InterpretExp(exp, state));
+                    output.Add(InterpretExp(exp));
                 }
                 return output;
             }
@@ -249,7 +247,7 @@ namespace RefactorLang
                         if (!ChefLocation.TryParse(args[0].TypeCheckString(), out ChefLocation newLocation))
                             throw new ArgumentException("expected a location string for GOTO, failed");
 
-                        state.ChefLocation = newLocation;
+                        this.State.ChefLocation = newLocation;
                         RecordAction("Chef goes to " + newLocation);
 
                         break;
@@ -257,15 +255,15 @@ namespace RefactorLang
                 case Keyword.GET:
                     {
                         CheckArguments(1);
-                        if (state.ChefLocation != ChefLocation.Pantry)
+                        if (this.State.ChefLocation != ChefLocation.Pantry)
                             throw new ArgumentException("chef not at pantry, can't GET");
                         if (!FoodItem.TryParse(args[0].TypeCheckString(), out FoodItem food))
                             throw new ArgumentException("expected a food string for GET, failed");
-                        if (!state.Shelf.Contains(food))
+                        if (!this.State.Shelf.Contains(food))
                             throw new ArgumentException("pantry does not contain " + food + ", can't GET");
 
-                        state.ChefHands = food;
-                        state.Shelf.Remove(food);
+                        this.State.ChefHands = food;
+                        this.State.Shelf.Remove(food);
                         RecordAction("Chef picks up " + food);
 
                         break;
@@ -273,32 +271,32 @@ namespace RefactorLang
                 case Keyword.DELIVER:
                     {
                         CheckArguments(0);
-                        if (state.ChefHands == FoodItem.None)
+                        if (this.State.ChefHands == FoodItem.None)
                             throw new ArgumentException("can't deliver, chef isn't holding anything");
-                        if (state.ChefLocation != ChefLocation.Window)
+                        if (this.State.ChefLocation != ChefLocation.Window)
                         {
-                            state.ChefLocation = ChefLocation.Window;
+                            this.State.ChefLocation = ChefLocation.Window;
                             RecordAction("Chef goes to " + ChefLocation.Window);
                         }
 
-                        state.DeliveredOrders.Add(state.ChefHands);
-                        RecordAction("Chef delivers " +  state.ChefHands);
-                        state.ChefHands = FoodItem.None;
+                        this.State.DeliveredOrders.Add(this.State.ChefHands);
+                        RecordAction("Chef delivers " + this.State.ChefHands);
+                        this.State.ChefHands = FoodItem.None;
 
                         break;
                     }
                 case Keyword.POTADD:
                     {
                         CheckArguments(1);
-                        if (state.ChefLocation != ChefLocation.Stove)
+                        if (this.State.ChefLocation != ChefLocation.Stove)
                             throw new ArgumentException("chef not at stove, can't POTADD");
                         if (!new List<float> { 0f, 1f, 2f }.Contains(args[0].TypeCheckNum()))
                             throw new ArgumentException("must add to pot 0, 1, or 2");
 
-                        string currentFood = state.ChefHands.ToString();
+                        string currentFood = this.State.ChefHands.ToString();
                         int potNum = (int)args[0].TypeCheckNum();
-                        state.StoveContents[potNum].Add(state.ChefHands);
-                        state.ChefHands = FoodItem.None;
+                        this.State.StoveContents[potNum].Add(this.State.ChefHands);
+                        this.State.ChefHands = FoodItem.None;
                         RecordAction("Chef deposits " + currentFood + " into stove pot #" + potNum);
 
                         break;
@@ -306,25 +304,25 @@ namespace RefactorLang
                 case Keyword.POTREMOVE:
                     {
                         CheckArguments(1);
-                        if (state.ChefLocation != ChefLocation.Stove)
+                        if (this.State.ChefLocation != ChefLocation.Stove)
                             throw new ArgumentException("chef not at stove, can't POTREMOVE");
                         if (!new List<float> { 0f, 1f, 2f }.Contains(args[0].TypeCheckNum()))
                             throw new ArgumentException("must add to pot 0, 1, or 2");
 
                         int potNum = (int)args[0].TypeCheckNum();
 
-                        if (!state.StoveContents[potNum].Any())
+                        if (!this.State.StoveContents[potNum].Any())
                             throw new ArgumentException("pot #" + potNum + "doesn't have anything in it, can't POTREMOVE");
 
-                        if (state.StoveContents[potNum].Count == 1)
+                        if (this.State.StoveContents[potNum].Count == 1)
                         {
-                            state.ChefHands = state.StoveContents[potNum].Last();
-                            state.StoveContents[potNum] = new HashBag<FoodItem>();
-                            RecordAction("Chef takes " + state.ChefHands + " out of stove pot #" + potNum);
+                            this.State.ChefHands = this.State.StoveContents[potNum].Last();
+                            this.State.StoveContents[potNum] = new HashBag<FoodItem>();
+                            RecordAction("Chef takes " + this.State.ChefHands + " out of stove pot #" + potNum);
                         }
                         else
                         {
-                            state.StoveContents[potNum] = new HashBag<FoodItem>();
+                            this.State.StoveContents[potNum] = new HashBag<FoodItem>();
                             RecordAction("Everything in pot #" + potNum + " fell on the floor!");
                         }
                         
@@ -334,7 +332,7 @@ namespace RefactorLang
                 case Keyword.BOIL:
                     {
                         CheckArguments(1);
-                        if (state.ChefLocation != ChefLocation.Stove)
+                        if (this.State.ChefLocation != ChefLocation.Stove)
                             throw new ArgumentException("chef not at stove, can't BOIL");
                         if (!new List<float> { 0f, 1f, 2f }.Contains(args[0].TypeCheckNum()))
                             throw new ArgumentException("must boil in pot 0, 1, or 2");
@@ -342,9 +340,9 @@ namespace RefactorLang
 
                         int potNum = (int)args[0].TypeCheckNum();
                         HashBag<FoodItem> ingredients = new HashBag<FoodItem>();
-                        ingredients.AddAll(state.StoveContents[potNum]);
+                        ingredients.AddAll(this.State.StoveContents[potNum]);
 
-                        state.StoveContents[potNum] = new HashBag<FoodItem> { state.RecipeLookup(ingredients) };
+                        this.State.StoveContents[potNum] = new HashBag<FoodItem> { this.State.RecipeLookup(ingredients) };
                         RecordAction("Chef boils pot #" + potNum);
 
 
@@ -355,56 +353,54 @@ namespace RefactorLang
             }
         }
 
-        private static void InterpretITE(Grammar.stmt.IfThenElse stmt, State state)
+        private void InterpretITE(Grammar.stmt.IfThenElse stmt)
         {
             // if block
-            ExpValue condition = InterpretExp(stmt.Item1, state);
+            ExpValue condition = InterpretExp(stmt.Item1);
             bool conditionResult = condition.TypeCheckBool();
 
             if (conditionResult)
             {
-                InterpretAllStmts(stmt.Item2.ToList(), state);
+                InterpretAllStmts(stmt.Item2.ToList());
                 return;
             }
 
             // elseif blocks
             foreach (var item in stmt.Item3)
             {
-                ExpValue elseCondition = InterpretExp(item.Item1, state);
+                ExpValue elseCondition = InterpretExp(item.Item1);
                 bool elseConditionResult = elseCondition.TypeCheckBool();
 
                 if (elseConditionResult)
                 {
-                    InterpretAllStmts(item.Item2.ToList(), state);
+                    InterpretAllStmts(item.Item2.ToList());
                     return;
                 }
             }
 
             // else block
             if (stmt.Item4 != null)
-                InterpretAllStmts(stmt.Item4.Value.ToList(), state);
+                InterpretAllStmts(stmt.Item4.Value.ToList());
         }
 
-        private static void InterpretWhile(Grammar.stmt.While stmt, State state) {
+        private void InterpretWhile(Grammar.stmt.While stmt) {
             WhileFlag:
-            ExpValue condition = InterpretExp(stmt.Item1, state);
+            ExpValue condition = InterpretExp(stmt.Item1);
             bool conditionResult = condition.TypeCheckBool();
 
             if (conditionResult)
             {
-                InterpretAllStmts(stmt.Item2.ToList(), state);
+                InterpretAllStmts(stmt.Item2.ToList());
                 goto WhileFlag;
             }
         }
 
         // Front-facing entry point for interpreting a program
-        public static void Interpret(Grammar.prog prog, List<FoodItem> orders, HashBag<FoodItem> shelf)
+        public void Interpret(Grammar.prog prog)
         {
-            State state = new State(orders, shelf);
+            InterpretAllStmts(prog.Item.ToList());
 
-            InterpretAllStmts(prog.Item.ToList(), state);
-
-            if (Enumerable.SequenceEqual(state.Orders, state.DeliveredOrders))
+            if (Enumerable.SequenceEqual(this.State.Orders, this.State.DeliveredOrders))
                 RecordAction("Success!");
             else RecordAction("Failure...");
         }

@@ -7,7 +7,6 @@ using Microsoft.FSharp.Collections;
 using System.IO;
 using System.Collections.Generic;
 using System;
-using C5;
 
 namespace RefactorLangConsole
 {
@@ -25,7 +24,8 @@ namespace RefactorLangConsole
 
             try 
             {
-                Interpreter.Interpret(prog, new List<FoodItem> { FoodItem.BoiledPasta }, new HashBag<FoodItem> { FoodItem.Pasta, FoodItem.Sauce });
+                Interpreter interpreter = new Interpreter([FoodItem.BoiledPasta], [FoodItem.Pasta, FoodItem.Sauce]);
+                interpreter.Interpret(prog);
             }
             catch (ArgumentException ex)
             {
