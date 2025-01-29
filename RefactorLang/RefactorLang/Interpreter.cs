@@ -172,8 +172,18 @@ namespace RefactorLang
             this.OutputLog.Add(new UnityPackage(action, message));
         }
 
+        /*
+         * In order to interpret the AST that is the output of Parser.fs, we must implement methods to interpret every data type that can be encountered.
+         * These include:
+         * • Binary operand expressions (Binop)
+         * • Single expressions (Exp)
+         * • Statements and lists of statements (Stmt)
+         * • Special statements (KCall)
+         * • Branching statements (ITE, While, etc.)
+         */
         private ExpValue InterpretBinop(Grammar.exp.Binop binop)
         {
+            // Binops are made up of two Exps and a binary operation. We must interpret all three.
             ExpValue InterpretBinopExpression(Grammar.exp exp1, Grammar.exp exp2, Func<ExpValue, ExpValue, ExpValue> operation)
             {
                 ExpValue inp1 = InterpretExp(exp1);
@@ -181,6 +191,7 @@ namespace RefactorLang
                 return operation(inp1, inp2);
             }
 
+            // In order to interpret binary expressions, we must substitute the abstract objects from the AST with C#'s notion of math.
             return binop.Item switch
             {
                 Grammar.binop.Add b => InterpretBinopExpression(b.Item1, b.Item2,
@@ -216,6 +227,7 @@ namespace RefactorLang
 
         private ExpValue InterpretExp(Grammar.exp exp)
         {
+            // Most Exps are simplified to variable names, but there are a few more complicated ones.
             switch (exp)
             {
                 case Grammar.exp.CBool v:
@@ -240,6 +252,7 @@ namespace RefactorLang
 
         private void InterpretStmt(Grammar.stmt stmt)
         {
+            // Statements are complex and relegated to their own interpretation functions.
             switch (stmt)
             {
                 case Grammar.stmt.KCall kCall:
@@ -256,12 +269,15 @@ namespace RefactorLang
             }
         }
 
+        // Statements are the only void actions that can be chained so far (called a Block), so we need to make sure to handle that properly.
         private void InterpretAllStmts(List<Grammar.stmt> stmts)
         {
             foreach (Grammar.stmt stmt in stmts)
                 InterpretStmt(stmt);
         }
 
+        // KCalls are what eventually become our UnityActions. This is where the actual gameplay takes place.
+        // TODO: Clean all of this up, this function is a monster :)
         private void InterpretKCall(Grammar.stmt.KCall stmt)
         {
             void CheckArguments(int num)
