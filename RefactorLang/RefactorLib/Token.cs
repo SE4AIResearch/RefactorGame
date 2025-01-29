@@ -1,4 +1,9 @@
-﻿namespace RefactorLib
+﻿namespace System.Runtime.CompilerServices
+{
+    public class IsExternalInit { }
+}
+
+namespace RefactorLib
 {
     public enum Symbol
     {
@@ -48,6 +53,7 @@
         // Loops
         WHILE,  // while
         FOR,    // for
+        FOREACH, // foreach
         IN, // in
 
         // Puncuation
@@ -59,19 +65,24 @@
         EOF,    // <eof>
     }
 
-    // Defines the different tokens that can be expected by the Parser.
-    // Note: Ident refers to Identifier, which can refer to the names of variables, classes, functions, etc.
-    public record Token : IExp
+    public enum Keyword
     {
-        public record TokenSymbol(Symbol Symbol) : Token();
-        public record TokenIdent(string Ident) : Token();
-        public record TokenNumber(int Number) : Token();
-        public record TokenString(string String): Token();
+        GOTO,
+        GET,
+        POTADD,
+        POTREMOVE,
+        BOIL,
+        DELIVER
     }
 
-
-    // The IExp interface binds all of the following expressions to make them work with a single root parsing function.
-    // The list of tokens is interpreted as an IExp[] and simplified recursively.
-    public interface IExp { }
-
+    // Defines the different tokens that can be expected by the Parser.
+    // Note: Ident refers to Identifier, which can refer to the names of variables, classes, functions, etc.
+    public record Token
+    {
+        public record TokenSymbol(Symbol Symbol) : Token;
+        public record TokenIdent(string Ident) : Token;
+        public record TokenNumber(float Number) : Token;
+        public record TokenString(string String) : Token;
+        public record TokenKeyword(Keyword Keyword) : Token;
+    }
 }

@@ -1,18 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<ImplicitUsings>disable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
-	<Compile Include="Grammar.fs" />
-	<Compile Include="Parser.fs" />
-    <Compile Include="Library.fs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="FParsec" Version="1.1.1" />
+	  <Compile Include="Grammar.fs" />
+	  <Compile Include="Parser.fs" />
+	  <Compile Include="Library.fs" />
+	  <Compile Include="RefactorLangParser.fs" />
   </ItemGroup>
 
   <ItemGroup>
