@@ -10,25 +10,42 @@ using C5;
 
 namespace RefactorLang
 {
+ 
+    // Contains all possible locations that the chef can be standing at any timestep.
     public enum ChefLocation
     {
         Pantry, Stove, Window
     }
 
+    // All possible food items that can be prepared, including ingredients and unintentional products (Garbage, etc.)
     public enum FoodItem
     {
         None, Garbage, Pasta, BoiledPasta, Sauce, PastaWithSauce, Potato, BoiledPotato
     }
 
+    // The UnityPackage record is just a pair of a UnityAction and a debug message to be logged and shown to the player as a record of chef actions.
+    // The final output of compilation is a list of UnityPackages as a list of instructions for the chef.
     public record UnityPackage(UnityAction Action, string Message);
     
+    // A UnityAction is directly interpreted by the Unity frontend of the game to be shown to the player.
     public record UnityAction
     {
+        // The chef moves to a new location.
         public record ChefMove(ChefLocation Destination) : UnityAction;
+
+        // The chef picks up a food item and visually holds it.
         public record PickUp(FoodItem Food) : UnityAction;
+
+        // The chef plays a generic "Use" animation. (This might eventually change to contextual Use animations, like "Use Stove".)
         public record Use() : UnityAction;
+
+        // The chef puts down whatever it is holding.
         public record PutDown() : UnityAction;
+
+        // The chef loses whatever it is holding forever.
         public record DropOnFloor() : UnityAction;
+
+        // Default: The chef doesn't do any visible actions.
         public record NoAction() : UnityAction;
     }
 
@@ -88,8 +105,10 @@ namespace RefactorLang
         public List<FoodItem> DeliveredOrders { get; set; } = new List<FoodItem>();
         public HashBag<FoodItem> Shelf { get; set; }
 
+        // The list of all variable references currently tracked by the backend.
         public Dictionary<string, object> VariableMap { get; set; } = new Dictionary<string, object>();
 
+        // The map of ingredient bags to a single dish.
         public Dictionary<HashBag<FoodItem>, FoodItem> BoilRecipes { get; } = new Dictionary<HashBag<FoodItem>, FoodItem>()
         {
             { new HashBag<FoodItem> { }, FoodItem.None },
