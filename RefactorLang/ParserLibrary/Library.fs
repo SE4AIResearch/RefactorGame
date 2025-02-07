@@ -59,7 +59,7 @@ module RefactorLangParserLib =
             | h :: _ -> Failure (label, (sprintf "unexpected '%s'" (stringOfToken h)))
         { parserFn = parseHelper; label = label }
 
-    let parseAnyNumber : parser<float32> =
+    let parseAnyNumber : parser<int> =
         let label = "number"
         let parseHelper (stream: token list) =
             match stream with

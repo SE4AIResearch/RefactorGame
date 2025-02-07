@@ -10,9 +10,6 @@ namespace RefactorLib
         // Declarations
         VAR,    // var (variable declaration)
         FUNC,   // func (function declaration)
-        CLASS,  // class (class declaration)
-        STATIC, // static
-        FIELD,  // field
 
         // Assignment
         EQ,     // =
@@ -37,6 +34,10 @@ namespace RefactorLib
         STAR,   // *
         FSLASH, // /
         MOD,    // %
+        GT,     // >
+        GTE,    // >=
+        LT,     // <
+        LTE,    // <=
 
         // Containers
         LBRACE, // {
@@ -69,9 +70,9 @@ namespace RefactorLib
     {
         GOTO,
         GET,
-        POTADD,
-        POTREMOVE,
-        BOIL,
+        PUT,
+        TAKE,
+        ACTIVATE,
         DELIVER
     }
 
@@ -81,7 +82,7 @@ namespace RefactorLib
     {
         public record TokenSymbol(Symbol Symbol) : Token;
         public record TokenIdent(string Ident) : Token;
-        public record TokenNumber(float Number) : Token;
+        public record TokenNumber(int Number) : Token;
         public record TokenString(string String) : Token;
         public record TokenKeyword(Keyword Keyword) : Token;
     }

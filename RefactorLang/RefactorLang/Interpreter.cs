@@ -81,9 +81,9 @@ namespace RefactorLang
         {
             return (bool)TypeCheck(Type.Bool);
         }
-        public float TypeCheckNum()
+        public int TypeCheckNum()
         {
-            return (float)TypeCheck(Type.Num);
+            return (int)TypeCheck(Type.Num);
         }
     }
 
@@ -94,10 +94,8 @@ namespace RefactorLang
      *      - The orders that have been fulfilled by the program so far (the current output)
      *      - The current contents of the pantry shelf
      *      - A map relating names of declared variables to their values
-     *      - A map relating bags of ingredients to their resulting food items for each method of cooking (so far, just boiling)
      *      - The current location of the Chef
      *      - The food item currently held by the Chef
-     *      - The contents of each appliance (so far, just one stove with three burners)
      */
     public class State
     {
@@ -108,32 +106,8 @@ namespace RefactorLang
         // The list of all variable references currently tracked by the backend.
         public Dictionary<string, object> VariableMap { get; set; } = new Dictionary<string, object>();
 
-        // The map of ingredient bags to a single dish.
-        public Dictionary<HashBag<FoodItem>, FoodItem> BoilRecipes { get; } = new Dictionary<HashBag<FoodItem>, FoodItem>()
-        {
-            { new HashBag<FoodItem> { }, FoodItem.None },
-            { new HashBag<FoodItem> { FoodItem.Pasta }, FoodItem.BoiledPasta },
-            { new HashBag<FoodItem> { FoodItem.Pasta, FoodItem.Sauce }, FoodItem.PastaWithSauce },
-            { new HashBag<FoodItem> { FoodItem.Potato }, FoodItem.BoiledPotato },
-        };
-
         public ChefLocation ChefLocation { get; set; } = ChefLocation.Pantry;
         public FoodItem ChefHands { get; set; } = FoodItem.None;
-
-        public HashBag<FoodItem>[] StoveContents { get; set; } = new HashBag<FoodItem>[3] { new HashBag<FoodItem>(), new HashBag<FoodItem>(), new HashBag<FoodItem>() };
-
-        public FoodItem RecipeLookup(HashBag<FoodItem> ingredients)
-        {
-            foreach (KeyValuePair<HashBag<FoodItem>, FoodItem> kv in BoilRecipes)
-            {
-                if (kv.Key.SequenceEqual(ingredients))
-                {
-                    return kv.Value;
-                }
-            }
-
-            return FoodItem.Garbage;
-        }
 
         public State(List<FoodItem> orders, HashBag<FoodItem> shelf)
         {
@@ -244,7 +218,7 @@ namespace RefactorLang
                         throw new ArgumentOutOfRangeException("no variable by that name exists");
                     if (value is not List<string>)
                         throw new ArgumentOutOfRangeException("that variable is not a list of strings");
-                    return new ExpValue(ExpValue.Type.Str, ((List<string>)value)[(int)InterpretExp(v.Item2).TypeCheckNum()]);
+                    return new ExpValue(ExpValue.Type.Str, ((List<string>)value)[InterpretExp(v.Item2).TypeCheckNum()]);
                 default:
                     throw new ArgumentOutOfRangeException("EXP NOT SUPPORTED");
             }
@@ -339,69 +313,6 @@ namespace RefactorLang
                         this.State.DeliveredOrders.Add(this.State.ChefHands);
                         RecordAction(new UnityAction.PutDown(), "Chef delivers " + this.State.ChefHands);
                         this.State.ChefHands = FoodItem.None;
-
-                        break;
-                    }
-                case Keyword.POTADD:
-                    {
-                        CheckArguments(1);
-                        if (this.State.ChefLocation != ChefLocation.Stove)
-                            throw new ArgumentException("chef not at stove, can't POTADD");
-                        if (!new List<float> { 0f, 1f, 2f }.Contains(args[0].TypeCheckNum()))
-                            throw new ArgumentException("must add to pot 0, 1, or 2");
-
-                        string currentFood = this.State.ChefHands.ToString();
-                        int potNum = (int)args[0].TypeCheckNum();
-                        this.State.StoveContents[potNum].Add(this.State.ChefHands);
-                        this.State.ChefHands = FoodItem.None;
-                        RecordAction(new UnityAction.PutDown(), "Chef deposits " + currentFood + " into stove pot #" + potNum);
-
-                        break;
-                    }
-                case Keyword.POTREMOVE:
-                    {
-                        CheckArguments(1);
-                        if (this.State.ChefLocation != ChefLocation.Stove)
-                            throw new ArgumentException("chef not at stove, can't POTREMOVE");
-                        if (!new List<float> { 0f, 1f, 2f }.Contains(args[0].TypeCheckNum()))
-                            throw new ArgumentException("must add to pot 0, 1, or 2");
-
-                        int potNum = (int)args[0].TypeCheckNum();
-
-                        if (!this.State.StoveContents[potNum].Any())
-                            throw new ArgumentException("pot #" + potNum + "doesn't have anything in it, can't POTREMOVE");
-
-                        if (this.State.StoveContents[potNum].Count == 1)
-                        {
-                            this.State.ChefHands = this.State.StoveContents[potNum].Last();
-                            this.State.StoveContents[potNum] = new HashBag<FoodItem>();
-                            RecordAction(new UnityAction.PickUp(this.State.ChefHands), "Chef takes " + this.State.ChefHands + " out of stove pot #" + potNum);
-                        }
-                        else
-                        {
-                            this.State.StoveContents[potNum] = new HashBag<FoodItem>();
-                            RecordAction(new UnityAction.DropOnFloor(), "Everything in pot #" + potNum + " fell on the floor!");
-                        }
-                        
-
-                        break;
-                    }
-                case Keyword.BOIL:
-                    {
-                        CheckArguments(1);
-                        if (this.State.ChefLocation != ChefLocation.Stove)
-                            throw new ArgumentException("chef not at stove, can't BOIL");
-                        if (!new List<float> { 0f, 1f, 2f }.Contains(args[0].TypeCheckNum()))
-                            throw new ArgumentException("must boil in pot 0, 1, or 2");
-
-
-                        int potNum = (int)args[0].TypeCheckNum();
-                        HashBag<FoodItem> ingredients = new HashBag<FoodItem>();
-                        ingredients.AddAll(this.State.StoveContents[potNum]);
-
-                        this.State.StoveContents[potNum] = new HashBag<FoodItem> { this.State.RecipeLookup(ingredients) };
-                        RecordAction(new UnityAction.Use(), "Chef boils pot #" + potNum);
-
 
                         break;
                     }

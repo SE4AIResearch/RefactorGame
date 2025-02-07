@@ -19,7 +19,12 @@ module RefactorLangParser =
             retBinop Symbol.MOD Mod
             retBinop Symbol.AND And
             retBinop Symbol.OR Or
+            retBinop Symbol.GTE Gte
+            retBinop Symbol.LTE Lte
+            retBinop Symbol.GT Gt
+            retBinop Symbol.LT Lt
             retBinop Symbol.EQEQ Eq
+            retBinop Symbol.NEQ Neq
         ]
         let parseTerm = choice [
             parseAnyIdent .>>. betweenSymbols Symbol.LBRACK parseExp Symbol.RBRACK |>> Idx
@@ -40,14 +45,15 @@ module RefactorLangParser =
         let parseElseIf = parseSymbol Symbol.ELSE >>. parseIf
         let parseITE = parseIf .>>. (many parseElseIf) .>>. opt (parseSymbol Symbol.ELSE >>. parseBlock)
         let parseWhile = parseSymbol Symbol.WHILE >>. betweenSymbols Symbol.LPAREN parseExp Symbol.RPAREN .>>. parseBlock
-        let parseIn = parseAnyIdent .>> parseSymbol Symbol.IN .>>. parseAnyIdent
-        let parseForEach = parseSymbol Symbol.FOREACH >>. betweenSymbols Symbol.LPAREN parseIn Symbol.RPAREN .>>. parseBlock
+        let parseFDecl = parseSymbol Symbol.FUNC >>. parseAnyIdent .>>. betweenSymbols Symbol.LPAREN (sep parseAnyIdent (parseSymbol Symbol.COMMA)) Symbol.RPAREN .>>. parseBlock
         let parseKeywordStmt = parseAnyKeyword .>>. betweenSymbols Symbol.LPAREN (sep parseExp (parseSymbol Symbol.COMMA)) Symbol.RPAREN
         choice [
             betweenNewlines parseKeywordStmt |>> fun (kw, ps) -> match kw with TokenKeyword k -> KCall(k, ps)
             betweenNewlines parseITE |>> fun (((ie, bl), eiebs), ebl) -> IfThenElse (ie, bl, eiebs, ebl)
-            betweenNewlines parseForEach |>> fun ((id1, id2), bl) -> ForEach (id1, id2, bl)
             betweenNewlines parseWhile |>> fun (exp, bl) -> While(exp, bl)
+            betweenNewlines parseFDecl |>> fun ((id, ids), bl) -> FDecl(id, ids, bl)
+            betweenNewlines (parseSymbol Symbol.RETURN) >>. parseExp |>> fun (exp) -> RetVal(exp)
+            betweenNewlines (parseSymbol Symbol.RETURN) |>> fun (_) -> RetVoid
         ]
 
     let parseProg : parser<prog> =
