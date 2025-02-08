@@ -10,118 +10,7 @@ using C5;
 
 namespace RefactorLang
 {
- 
-    // Contains all possible locations that the chef can be standing at any timestep.
-    public enum ChefLocation
-    {
-        Pantry, Stove, Window
-    }
 
-    // All possible food items that can be prepared, including ingredients and unintentional products (Garbage, etc.)
-    public enum FoodItem
-    {
-        None, Garbage, Pasta, BoiledPasta, Sauce, PastaWithSauce, Potato, BoiledPotato
-    }
-
-    // The UnityPackage record is just a pair of a UnityAction and a debug message to be logged and shown to the player as a record of chef actions.
-    // The final output of compilation is a list of UnityPackages as a list of instructions for the chef.
-    public record UnityPackage(UnityAction Action, string Message);
-    
-    // A UnityAction is directly interpreted by the Unity frontend of the game to be shown to the player.
-    public record UnityAction
-    {
-        // The chef moves to a new location.
-        public record ChefMove(ChefLocation Destination) : UnityAction;
-
-        // The chef picks up a food item and visually holds it.
-        public record PickUp(FoodItem Food) : UnityAction;
-
-        // The chef plays a generic "Use" animation. (This might eventually change to contextual Use animations, like "Use Stove".)
-        public record Use() : UnityAction;
-
-        // The chef puts down whatever it is holding.
-        public record PutDown() : UnityAction;
-
-        // The chef loses whatever it is holding forever.
-        public record DropOnFloor() : UnityAction;
-
-        // Default: The chef doesn't do any visible actions.
-        public record NoAction() : UnityAction;
-    }
-
-    /*
-     *  The ExpValue class handles all possible variable values that can be used in the game.
-     *  Each ExpValue holds the Type (for typechecking purposes), as well as the Value.
-     */
-    public class ExpValue
-    {
-        public enum Type { Bool, Str, Num }
-
-        public Type ExpType { get; set; }
-        public object Value { get; set; }
-
-        public ExpValue(Type type, object value)
-        {
-            ExpType = type;
-            Value = value;
-        }
-
-        private object TypeCheck(Type type)
-        {
-            if (this.ExpType != type)
-                throw new ArgumentException("Type error: Expected " + type.ToString() + ", got " + this.ExpType.ToString());
-
-            return this.Value;
-        }
-        public string TypeCheckString()
-        {
-            return (string)TypeCheck(Type.Str);
-        }
-        public bool TypeCheckBool()
-        {
-            return (bool)TypeCheck(Type.Bool);
-        }
-        public int TypeCheckNum()
-        {
-            return (int)TypeCheck(Type.Num);
-        }
-    }
-
-    /*
-     *  The State class holds all of the information that is used by the game to maintain the current puzzle state.
-     *  The current information needed is:
-     *      - The orders that must be fulfilled by the program (the test case)
-     *      - The orders that have been fulfilled by the program so far (the current output)
-     *      - The current contents of the pantry shelf
-     *      - A map relating names of declared variables to their values
-     *      - The current location of the Chef
-     *      - The food item currently held by the Chef
-     */
-    public class State
-    {
-        public List<FoodItem> Orders { get; }
-        public List<FoodItem> DeliveredOrders { get; set; } = new List<FoodItem>();
-        public HashBag<FoodItem> Shelf { get; set; }
-
-        // The list of all variable references currently tracked by the backend.
-        public Dictionary<string, object> VariableMap { get; set; } = new Dictionary<string, object>();
-
-        public ChefLocation ChefLocation { get; set; } = ChefLocation.Pantry;
-        public FoodItem ChefHands { get; set; } = FoodItem.None;
-
-        public State(List<FoodItem> orders, HashBag<FoodItem> shelf)
-        {
-            Orders = orders;
-            Shelf = shelf;
-            VariableMap.Add("orders", orders.Select(x => x.ToString()).ToList());
-        }
-
-        public override string ToString()
-        {
-            // TODO: pretty-print current state
-            return base.ToString();
-        }
-    }
     public class Interpreter
     {
         private State State;
@@ -193,7 +82,19 @@ namespace RefactorLang
                                         (x, y) => new ExpValue(ExpValue.Type.Bool, (x.ExpType == y.ExpType) && x.Value.Equals(y.Value))
                                     ),
                 Grammar.binop.Neq b => InterpretBinopExpression(b.Item1, b.Item2,
-                                        (x, y) => new ExpValue(ExpValue.Type.Bool, (x.ExpType == y.ExpType) && !x.Value.Equals(y.Value))
+                                        (x, y) => new ExpValue(ExpValue.Type.Bool, (x.ExpType != y.ExpType) || !x.Value.Equals(y.Value))
+                                    ),
+                Grammar.binop.Gt b => InterpretBinopExpression(b.Item1, b.Item2,
+                                        (x, y) => new ExpValue(ExpValue.Type.Bool, x.TypeCheckNum() > y.TypeCheckNum())
+                                    ),
+                Grammar.binop.Gte b => InterpretBinopExpression(b.Item1, b.Item2,
+                                        (x, y) => new ExpValue(ExpValue.Type.Bool, x.TypeCheckNum() >= y.TypeCheckNum())
+                                    ),
+                Grammar.binop.Lt b => InterpretBinopExpression(b.Item1, b.Item2,
+                                        (x, y) => new ExpValue(ExpValue.Type.Bool, x.TypeCheckNum() < y.TypeCheckNum())
+                                    ),
+                Grammar.binop.Lte b => InterpretBinopExpression(b.Item1, b.Item2,
+                                        (x, y) => new ExpValue(ExpValue.Type.Bool, x.TypeCheckNum() <= y.TypeCheckNum())
                                     ),
                 _ => throw new ArgumentOutOfRangeException("BINOP NOT SUPPORTED"),
             };
@@ -274,45 +175,37 @@ namespace RefactorLang
             {
                 case Keyword.GOTO:
                     {
-                        CheckArguments(1);
-                        if (!ChefLocation.TryParse(args[0].TypeCheckString(), out ChefLocation newLocation))
-                            throw new ArgumentException("expected a location string for GOTO, failed");
-
-                        this.State.ChefLocation = newLocation;
-                        RecordAction(new UnityAction.ChefMove(newLocation), "Chef goes to " + newLocation);
+                        throw new ArgumentOutOfRangeException("goto was unimplemented");
 
                         break;
                     }
                 case Keyword.GET:
                     {
                         CheckArguments(1);
-                        if (this.State.ChefLocation != ChefLocation.Pantry)
+                        if (!this.State.ChefLocation.Equals(new ChefLocation.Pantry()))
                             throw new ArgumentException("chef not at pantry, can't GET");
-                        if (!FoodItem.TryParse(args[0].TypeCheckString(), out FoodItem food))
-                            throw new ArgumentException("expected a food string for GET, failed");
+                        FoodItem food = new FoodItem.Some(args[0].TypeCheckString());
                         if (!this.State.Shelf.Contains(food))
                             throw new ArgumentException("pantry does not contain " + food + ", can't GET");
 
                         this.State.ChefHands = food;
                         this.State.Shelf.Remove(food);
-                        RecordAction(new UnityAction.PickUp(food), "Chef picks up " + food);
+                        RecordAction(new UnityAction.PickUp(), "Chef picks up " + food);
 
                         break;
                     }
                 case Keyword.DELIVER:
                     {
                         CheckArguments(0);
-                        if (this.State.ChefHands == FoodItem.None)
+
+                        if (!this.State.ChefLocation.Equals(new ChefLocation.Window()))
+                            throw new ArgumentException("can't deliver, chef isn't at the window");
+                        if (this.State.ChefHands.Equals(new FoodItem.None()))
                             throw new ArgumentException("can't deliver, chef isn't holding anything");
-                        if (this.State.ChefLocation != ChefLocation.Window)
-                        {
-                            this.State.ChefLocation = ChefLocation.Window;
-                            RecordAction(new UnityAction.ChefMove(ChefLocation.Window), "Chef goes to " + ChefLocation.Window);
-                        }
 
                         this.State.DeliveredOrders.Add(this.State.ChefHands);
                         RecordAction(new UnityAction.PutDown(), "Chef delivers " + this.State.ChefHands);
-                        this.State.ChefHands = FoodItem.None;
+                        this.State.ChefHands = new FoodItem.None();
 
                         break;
                     }

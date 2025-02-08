@@ -24,7 +24,7 @@ namespace RefactorLangConsole
 
             try 
             {
-                Interpreter interpreter = new Interpreter([FoodItem.BoiledPasta], [FoodItem.Pasta, FoodItem.Sauce]);
+                Interpreter interpreter = new Interpreter( [new FoodItem.Some("pasta")], [new FoodItem.Some("pasta")]);
                 interpreter.Interpret(prog);
                 interpreter.PrintOutput();
             }
