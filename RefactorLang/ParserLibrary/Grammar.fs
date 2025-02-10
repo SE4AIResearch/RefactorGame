@@ -29,6 +29,7 @@ module Grammar =
     and unop =
     | Not of exp
     | Neg of exp
+    | Len of exp
     and exp =
     | CNum of int
     | CBool of bool

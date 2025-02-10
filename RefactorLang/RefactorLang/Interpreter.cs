@@ -101,6 +101,26 @@ namespace RefactorLang
             };
         }
 
+        private ExpValue InterpretUnop(Grammar.exp.Unop unop)
+        {
+            ExpValue InterpretUnopExpression(Grammar.exp exp, Func<ExpValue, ExpValue> operation)
+            {
+                ExpValue inp = InterpretExp(exp);
+                return operation(inp);
+            }
+
+            return unop.Item switch
+            {
+                Grammar.unop.Not b => InterpretUnopExpression(b.Item,
+                                        (x) => new ExpValue(ExpValue.Type.Bool, !x.TypeCheckBool())
+                                    ),
+                Grammar.unop.Neg b => InterpretUnopExpression(b.Item,
+                                        (x) => new ExpValue(ExpValue.Type.Num, -x.TypeCheckNum())
+                                    ),
+                _ => throw new ArgumentOutOfRangeException("BINOP NOT SUPPORTED"),
+            };
+        }
+
         private ExpValue InterpretExp(Grammar.exp exp)
         {
             // Most Exps are simplified to variable names, but there are a few more complicated ones.
@@ -112,14 +132,15 @@ namespace RefactorLang
                     return new ExpValue(ExpValue.Type.Str, v.Item);
                 case Grammar.exp.CNum v:
                     return new ExpValue(ExpValue.Type.Num, v.Item);
-                case Grammar.exp.Binop b:
-                    return InterpretBinop(b);
+                case Grammar.exp.Binop v:
+                    return InterpretBinop(v);
+                case Grammar.exp.Unop v:
+                    return InterpretUnop(v);
                 case Grammar.exp.CVar v:
                     if (!State.VariableMap.TryGetValue(v.Item, out ExpValue val))
                         throw new ArgumentOutOfRangeException("that variable is not defined");
                     return val;
                 case Grammar.exp.Idx v:
-                    //TODO: simplified to only work with string lists for now
                     throw new ArgumentOutOfRangeException("getting there");
                 case Grammar.exp.FCall v:
                     if (!State.FDecls.TryGetValue(v.Item1, out var fun))

@@ -14,6 +14,11 @@ namespace RefactorLangConsole
     {
         static void Main(string[] args)
         {
+            Test();
+        }
+
+        static void Test()
+        {
             string text = File.ReadAllText("./script.txt");
             List<Token> tokens = Tokenizer.TokenizeLine(text);
 
@@ -22,9 +27,9 @@ namespace RefactorLangConsole
 
             Grammar.prog prog = RefactorLangParser.parseToProg(ListModule.OfSeq(tokens));
 
-            try 
+            try
             {
-                Interpreter interpreter = new Interpreter( [new FoodItem.Some("pasta")], [new FoodItem.Some("pasta")]);
+                Interpreter interpreter = new Interpreter([new FoodItem.Some("pasta")], [new FoodItem.Some("pasta")]);
                 interpreter.Interpret(prog);
 
                 Console.WriteLine("=========================");

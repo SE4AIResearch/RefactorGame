@@ -61,6 +61,9 @@ namespace RefactorLang
                 { "<", Symbol.LT },
                 { "<=", Symbol.LTE },
 
+                // Other Operators
+                { "#", Symbol.HASH },
+
                 // Containers
                 { "{", Symbol.LBRACE },
                 { "}", Symbol.RBRACE },
@@ -99,7 +102,7 @@ namespace RefactorLang
             // Modifies tabs or \r\n's
             string replaced = text.Replace("\t", "").Replace("\r\n", " \r\n ");
 
-            Regex ParserRegex = new Regex("((\".*?\")|\\n|[a-zA-Z0-9_]+(\\.[0-9]+)?|[\\(\\)\\[\\]\\{\\}]|>=|>|<=|<|==|!=|=|&&|\\|\\||!|\\S+?(?:,\\S+?)*)");
+            Regex ParserRegex = new Regex("((\".*?\")|\\n|[a-zA-Z0-9_]+(\\.[0-9]+)?|[\\(\\)\\[\\]\\{\\}]|>=|>|<=|<|==|!=|=|&&|\\|\\||!|#|\\S+?(?:,\\S+?)*)");
 
             // Applies a regex that matches words, numbers, commas (), [], {}
             // Splitting them into an array

@@ -11,6 +11,7 @@ module RefactorLangParser =
 
     parseExpRef.Value <-
         let retBinop (s: Symbol) (e: exp * exp -> binop) : parser<exp -> exp -> exp> = parseSymbol s >>. returnP (fun x y -> Binop (e (x, y)))
+        let retUnop (s: Symbol) (u: exp -> unop): parser<exp -> exp> = parseSymbol s >>. returnP (fun x -> Unop (u (x)))
         let parseBinop = choice [
             retBinop Symbol.PLUS Add
             retBinop Symbol.DASH Sub
@@ -26,6 +27,11 @@ module RefactorLangParser =
             retBinop Symbol.EQEQ Eq
             retBinop Symbol.NEQ Neq
         ]
+        let parseUnop = choice [
+            retUnop Symbol.NOT Not
+            retUnop Symbol.DASH Neg
+            retUnop Symbol.HASH Len
+        ]
         let parseTerm = choice [
             parseAnyIdent .>>. betweenSymbols Symbol.LPAREN (sep parseExp (parseSymbol Symbol.COMMA)) Symbol.RPAREN |>> FCall
             parseAnyIdent .>>. betweenSymbols Symbol.LBRACK parseExp Symbol.RBRACK |>> Idx
@@ -35,7 +41,8 @@ module RefactorLangParser =
             parseAnyIdent |>> CVar
             betweenSymbols Symbol.LPAREN parseExp Symbol.RPAREN
         ]
-        let andBinop = chainl1 parseTerm parseBinop
+        let andUnop = prefix1 parseTerm parseUnop
+        let andBinop = chainl1 andUnop parseBinop
         andBinop
 
     let parseBlock : parser<block> =
@@ -72,3 +79,16 @@ module RefactorLangParser =
         match (run parseProg (convertSymbols tokens)) with
         | Success (p, _) -> p
         | Failure (f1, f2) -> failwith "did not compile"
+
+    let parseJustUnop () =
+        let retUnop (s: Symbol) (u: exp -> unop): parser<exp -> exp> =
+            parseSymbol s >>. returnP (fun x -> Unop (u (x)))
+
+        let parseUnop = choice [
+            retUnop Symbol.NOT Not
+        ]
+
+        let testPrefix1 = run (prefix1 (parseSymbol Symbol.TRUE |>> fun _ -> CBool true) parseUnop) [token.TokenSymbol(Symbol.NOT); token.TokenSymbol(Symbol.TRUE)]
+        printfn "prefix1: %A" testPrefix1
+
+

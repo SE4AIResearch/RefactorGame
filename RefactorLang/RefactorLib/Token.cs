@@ -39,6 +39,9 @@ namespace RefactorLib
         LT,     // <
         LTE,    // <=
 
+        // Other Operators
+        HASH,   // #
+
         // Containers
         LBRACE, // {
         RBRACE, // }

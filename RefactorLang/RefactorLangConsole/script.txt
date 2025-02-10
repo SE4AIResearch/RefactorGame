@@ -1,9 +1,1 @@
-﻿func test(y, z) {
-	return y + z
-}
-
-var x = 5
-PRINT(x)
-
-x = test(8, 4)
-PRINT(x)
+﻿PRINT(7---6)
