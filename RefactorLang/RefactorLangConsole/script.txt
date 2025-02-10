@@ -1,9 +1,9 @@
-﻿func test() {
-	return 4 + 2
+﻿func test(y, z) {
+	return y + z
 }
 
 var x = 5
 PRINT(x)
 
-x = test()
+x = test(8, 4)
 PRINT(x)

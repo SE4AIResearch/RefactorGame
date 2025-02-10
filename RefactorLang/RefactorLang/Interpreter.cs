@@ -126,6 +126,10 @@ namespace RefactorLang
                         throw new ArgumentOutOfRangeException("that function is not defined");
 
                     State.Stack.Push(State.VariableMap.ToDictionary(x => x.Key, x => x.Value));
+
+                    for (int i = 0; i < v.Item2.Count(); i++)
+                        State.VariableMap.Add(fun.Item2[i], InterpretExp(v.Item2[i]));
+
                     ExpValue x = InterpretAllStmts(fun.Item3.ToList());
                     State.VariableMap = State.Stack.Pop();
 
