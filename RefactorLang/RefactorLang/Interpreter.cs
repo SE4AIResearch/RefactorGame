@@ -7,6 +7,7 @@ using RefactorLib;
 using ParserLibrary;
 using RefactorLang;
 using C5;
+using static ParserLibrary.Grammar.stmt;
 
 namespace RefactorLang
 {
@@ -79,10 +80,10 @@ namespace RefactorLang
                                         (x, y) => new ExpValue(ExpValue.Type.Bool, x.TypeCheckBool() || y.TypeCheckBool())
                                     ),
                 Grammar.binop.Eq b => InterpretBinopExpression(b.Item1, b.Item2,
-                                        (x, y) => new ExpValue(ExpValue.Type.Bool, (x.ExpType == y.ExpType) && x.Value.Equals(y.Value))
+                                        (x, y) => new ExpValue(ExpValue.Type.Bool, (x.TypeDef == y.TypeDef) && x.Value.Equals(y.Value))
                                     ),
                 Grammar.binop.Neq b => InterpretBinopExpression(b.Item1, b.Item2,
-                                        (x, y) => new ExpValue(ExpValue.Type.Bool, (x.ExpType != y.ExpType) || !x.Value.Equals(y.Value))
+                                        (x, y) => new ExpValue(ExpValue.Type.Bool, (x.TypeDef != y.TypeDef) || !x.Value.Equals(y.Value))
                                     ),
                 Grammar.binop.Gt b => InterpretBinopExpression(b.Item1, b.Item2,
                                         (x, y) => new ExpValue(ExpValue.Type.Bool, x.TypeCheckNum() > y.TypeCheckNum())
@@ -113,42 +114,82 @@ namespace RefactorLang
                     return new ExpValue(ExpValue.Type.Num, v.Item);
                 case Grammar.exp.Binop b:
                     return InterpretBinop(b);
+                case Grammar.exp.CVar v:
+                    if (!State.VariableMap.TryGetValue(v.Item, out ExpValue val))
+                        throw new ArgumentOutOfRangeException("that variable is not defined");
+                    return val;
                 case Grammar.exp.Idx v:
                     //TODO: simplified to only work with string lists for now
-                    if (!this.State.VariableMap.TryGetValue(v.Item1, out var value))
-                        throw new ArgumentOutOfRangeException("no variable by that name exists");
-                    if (value is not List<string>)
-                        throw new ArgumentOutOfRangeException("that variable is not a list of strings");
-                    return new ExpValue(ExpValue.Type.Str, ((List<string>)value)[InterpretExp(v.Item2).TypeCheckNum()]);
+                    throw new ArgumentOutOfRangeException("getting there");
+                case Grammar.exp.FCall v:
+                    if (!State.FDecls.TryGetValue(v.Item1, out var fun))
+                        throw new ArgumentOutOfRangeException("that function is not defined");
+
+                    State.Stack.Push(State.VariableMap.ToDictionary(x => x.Key, x => x.Value));
+                    ExpValue x = InterpretAllStmts(fun.Item3.ToList());
+                    State.VariableMap = State.Stack.Pop();
+
+                    return x;
                 default:
-                    throw new ArgumentOutOfRangeException("EXP NOT SUPPORTED");
+                    throw new ArgumentOutOfRangeException("EXP NOT SUPPORTED: " + exp.ToString());
             }
         }
 
-        private void InterpretStmt(Grammar.stmt stmt)
+        private ExpValue InterpretStmt(Grammar.stmt stmt)
         {
+            ExpValue x;
+
             // Statements are complex and relegated to their own interpretation functions.
             switch (stmt)
             {
+                case Grammar.stmt.FDecl fdecl:
+                    if (State.VariableMap.ContainsKey(fdecl.Item1) || State.FDecls.ContainsKey(fdecl.Item1))
+                        throw new ArgumentException($"variable {fdecl.Item1} is already defined");
+                    State.FDecls.Add(fdecl.Item1, fdecl);
+                    goto retnone;
+                case Grammar.stmt.VDecl vdecl:
+                    if (State.VariableMap.ContainsKey(vdecl.Item1))
+                        throw new ArgumentException($"variable {vdecl.Item1} is already defined");
+                    x = InterpretExp(vdecl.Item2);
+                    State.VariableMap.Add(vdecl.Item1, x);
+                    goto retnone;
+                case Grammar.stmt.Assn assn:
+                    if (!State.VariableMap.ContainsKey(assn.Item1))
+                        throw new ArgumentException($"variable {assn.Item1} is not defined");
+                    x = InterpretExp(assn.Item2);
+                    State.VariableMap[assn.Item1] = x;
+                    goto retnone;
                 case Grammar.stmt.KCall kCall:
                     InterpretKCall(kCall);
-                    break;
+                    goto retnone;
                 case Grammar.stmt.IfThenElse ite:
                     InterpretITE(ite);
-                    break;
+                    goto retnone;
                 case Grammar.stmt.While wh:
                     InterpretWhile(wh);
-                    break;
+                    goto retnone;
+                case Grammar.stmt.RetVal rv:
+                    return InterpretExp(rv.Item);
+                
                 default:
                     throw new ArgumentOutOfRangeException("STMT NOT SUPPORTED");
+
+                retnone:
+                    return new ExpValue(ExpValue.Type.None, null);
             }
         }
 
         // Statements are the only void actions that can be chained so far (called a Block), so we need to make sure to handle that properly.
-        private void InterpretAllStmts(List<Grammar.stmt> stmts)
+        private ExpValue InterpretAllStmts(List<Grammar.stmt> stmts)
         {
             foreach (Grammar.stmt stmt in stmts)
-                InterpretStmt(stmt);
+            {
+                ExpValue x = InterpretStmt(stmt);
+                if (!x.TypeDef.Equals(new ExpValue.ExpType.Single(ExpValue.Type.None)))
+                    return x;
+            }
+
+            return new ExpValue(ExpValue.Type.None, null);
         }
 
         // KCalls are what eventually become our UnityActions. This is where the actual gameplay takes place.
@@ -173,6 +214,11 @@ namespace RefactorLang
 
             switch (stmt.Item1)
             {
+                case Keyword.PRINT:
+                    CheckArguments(1);
+                    RecordAction(new UnityAction.NoAction(), args[0].Value.ToString());
+                    Console.WriteLine(args[0].Value.ToString());
+                    break;
                 case Keyword.GOTO:
                     {
                         throw new ArgumentOutOfRangeException("goto was unimplemented");

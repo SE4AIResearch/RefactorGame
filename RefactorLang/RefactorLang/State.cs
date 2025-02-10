@@ -1,4 +1,5 @@
 ﻿using C5;
+using ParserLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,35 +54,47 @@ namespace RefactorLang
      */
     public class ExpValue
     {
-        public enum Type { Bool, Str, Num }
+        public enum Type { Bool, Str, Num, Void, None }
 
-        public Type ExpType { get; set; }
+        public record ExpType
+        {
+            public record Single(Type Type) : ExpType;
+            public record List(Type Type) : ExpType;
+        }
+
+        public ExpType TypeDef { get; set; }
         public object Value { get; set; }
 
-        public ExpValue(Type type, object value)
+        public ExpValue(ExpType type, object value)
         {
-            ExpType = type;
+            TypeDef = type;
             Value = value;
         }
 
-        private object TypeCheck(Type type)
+        public ExpValue(Type type, object value)
         {
-            if (this.ExpType != type)
-                throw new ArgumentException("Type error: Expected " + type.ToString() + ", got " + this.ExpType.ToString());
+            TypeDef = new ExpType.Single(type);
+            Value = value;
+        }
+
+        private object TypeCheck(ExpType type)
+        {
+            if (!type.Equals(TypeDef))
+                throw new ArgumentException("Type error: Expected " + type.ToString() + ", got " + this.TypeDef.ToString());
 
             return this.Value;
         }
         public string TypeCheckString()
         {
-            return (string)TypeCheck(Type.Str);
+            return (string)TypeCheck(new ExpType.Single(Type.Str));
         }
         public bool TypeCheckBool()
         {
-            return (bool)TypeCheck(Type.Bool);
+            return (bool)TypeCheck(new ExpType.Single(Type.Bool));
         }
         public int TypeCheckNum()
         {
-            return (int)TypeCheck(Type.Num);
+            return (int)TypeCheck(new ExpType.Single(Type.Num));
         }
     }
 
@@ -104,7 +117,13 @@ namespace RefactorLang
         public Station Station { get; } = new Station("A", new List<Module> { new Slicer() });
 
         // The list of all variable references currently tracked by the backend.
-        public Dictionary<string, object> VariableMap { get; set; } = new Dictionary<string, object>();
+        public Dictionary<string, ExpValue> VariableMap { get; set; } = new Dictionary<string, ExpValue>();
+
+        // the list of defined global functions
+        public Dictionary<string, Grammar.stmt.FDecl> FDecls { get; set; } = new Dictionary<string, Grammar.stmt.FDecl>();
+
+        // Stack model for handling scopes in function calls
+        public Stack<Dictionary<string, ExpValue>> Stack { get; set; } = new Stack<Dictionary<string, ExpValue>>();
 
         public ChefLocation ChefLocation { get; set; } = new ChefLocation.Pantry();
         public FoodItem ChefHands { get; set; } = new FoodItem.None();
@@ -113,7 +132,7 @@ namespace RefactorLang
         {
             Orders = orders;
             Shelf = shelf;
-            VariableMap.Add("orders", orders.Select(x => x.ToString()).ToList());
+            VariableMap.Add("orders", new ExpValue(new ExpValue.ExpType.List(ExpValue.Type.Str), orders.Select(x => x.ToString()).ToList()));
         }
 
         public override string ToString()

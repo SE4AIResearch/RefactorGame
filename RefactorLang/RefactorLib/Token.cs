@@ -73,7 +73,8 @@ namespace RefactorLib
         PUT,
         TAKE,
         ACTIVATE,
-        DELIVER
+        DELIVER,
+        PRINT
     }
 
     // Defines the different tokens that can be expected by the Parser.

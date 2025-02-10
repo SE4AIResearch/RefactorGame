@@ -1,3 +1,9 @@
-﻿if (0 <= 1) {
-	GOTO("Pantry")
+﻿func test() {
+	return 4 + 2
 }
+
+var x = 5
+PRINT(x)
+
+x = test()
+PRINT(x)

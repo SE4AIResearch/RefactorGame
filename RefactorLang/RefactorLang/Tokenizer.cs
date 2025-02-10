@@ -87,6 +87,7 @@ namespace RefactorLang
             // Conversion list from concrete syntax to Symbols.
             Dictionary<string, Keyword> keywordLookup = new Dictionary<string, Keyword>()
             {
+                { "PRINT", Keyword.PRINT },
                 { "GOTO", Keyword.GOTO },
                 { "GET", Keyword.GET },
                 { "PUT", Keyword.PUT },

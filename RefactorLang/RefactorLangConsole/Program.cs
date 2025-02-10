@@ -26,6 +26,8 @@ namespace RefactorLangConsole
             {
                 Interpreter interpreter = new Interpreter( [new FoodItem.Some("pasta")], [new FoodItem.Some("pasta")]);
                 interpreter.Interpret(prog);
+
+                Console.WriteLine("=========================");
                 interpreter.PrintOutput();
             }
             catch (ArgumentException ex)
