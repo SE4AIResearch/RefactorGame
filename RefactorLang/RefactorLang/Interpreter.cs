@@ -117,12 +117,17 @@ namespace RefactorLang
                 Grammar.unop.Neg b => InterpretUnopExpression(b.Item,
                                         (x) => new ExpValue(ExpValue.Type.Num, -x.TypeCheckNum())
                                     ),
+                Grammar.unop.Len b => InterpretUnopExpression(b.Item,
+                                        (x) => new ExpValue(ExpValue.Type.Num, x.TypeCheckList().GetType().GetProperty("Count").GetValue(x.TypeCheckList()))
+                                    ),
                 _ => throw new ArgumentOutOfRangeException("BINOP NOT SUPPORTED"),
             };
         }
 
         private ExpValue InterpretExp(Grammar.exp exp)
         {
+            ExpValue val;
+
             // Most Exps are simplified to variable names, but there are a few more complicated ones.
             switch (exp)
             {
@@ -137,11 +142,15 @@ namespace RefactorLang
                 case Grammar.exp.Unop v:
                     return InterpretUnop(v);
                 case Grammar.exp.CVar v:
-                    if (!State.VariableMap.TryGetValue(v.Item, out ExpValue val))
+                    if (!State.VariableMap.TryGetValue(v.Item, out val))
                         throw new ArgumentOutOfRangeException("that variable is not defined");
                     return val;
                 case Grammar.exp.Idx v:
-                    throw new ArgumentOutOfRangeException("getting there");
+                    if (!State.VariableMap.TryGetValue(v.Item1, out val))
+                        throw new ArgumentOutOfRangeException("that variable is not defined");
+                    object list = val.TypeCheckList();
+                    ExpValue.Type type = val.PokeType();
+                    return new ExpValue(type, list.GetType().GetProperty("Item").GetValue(list, new object[] { (int)InterpretExp(v.Item2).Value - 1 }));
                 case Grammar.exp.FCall v:
                     if (!State.FDecls.TryGetValue(v.Item1, out var fun))
                         throw new ArgumentOutOfRangeException("that function is not defined");

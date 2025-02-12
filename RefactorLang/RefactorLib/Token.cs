@@ -56,9 +56,6 @@ namespace RefactorLib
 
         // Loops
         WHILE,  // while
-        FOR,    // for
-        FOREACH, // foreach
-        IN, // in
 
         // Puncuation
         COMMA,  // ,

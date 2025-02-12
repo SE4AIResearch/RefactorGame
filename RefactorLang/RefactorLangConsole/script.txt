@@ -1,1 +1,2 @@
-﻿PRINT(7---6)
+﻿PRINT(#orders)
+PRINT(orders[1])

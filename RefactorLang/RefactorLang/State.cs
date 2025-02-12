@@ -84,6 +84,20 @@ namespace RefactorLang
 
             return this.Value;
         }
+
+        public Type PokeType()
+        {
+            switch (this.TypeDef)
+            {
+                case ExpType.Single e:
+                    return e.Type;
+                case ExpType.List e:
+                    return e.Type;
+                default:
+                    throw new ArgumentOutOfRangeException("what");
+            }
+        }
+
         public string TypeCheckString()
         {
             return (string)TypeCheck(new ExpType.Single(Type.Str));
@@ -95,6 +109,17 @@ namespace RefactorLang
         public int TypeCheckNum()
         {
             return (int)TypeCheck(new ExpType.Single(Type.Num));
+        }
+
+        public object TypeCheckList()
+        {
+            switch (this.TypeDef)
+            {
+                case ExpType.List l:
+                    return this.Value;
+                default:
+                    throw new ArgumentException("Type error: Expected list, got " + this.TypeDef.ToString());
+            }
         }
     }
 

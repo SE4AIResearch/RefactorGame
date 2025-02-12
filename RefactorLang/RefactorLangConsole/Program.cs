@@ -29,7 +29,7 @@ namespace RefactorLangConsole
 
             try
             {
-                Interpreter interpreter = new Interpreter([new FoodItem.Some("pasta")], [new FoodItem.Some("pasta")]);
+                Interpreter interpreter = new Interpreter([new FoodItem.Some("pasta"), new FoodItem.Some("tomato sauce")], [new FoodItem.Some("pasta")]);
                 interpreter.Interpret(prog);
 
                 Console.WriteLine("=========================");

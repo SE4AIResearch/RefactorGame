@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -19,17 +21,14 @@ namespace RefactorLang
 
     public abstract class Module
     {
-        public List<FoodItem> Slots { get; set; }
         public FoodItem Output { get; set; }
+        public abstract ICollection<FoodItem> Slots { get; }
 
-        public abstract int Size { get; set; }
+        public abstract int Size { get; }
 
         public abstract void Activate();
 
-        public void Put(FoodItem food, int slot)
-        {
-
-        }
+        public abstract void Put(FoodItem food, int slot);
 
         public FoodItem Take()
         {
@@ -42,11 +41,23 @@ namespace RefactorLang
 
     public class Slicer : Module
     {
-        public override int Size { get; set; } = 1;
+        public override int Size { get; } = 1;
+
+        private FoodItem[] _slots = new FoodItem[1];
+
+        public override ICollection<FoodItem> Slots {
+            get => _slots.ToList();
+        }
+
+        public override void Put(FoodItem food, int slot)
+        {
+            if (slot != 0) throw new ArgumentOutOfRangeException("slot must be 0 for slicer");
+            _slots[slot] = food;
+        }
 
         public override void Activate()
         {
-            switch (this.Slots[0])
+            switch (this.Slots.First())
             {
                 case FoodItem.None: break;
                 case FoodItem.Some(string food):
