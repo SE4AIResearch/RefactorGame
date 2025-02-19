@@ -22,7 +22,7 @@ public class ScriptCompiler : MonoBehaviour
 
         try
         {
-            Interpreter interpreter = new Interpreter(new List<FoodItem> { FoodItem.BoiledPasta }, new HashBag<FoodItem> { FoodItem.Pasta, FoodItem.Sauce });
+            Interpreter interpreter = new Interpreter(new List<string> { "Potato Soup" }, new List<string> { "Broth", "Broth", "Potato", "Tomato" });
             interpreter.Interpret(prog);
 
             return interpreter.OutputLog;
