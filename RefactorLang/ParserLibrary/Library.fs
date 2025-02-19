@@ -93,5 +93,6 @@ module RefactorLangParserLib =
             match stream with
             | [] -> Failure (label, "No more input.")
             | TokenKeyword tk :: t -> Success (TokenKeyword tk, t)
+            | TokenIdent ti :: t -> Success (TokenIdent ti, t)
             | h :: t -> Failure (label, (sprintf "unexpected '%s'" (stringOfToken h)))
         { parserFn = parseHelper; label = label }

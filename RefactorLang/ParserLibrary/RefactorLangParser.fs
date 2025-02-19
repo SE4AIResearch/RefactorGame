@@ -58,7 +58,7 @@ module RefactorLangParser =
         let parseAssn = parseAnyIdent .>>. (parseSymbol Symbol.EQ >>. parseExp)
         let parseKeywordStmt = parseAnyKeyword .>>. betweenSymbols Symbol.LPAREN (sep parseExp (parseSymbol Symbol.COMMA)) Symbol.RPAREN
         choice [
-            betweenNewlines parseKeywordStmt |>> fun (kw, ps) -> match kw with TokenKeyword k -> KCall(k, ps)
+            betweenNewlines parseKeywordStmt |>> fun (kw, ps) -> match kw with TokenKeyword k -> KCall(k, ps) | TokenIdent k -> FStmt(k, ps)
             betweenNewlines parseITE |>> fun (((ie, bl), eiebs), ebl) -> IfThenElse (ie, bl, eiebs, ebl)
             betweenNewlines parseWhile |>> While
             betweenNewlines parseFDecl |>> fun ((id, ids), bl) -> FDecl(id, ids, bl)
@@ -66,6 +66,7 @@ module RefactorLangParser =
             betweenNewlines parseAssn |>> Assn
             betweenNewlines ((parseSymbol Symbol.RETURN) >>. parseExp) |>> RetVal
             betweenNewlines (parseSymbol Symbol.RETURN) |>> fun (_) -> RetVoid
+            
         ]
 
     let parseProg : parser<prog> =

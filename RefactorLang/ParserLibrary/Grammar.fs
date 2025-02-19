@@ -47,6 +47,7 @@ module Grammar =
     | IfThenElse of exp * block * (exp * block) list * block option
     | While of exp * block
     | KCall of Keyword * exp list
+    | FStmt of id * exp list
     | RetVal of exp
     | RetVoid
     and block = stmt list

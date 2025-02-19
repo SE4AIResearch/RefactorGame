@@ -1,14 +1,9 @@
-﻿using System;
+﻿using C5;
+using ParserLibrary;
+using RefactorLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RefactorLib;
-using ParserLibrary;
-using RefactorLang;
-using C5;
-using static ParserLibrary.Grammar.stmt;
-using static RefactorLang.ChefLocation;
 
 namespace RefactorLang
 {
@@ -211,7 +206,19 @@ namespace RefactorLang
                     goto retnone;
                 case Grammar.stmt.RetVal rv:
                     return InterpretExp(rv.Item);
-                
+                case Grammar.stmt.FStmt f:
+                    if (!State.FDecls.TryGetValue(f.Item1, out var fun))
+                        throw new ArgumentOutOfRangeException("that function is not defined");
+
+                    State.Stack.Push(State.VariableMap.ToDictionary(x => x.Key, x => x.Value));
+
+                    for (int i = 0; i < f.Item2.Count(); i++)
+                        State.VariableMap.Add(fun.Item2[i], InterpretExp(f.Item2[i]));
+
+                    ExpValue fStmt = InterpretAllStmts(fun.Item3.ToList());
+                    State.VariableMap = State.Stack.Pop();
+                    goto retnone;
+
                 default:
                     throw new ArgumentOutOfRangeException("STMT NOT SUPPORTED");
 
@@ -316,7 +323,6 @@ namespace RefactorLang
                 case Keyword.PRINT:
                     CheckArguments(1);
                     RecordAction(new UnityAction.NoAction(), args[0].Value.ToString());
-                    Console.WriteLine(args[0].Value.ToString());
                     break;
                 case Keyword.GOTO:
                     CheckArguments(1);

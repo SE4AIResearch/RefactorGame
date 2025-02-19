@@ -27,20 +27,28 @@ namespace RefactorLangConsole
 
             Grammar.prog prog = RefactorLangParser.parseToProg(ListModule.OfSeq(tokens));
 
-            Interpreter interpreter = new Interpreter(["Potato Soup"], ["Broth", "Broth", "Potato", "Tomato"]);
+            List<List<string>> testCases = [["Tomato Soup"], ["Tomato Soup", "Tomato Soup"], ["Tomato Soup", "Tomato Soup", "Tomato Soup", "Tomato Soup"]];
+            List<string> pantry = ["Broth", "Broth", "Broth", "Broth", "Tomato", "Tomato", "Tomato", "Tomato"];
 
-            try
+            foreach (List<string> testCase in testCases)
             {
-                interpreter.Interpret(prog);
+                Console.WriteLine("=========================");
+                Console.WriteLine("TEST CASE: " + String.Join(", ", testCase));
 
-                Console.WriteLine("=========================");
-                interpreter.PrintOutput();
-            }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine("=========================");
-                interpreter.PrintOutput();
+                Interpreter interpreter = new Interpreter(testCase, pantry);
+
+                try
+                {
+                    interpreter.Interpret(prog);
+
+                    interpreter.PrintOutput();
+                }
+                catch (ArgumentException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine("=========================");
+                    interpreter.PrintOutput();
+                }
             }
         }
     }
