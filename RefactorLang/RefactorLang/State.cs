@@ -1,9 +1,11 @@
 ﻿using C5;
+using Microsoft.FSharp.Collections;
 using ParserLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace RefactorLang
 {
@@ -33,7 +35,7 @@ namespace RefactorLang
         public record ChefMove(ChefLocation Destination) : UnityAction;
 
         // The chef picks up a food item and visually holds it.
-        public record PickUp() : UnityAction;
+        public record PickUp(FoodItem Food) : UnityAction;
 
         // The chef plays a generic "Use" animation. (This might eventually change to contextual Use animations, like "Use Stove".)
         public record Use() : UnityAction;
@@ -139,7 +141,7 @@ namespace RefactorLang
         public List<FoodItem> DeliveredOrders { get; set; } = new List<FoodItem>();
         public HashBag<FoodItem> Shelf { get; set; }
 
-        public Station Station { get; } = new Station("A", new List<Module> { new Slicer() });
+        public List<Station> Stations { get; } = new List<Station> { new Station("Station 1", new List<Module> { new SoupMaker("A") }) };
 
         // The list of all variable references currently tracked by the backend.
         public Dictionary<string, ExpValue> VariableMap { get; set; } = new Dictionary<string, ExpValue>();
@@ -157,7 +159,7 @@ namespace RefactorLang
         {
             Orders = orders;
             Shelf = shelf;
-            VariableMap.Add("orders", new ExpValue(new ExpValue.ExpType.List(ExpValue.Type.Str), orders.Select(x => x.ToString()).ToList()));
+            VariableMap.Add("orders", new ExpValue(new ExpValue.ExpType.List(ExpValue.Type.Str), orders.Select(x => { if (x is FoodItem.Some food) return food.Food; return "None"; }).ToList()));
         }
 
         public override string ToString()

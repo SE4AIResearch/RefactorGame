@@ -8,18 +8,25 @@ using ParserLibrary;
 using RefactorLang;
 using C5;
 using static ParserLibrary.Grammar.stmt;
+using static RefactorLang.ChefLocation;
 
 namespace RefactorLang
 {
+
+
 
     public class Interpreter
     {
         private State State;
         public List<UnityPackage> OutputLog { get; }
 
-        public Interpreter(List<FoodItem> orders, HashBag<FoodItem> shelf)
+        public Interpreter(List<string> orders, List<string> shelf)
         {
-            State = new State(orders, shelf);
+            HashBag<FoodItem> foodItems = new HashBag<FoodItem>();
+
+            foodItems.AddAll(shelf.Select(x => new FoodItem.Some(x)).ToList<FoodItem>());
+
+            State = new State(orders.Select(x => new FoodItem.Some(x)).ToList<FoodItem>(), foodItems);
             OutputLog = new List<UnityPackage>();
         }
 
@@ -120,7 +127,7 @@ namespace RefactorLang
                 Grammar.unop.Len b => InterpretUnopExpression(b.Item,
                                         (x) => new ExpValue(ExpValue.Type.Num, x.TypeCheckList().GetType().GetProperty("Count").GetValue(x.TypeCheckList()))
                                     ),
-                _ => throw new ArgumentOutOfRangeException("BINOP NOT SUPPORTED"),
+                _ => throw new ArgumentOutOfRangeException("UNOP NOT SUPPORTED"),
             };
         }
 
@@ -150,7 +157,7 @@ namespace RefactorLang
                         throw new ArgumentOutOfRangeException("that variable is not defined");
                     object list = val.TypeCheckList();
                     ExpValue.Type type = val.PokeType();
-                    return new ExpValue(type, list.GetType().GetProperty("Item").GetValue(list, new object[] { (int)InterpretExp(v.Item2).Value - 1 }));
+                    return new ExpValue(type, list.GetType().GetProperty("Item").GetValue(list, new object[] { InterpretExp(v.Item2).TypeCheckNum() }));
                 case Grammar.exp.FCall v:
                     if (!State.FDecls.TryGetValue(v.Item1, out var fun))
                         throw new ArgumentOutOfRangeException("that function is not defined");
@@ -235,6 +242,64 @@ namespace RefactorLang
                 if (stmt.Item2.Length != num) throw new ArgumentException("wrong number of arguments");
             }
 
+            ChefLocation StringToLocation(string str)
+            {
+                switch (str)
+                {
+                    case "Pantry":
+                        return new ChefLocation.Pantry();
+                    case "Window":
+                        return new ChefLocation.Window();
+                    default:
+                        break;
+                }
+
+                try
+                {
+                    Station station = StringToStation(str);
+                    return new ChefLocation.Station(station.Name);
+                }
+                catch (ArgumentException)
+                {
+                    throw new ArgumentException($"No locations by that name ({str})");
+                }
+            }
+
+            Station StringToStation(string str)
+            {
+                return State.Stations.Find(station => station.Name == str);
+
+                throw new ArgumentException($"No stations by that name ({str})");
+            }
+
+            Module StringToModule(string str, Station station)
+            {
+                return station.Modules.Find(module => module.Name == str);
+
+                throw new ArgumentException($"No modules by that name ({str}) in this station ({station.Name})");
+            }
+
+            string StringOfLocation(ChefLocation loc)
+            {
+                return loc switch
+                {
+                    ChefLocation.Station s => s.Name,
+                    ChefLocation.Pantry => "Pantry",
+                    ChefLocation.Window => "Window",
+                    _ => throw new ArgumentException("what")
+                };
+            }
+
+            string StringOfFoodItem(FoodItem foodItem)
+            {
+                return foodItem switch
+                {
+                    FoodItem.Some food => food.Food,
+                    FoodItem.None => "None",
+                    _ => throw new ArgumentException("what")
+                };
+            }
+
             List<ExpValue> EvaluateArguments()
             {
                 List<ExpValue> output = new List<ExpValue>();
@@ -254,15 +319,15 @@ namespace RefactorLang
                     Console.WriteLine(args[0].Value.ToString());
                     break;
                 case Keyword.GOTO:
-                    {
-                        throw new ArgumentOutOfRangeException("goto was unimplemented");
-
-                        break;
-                    }
+                    CheckArguments(1);
+                    ChefLocation location = StringToLocation(args[0].TypeCheckString());
+                    State.ChefLocation = location;
+                    RecordAction(new UnityAction.ChefMove(location), $"chef moves to {StringOfLocation(location)}");
+                    break;
                 case Keyword.GET:
                     {
                         CheckArguments(1);
-                        if (!this.State.ChefLocation.Equals(new ChefLocation.Pantry()))
+                        if (State.ChefLocation is not ChefLocation.Pantry)
                             throw new ArgumentException("chef not at pantry, can't GET");
                         FoodItem food = new FoodItem.Some(args[0].TypeCheckString());
                         if (!this.State.Shelf.Contains(food))
@@ -270,7 +335,7 @@ namespace RefactorLang
 
                         this.State.ChefHands = food;
                         this.State.Shelf.Remove(food);
-                        RecordAction(new UnityAction.PickUp(), "Chef picks up " + food);
+                        RecordAction(new UnityAction.PickUp(food), "Chef picks up " + StringOfFoodItem(food));
 
                         break;
                     }
@@ -278,19 +343,83 @@ namespace RefactorLang
                     {
                         CheckArguments(0);
 
-                        if (!this.State.ChefLocation.Equals(new ChefLocation.Window()))
+                        if (State.ChefLocation is not ChefLocation.Window)
                             throw new ArgumentException("can't deliver, chef isn't at the window");
-                        if (this.State.ChefHands.Equals(new FoodItem.None()))
+                        if (State.ChefHands is FoodItem.None)
                             throw new ArgumentException("can't deliver, chef isn't holding anything");
 
                         this.State.DeliveredOrders.Add(this.State.ChefHands);
-                        RecordAction(new UnityAction.PutDown(), "Chef delivers " + this.State.ChefHands);
+                        RecordAction(new UnityAction.PutDown(), "Chef delivers " + StringOfFoodItem(this.State.ChefHands));
                         this.State.ChefHands = new FoodItem.None();
 
                         break;
                     }
+                case Keyword.PLACE:
+                    {
+                        Station station;
+
+                        CheckArguments(2);
+
+                        if (State.ChefLocation is ChefLocation.Station stationLoc)
+                            station = StringToStation(stationLoc.Name);
+                        else
+                            throw new ArgumentException("can't place, chef isn't at a workstation");
+
+                        if (State.ChefHands is FoodItem.None)
+                            throw new ArgumentException("can't place, chef isn't holding anything");
+
+                        Module module = StringToModule(args[0].TypeCheckString(), station);
+
+                        FoodItem food = State.ChefHands;
+                        module.Place(State.ChefHands, args[1].TypeCheckNum());
+                        State.ChefHands = new FoodItem.None();
+
+                        RecordAction(new UnityAction.PutDown(), $"chef puts {StringOfFoodItem(food)} in {module.Name}");
+
+                        break;
+                    }
+                case Keyword.ACTIVATE:
+                    {
+                        CheckArguments(1);
+
+                        Station station;
+
+                        if (State.ChefLocation is ChefLocation.Station stationLoc)
+                            station = StringToStation(stationLoc.Name);
+                        else
+                            throw new ArgumentException("can't activate, chef isn't at a workstation");
+
+                        Module module = StringToModule(args[0].TypeCheckString(), station);
+
+                        module.Activate();
+
+                        RecordAction(new UnityAction.Use(), $"chef activates module {module.Name}");
+
+                        break;
+                    }
+                case Keyword.TAKE:
+                    {
+                        CheckArguments(1);
+
+                        Station station;
+
+                        if (State.ChefLocation is ChefLocation.Station stationLoc)
+                            station = StringToStation(stationLoc.Name);
+                        else
+                            throw new ArgumentException("can't activate, chef isn't at a workstation");
+
+                        Module module = StringToModule(args[0].TypeCheckString(), station);
+
+                        FoodItem output = module.Take();
+
+                        State.ChefHands = output;
+
+                        RecordAction(new UnityAction.PickUp(output), $"chef picks up {StringOfFoodItem(output)} from {module.Name}");
+
+                        break;
+                    }
                 default:
-                    throw new ArgumentOutOfRangeException("KCALL NOT SUPPORTED");
+                    throw new ArgumentOutOfRangeException("KCALL NOT SUPPORTED: " + stmt.ToString());
             }
         }
 

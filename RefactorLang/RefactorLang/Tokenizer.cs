@@ -93,7 +93,7 @@ namespace RefactorLang
                 { "PRINT", Keyword.PRINT },
                 { "GOTO", Keyword.GOTO },
                 { "GET", Keyword.GET },
-                { "PUT", Keyword.PUT },
+                { "PLACE", Keyword.PLACE },
                 { "TAKE", Keyword.TAKE },
                 { "ACTIVATE", Keyword.ACTIVATE },
                 { "DELIVER", Keyword.DELIVER },
@@ -132,7 +132,7 @@ namespace RefactorLang
                     output.Add(new Token.TokenNumber(number));
                 }
                 // do NOT delete the second condition, it's not actually an empty string
-                else if (word != "" && word != "​")
+                else if (word != "" && word != "​" && word != "​")
                 {
                     output.Add(new Token.TokenIdent(word));
                 }

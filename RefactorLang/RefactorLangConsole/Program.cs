@@ -27,9 +27,10 @@ namespace RefactorLangConsole
 
             Grammar.prog prog = RefactorLangParser.parseToProg(ListModule.OfSeq(tokens));
 
+            Interpreter interpreter = new Interpreter(["Potato Soup"], ["Broth", "Broth", "Potato", "Tomato"]);
+
             try
             {
-                Interpreter interpreter = new Interpreter([new FoodItem.Some("pasta"), new FoodItem.Some("tomato sauce")], [new FoodItem.Some("pasta")]);
                 interpreter.Interpret(prog);
 
                 Console.WriteLine("=========================");
@@ -38,6 +39,8 @@ namespace RefactorLangConsole
             catch (ArgumentException ex)
             {
                 Console.WriteLine(ex.Message);
+                Console.WriteLine("=========================");
+                interpreter.PrintOutput();
             }
         }
     }

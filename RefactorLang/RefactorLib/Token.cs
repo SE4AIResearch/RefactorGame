@@ -70,7 +70,7 @@ namespace RefactorLib
     {
         GOTO,
         GET,
-        PUT,
+        PLACE,
         TAKE,
         ACTIVATE,
         DELIVER,
