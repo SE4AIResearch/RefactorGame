@@ -27,6 +27,8 @@ namespace RefactorLang
         public string Name { get; set; }
         public abstract int Size { get; }
 
+        public bool IsLocked { get; set; }
+
         public abstract void Activate();
 
         public abstract void Place(FoodItem food, int slot);
@@ -46,6 +48,22 @@ namespace RefactorLang
             if (!(this.Slots.ToList()[slotnum] is FoodItem.Some food && food.Food == foodName))
                 throw new ArgumentException($"slot number {slotnum} does not have {foodName}");
 
+        }
+
+        protected void CheckSlotFoodContains(int slotnum, string foodParam)
+        {
+            CheckSlotNotNone(slotnum);
+
+            if (!(this.Slots.ToList()[slotnum] is FoodItem.Some food && !food.Food.Contains(foodParam)))
+                throw new ArgumentException($"slot number {slotnum} is not a {foodParam}");
+        }
+
+        protected void CheckSlotFoodDoesNotContain(int slotnum, string foodParam)
+        {
+            CheckSlotNotNone(slotnum);
+
+            if (!(this.Slots.ToList()[slotnum] is FoodItem.Some food && food.Food.Contains(foodParam)))
+                throw new ArgumentException($"slot number {slotnum} is a {foodParam}");
         }
 
         public FoodItem Take()
@@ -77,27 +95,27 @@ namespace RefactorLang
             _slots = new FoodItem[Size];
         }
 
-        public ArrayModule(string name)
+        public ArrayModule(string name, bool isLocked = false)
         {
             _slots = new FoodItem[Size];
             Name = name;
+            IsLocked = isLocked;
         }
     }
 
     public class Slicer : ArrayModule
     {
-        public Slicer(string name) : base(name)
-        {
-            
-        }
+        public Slicer(string name, bool isLocked = false) : base(name, isLocked) { }
 
         public override int Size { get; } = 1;
 
         public override void Activate()
         {
-            FoodItem food = CheckSlotNotNone(0);
+            FoodItem.Some food = CheckSlotNotNone(0);
+            CheckSlotFoodDoesNotContain(0, "Sliced");
+            CheckSlotFoodContains(0, "Loaf of");
 
-            Output = new FoodItem.Some("Sliced " + food);
+            Output = new FoodItem.Some(food.Food.Replace("Loaf of ", "Sliced "));
 
             Empty();
         }
@@ -107,17 +125,99 @@ namespace RefactorLang
     {
         public override int Size { get; } = 2;
 
-        public SoupMaker (string name) : base(name)
-        { 
-            
-        }
+        public SoupMaker(string name, bool isLocked = false) : base(name, isLocked) { }
 
         public override void Activate()
         {
             CheckSlotFood(0, "Broth");
             FoodItem.Some food = CheckSlotNotNone(1);
+            CheckSlotFoodDoesNotContain(1, "Soup");
 
             Output = new FoodItem.Some(food.Food + " Soup");
+            Empty();
+        }
+    }
+
+    public class Grinder : ArrayModule
+    {
+        public override int Size { get; } = 1;
+
+        public Grinder(string name, bool isLocked = false) : base(name, isLocked) { }
+
+        public override void Activate()
+        {
+            FoodItem.Some food = CheckSlotNotNone(0);
+            CheckSlotFoodDoesNotContain(0, "Ground");
+            CheckSlotFoodContains(0, "Raw");
+
+            Output = new FoodItem.Some(food.Food.Replace("Raw ", "Ground "));
+            Empty();
+        }
+    }
+
+    public class Fryer : ArrayModule
+    {
+        public override int Size { get; } = 2;
+
+        public Fryer(string name, bool isLocked = false) : base(name, isLocked) { }
+
+        public override void Activate()
+        {
+            CheckSlotFood(0, "Ground Chicken");
+            CheckSlotFood(1, "Sliced Bread");
+
+            Output = new FoodItem.Some("Chicken Tenders");
+            Empty();
+        }
+    }
+
+    public class BarbecueSaucer : ArrayModule
+    {
+        public override int Size { get; } = 3;
+
+        public BarbecueSaucer(string name, bool isLocked = false) : base(name, isLocked) { }
+
+        public override void Activate()
+        {
+            CheckSlotFood(0, "Tomato");
+            CheckSlotFood(1, "Sugar");
+            CheckSlotFood(2, "Vinegar");
+
+            Output = new FoodItem.Some("Barbecue Sauce");
+            Empty();
+        }
+    }
+
+    public class Griddle : ArrayModule
+    {
+        public override int Size { get; } = 2;
+
+        public Griddle(string name, bool isLocked = false) : base(name, isLocked) { }
+
+        public override void Activate()
+        {
+            CheckSlotFood(0, "Egg");
+            CheckSlotFood(1, "Pepper");
+
+            Output = new FoodItem.Some("Fried Egg");
+            Empty();
+        }
+    }
+
+    public class BurgerBuilder : ArrayModule
+    {
+        public override int Size { get; } = 4;
+
+        public BurgerBuilder(string name, bool isLocked = false) : base(name, isLocked) { }
+
+        public override void Activate()
+        {
+            CheckSlotFood(0, "Sliced Bread");
+            FoodItem.Some food = CheckSlotNotNone(1);
+            CheckSlotFood(2, "Ground Beef");
+            CheckSlotFood(3, "Sliced Bread");
+
+            Output = new FoodItem.Some(food.Food + " Burger");
             Empty();
         }
     }

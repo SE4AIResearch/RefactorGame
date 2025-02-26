@@ -7,19 +7,33 @@ using Microsoft.FSharp.Collections;
 using System.IO;
 using System.Collections.Generic;
 using System;
+using System.Text.Json;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace RefactorLangConsole
 {
-    internal class Program
+
+    public class Program
     {
         static void Main(string[] args)
         {
-            Test();
-        }
+            List<StationSignature> stations = [
+                new ("Station 1", [ new ModuleSignature("SoupMaker", "A", true) ] )
+            ];
 
-        static void Test()
+            Puzzle puzzle = new Puzzle("One Soup Two Soup", 1, 1, stations, [["Potato Soup"], ["Tomato Soup"]], ["Broth", "Broth", "Potato", "Tomato"], File.ReadAllText("script.txt"), "chef go whee");
+
+            Puzzle.Serialize(puzzle);
+
+            puzzle = Puzzle.Deserialize(@".\samplePuzzle.json");
+
+            Test(puzzle);
+        }
+        
+
+        static void Test(Puzzle puzzle)
         {
-            string text = File.ReadAllText("./script.txt");
+            string text = puzzle.StarterCode;
             List<Token> tokens = Tokenizer.TokenizeLine(text);
 
             string result = RefactorLangParser.parseToString(ListModule.OfSeq(tokens));
@@ -27,8 +41,8 @@ namespace RefactorLangConsole
 
             Grammar.prog prog = RefactorLangParser.parseToProg(ListModule.OfSeq(tokens));
 
-            List<List<string>> testCases = [["Tomato Soup"], ["Tomato Soup", "Tomato Soup"], ["Tomato Soup", "Tomato Soup", "Tomato Soup", "Tomato Soup"]];
-            List<string> pantry = ["Broth", "Broth", "Broth", "Broth", "Tomato", "Tomato", "Tomato", "Tomato"];
+            List<List<string>> testCases = puzzle.TestCases;
+            List<string> pantry = puzzle.StarterPantry;
 
             foreach (List<string> testCase in testCases)
             {
