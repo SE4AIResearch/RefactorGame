@@ -40,7 +40,9 @@ public class ChefExecute : MonoBehaviour
         switch (package.Action)
         {
             case UnityAction.ChefMove(ChefLocation loc):
-                Transform target = LocationMap.transform.Find(loc.ToString());
+                string locString = loc.ToString().Replace(" { }", "");
+                if (locString.StartsWith("Station")) { locString = "Stove"; }
+                Transform target = LocationMap.transform.Find(locString);
                 transform.position = target.position;
                 break;
             default:
