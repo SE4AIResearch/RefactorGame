@@ -23,9 +23,9 @@ namespace RefactorLangConsole
 
             Puzzle puzzle = new Puzzle("One Soup Two Soup", 1, 1, stations, [["Potato Soup"], ["Tomato Soup"]], ["Broth", "Broth", "Potato", "Tomato"], File.ReadAllText("script.txt"), "chef go whee");
 
-            Puzzle.Serialize(puzzle);
+            //Puzzle.Serialize(puzzle);
 
-            puzzle = Puzzle.Deserialize(@".\samplePuzzle.json");
+            //puzzle = Puzzle.Deserialize(@".\samplePuzzle.json");
 
             Test(puzzle);
         }

@@ -37,7 +37,7 @@ namespace RefactorLang
         // The chef picks up a food item and visually holds it.
         public record PickUp(FoodItem Food) : UnityAction;
 
-        // The chef plays a generic "Use" animation. (This might eventually change to contextual Use animations, like "Use Stove".)
+        // The chef plays a generic "Use" animation.
         public record Use() : UnityAction;
 
         // The chef puts down whatever it is holding.
@@ -117,7 +117,7 @@ namespace RefactorLang
         {
             switch (this.TypeDef)
             {
-                case ExpType.List l:
+                case ExpType.List:
                     return this.Value;
                 default:
                     throw new ArgumentException("Type error: Expected list, got " + this.TypeDef.ToString());
@@ -159,7 +159,9 @@ namespace RefactorLang
         {
             Orders = orders;
             Shelf = shelf;
-            VariableMap.Add("orders", new ExpValue(new ExpValue.ExpType.List(ExpValue.Type.Str), orders.Select(x => { if (x is FoodItem.Some food) return food.Food; return "None"; }).ToList()));
+            VariableMap.Add("orders", new ExpValue(new ExpValue.ExpType.List(ExpValue.Type.Str), orders.Select(
+                x => { if (x is FoodItem.Some food) return food.Food; return "None"; }).ToList())
+            );
         }
 
         public override string ToString()

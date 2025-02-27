@@ -21,7 +21,7 @@ namespace RefactorLang
 
     public abstract class Module
     {
-        public FoodItem Output { get; set; }
+        public FoodItem Output { get; set; } = new FoodItem.None();
         public abstract ICollection<FoodItem> Slots { get; }
 
         public string Name { get; set; }
@@ -54,7 +54,7 @@ namespace RefactorLang
         {
             CheckSlotNotNone(slotnum);
 
-            if (!(this.Slots.ToList()[slotnum] is FoodItem.Some food && !food.Food.Contains(foodParam)))
+            if (this.Slots.ToList()[slotnum] is FoodItem.Some food && !food.Food.Contains(foodParam))
                 throw new ArgumentException($"slot number {slotnum} is not a {foodParam}");
         }
 
@@ -62,7 +62,7 @@ namespace RefactorLang
         {
             CheckSlotNotNone(slotnum);
 
-            if (!(this.Slots.ToList()[slotnum] is FoodItem.Some food && food.Food.Contains(foodParam)))
+            if (this.Slots.ToList()[slotnum] is FoodItem.Some food && food.Food.Contains(foodParam))
                 throw new ArgumentException($"slot number {slotnum} is a {foodParam}");
         }
 

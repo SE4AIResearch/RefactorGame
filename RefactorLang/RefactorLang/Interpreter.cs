@@ -274,16 +274,14 @@ namespace RefactorLang
 
             Station StringToStation(string str)
             {
-                return State.Stations.Find(station => station.Name == str);
-
-                throw new ArgumentException($"No stations by that name ({str})");
+                return State.Stations.Find(station => station.Name == str) 
+                    ?? throw new ArgumentException($"No stations by that name ({str})");
             }
 
             Module StringToModule(string str, Station station)
             {
-                return station.Modules.Find(module => module.Name == str);
-
-                throw new ArgumentException($"No modules by that name ({str}) in this station ({station.Name})");
+                return station.Modules.Find(module => module.Name == str) 
+                    ?? throw new ArgumentException($"No modules by that name ({str}) in this station ({station.Name})");
             }
 
             string StringOfLocation(ChefLocation loc)
@@ -302,7 +300,7 @@ namespace RefactorLang
                 return foodItem switch
                 {
                     FoodItem.Some food => food.Food,
-                    FoodItem.None => "None",
+                    FoodItem.None => "Nothing",
                     _ => throw new ArgumentException("what")
                 };
             }
