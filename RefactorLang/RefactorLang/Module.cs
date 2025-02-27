@@ -10,7 +10,7 @@ namespace RefactorLang
     public class Station
     {
         public List<Module> Modules { get; }
-        public string Name { get; }
+        public string Name { get; set; }
 
         public Station(string name, List<Module> modules)
         {
