@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -91,6 +92,11 @@ namespace RefactorLang
             Name = name;
             Modules = modules;
         }
+
+        public Station ConvertToStation()
+        {
+            return new Station(Name, Modules.Select(x => x.ConvertToModule()).ToList());
+        }
     }
 
     public class ModuleSignature
@@ -117,7 +123,13 @@ namespace RefactorLang
             return this.Module switch
             {
                 "SoupMaker" => new SoupMaker(Name, Locked),
-                _ => throw new Exception("what"),
+                "Slicer" => new Slicer(Name, Locked),
+                "Grinder" => new Grinder(Name, Locked),
+                "Fryer" => new Fryer(Name, Locked),
+                "BarbecueSaucer" => new BarbecueSaucer(Name, Locked),
+                "Griddle" => new Griddle(Name, Locked),
+                "BurgerBuilder" => new BurgerBuilder(Name, Locked),
+                _ => throw new ArgumentException("not a module string"),
             };
         }
     }

@@ -7,21 +7,18 @@ using System.Linq;
 
 namespace RefactorLang
 {
-
-
-
     public class Interpreter
     {
         private State State;
         public List<UnityPackage> OutputLog { get; }
 
-        public Interpreter(List<string> orders, List<string> shelf)
+        public Interpreter(List<string> orders, List<string> shelf, List<Station> stations)
         {
             HashBag<FoodItem> foodItems = new HashBag<FoodItem>();
 
             foodItems.AddAll(shelf.Select(x => new FoodItem.Some(x)).ToList<FoodItem>());
 
-            State = new State(orders.Select(x => new FoodItem.Some(x)).ToList<FoodItem>(), foodItems);
+            State = new State(orders.Select(x => new FoodItem.Some(x)).ToList<FoodItem>(), foodItems, stations);
             OutputLog = new List<UnityPackage>();
         }
 

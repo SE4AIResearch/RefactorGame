@@ -18,10 +18,13 @@ namespace RefactorLangConsole
         static void Main(string[] args)
         {
             List<StationSignature> stations = [
-                new ("Station 1", [ new ModuleSignature("SoupMaker", "A", true) ] )
+                new ("Station 1", [ new ModuleSignature("Slicer", "A", true) ] )
             ];
 
-            Puzzle puzzle = new Puzzle("One Soup Two Soup", 1, 1, stations, [["Potato Soup"], ["Tomato Soup"]], ["Broth", "Broth", "Potato", "Tomato"], File.ReadAllText("script.txt"), "chef go whee");
+            List<List<string>> testCases = [["Potato Soup"], ["Tomato Soup"]];
+            List<string> pantry = ["Broth", "Broth", "Potato", "Tomato"];
+
+            Puzzle puzzle = new Puzzle("One Soup Two Soup", 1, 1, stations, testCases, pantry, File.ReadAllText("script.txt"), "chef go whee");
 
             //Puzzle.Serialize(puzzle);
 
@@ -41,15 +44,12 @@ namespace RefactorLangConsole
 
             Grammar.prog prog = RefactorLangParser.parseToProg(ListModule.OfSeq(tokens));
 
-            List<List<string>> testCases = puzzle.TestCases;
-            List<string> pantry = puzzle.StarterPantry;
-
-            foreach (List<string> testCase in testCases)
+            foreach (List<string> testCase in puzzle.TestCases)
             {
                 Console.WriteLine("=========================");
                 Console.WriteLine("TEST CASE: " + String.Join(", ", testCase));
 
-                Interpreter interpreter = new Interpreter(testCase, pantry);
+                Interpreter interpreter = new Interpreter(testCase, puzzle.StarterPantry, puzzle.Stations.Select(x => x.ConvertToStation()).ToList());
 
                 try
                 {

@@ -141,7 +141,7 @@ namespace RefactorLang
         public List<FoodItem> DeliveredOrders { get; set; } = new List<FoodItem>();
         public HashBag<FoodItem> Shelf { get; set; }
 
-        public List<Station> Stations { get; } = new List<Station> { new Station("Station 1", new List<Module> { new SoupMaker("A") }) };
+        public List<Station> Stations { get; }
 
         // The list of all variable references currently tracked by the backend.
         public Dictionary<string, ExpValue> VariableMap { get; set; } = new Dictionary<string, ExpValue>();
@@ -155,10 +155,11 @@ namespace RefactorLang
         public ChefLocation ChefLocation { get; set; } = new ChefLocation.Pantry();
         public FoodItem ChefHands { get; set; } = new FoodItem.None();
 
-        public State(List<FoodItem> orders, HashBag<FoodItem> shelf)
+        public State(List<FoodItem> orders, HashBag<FoodItem> shelf, List<Station> stations)
         {
             Orders = orders;
             Shelf = shelf;
+            Stations = stations;
             VariableMap.Add("orders", new ExpValue(new ExpValue.ExpType.List(ExpValue.Type.Str), orders.Select(
                 x => { if (x is FoodItem.Some food) return food.Food; return "None"; }).ToList())
             );
