@@ -16,6 +16,17 @@ namespace RefactorLang
         public record Window() : ChefLocation;
 
         public record Station(string Name) : ChefLocation;
+
+        public override string ToString()
+        {
+            return this switch
+            {
+                Pantry _ => "Pantry",
+                Window _ => "Window",
+                Station s => "Station" + s.Name,
+                _ => "Unknown"
+            };
+        }
     }
 
     public record FoodItem
