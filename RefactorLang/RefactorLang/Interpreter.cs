@@ -35,6 +35,62 @@ namespace RefactorLang
             this.OutputLog.Add(new UnityPackage(action, message));
         }
 
+        public static ChefLocation StringToLocation(string str, State state)
+        {
+            switch (str)
+            {
+                case "Pantry":
+                    return new ChefLocation.Pantry();
+                case "Window":
+                    return new ChefLocation.Window();
+                default:
+                    break;
+            }
+
+            try
+            {
+                Station station = StringToStation(str, state);
+                return new ChefLocation.Station(station.Name);
+            }
+            catch (ArgumentException)
+            {
+                throw new ArgumentException($"No locations by that name ({str})");
+            }
+        }
+
+        public static Station StringToStation(string str, State state)
+        {
+            return state.Stations.Find(station => station.Name == str)
+                ?? throw new ArgumentException($"No stations by that name ({str})");
+        }
+
+        public static Module StringToModule(string str, Station station)
+        {
+            return station.Modules.Find(module => module.Name == str)
+                ?? throw new ArgumentException($"No modules by that name ({str}) in this station ({station.Name})");
+        }
+
+        public static string StringOfLocation(ChefLocation loc)
+        {
+            return loc switch
+            {
+                ChefLocation.Station s => s.Name,
+                ChefLocation.Pantry => "Pantry",
+                ChefLocation.Window => "Window",
+                _ => throw new ArgumentException("what")
+            };
+        }
+
+        public static string StringOfFoodItem(FoodItem foodItem)
+        {
+            return foodItem switch
+            {
+                FoodItem.Some food => food.Food,
+                FoodItem.None => "Nothing",
+                _ => throw new ArgumentException("what")
+            };
+        }
+
         /*
          * In order to interpret the AST that is the output of Parser.fs, we must implement methods to interpret every data type that can be encountered.
          * These include:
@@ -246,62 +302,6 @@ namespace RefactorLang
                 if (stmt.Item2.Length != num) throw new ArgumentException("wrong number of arguments");
             }
 
-            ChefLocation StringToLocation(string str)
-            {
-                switch (str)
-                {
-                    case "Pantry":
-                        return new ChefLocation.Pantry();
-                    case "Window":
-                        return new ChefLocation.Window();
-                    default:
-                        break;
-                }
-
-                try
-                {
-                    Station station = StringToStation(str);
-                    return new ChefLocation.Station(station.Name);
-                }
-                catch (ArgumentException)
-                {
-                    throw new ArgumentException($"No locations by that name ({str})");
-                }
-            }
-
-            Station StringToStation(string str)
-            {
-                return State.Stations.Find(station => station.Name == str) 
-                    ?? throw new ArgumentException($"No stations by that name ({str})");
-            }
-
-            Module StringToModule(string str, Station station)
-            {
-                return station.Modules.Find(module => module.Name == str) 
-                    ?? throw new ArgumentException($"No modules by that name ({str}) in this station ({station.Name})");
-            }
-
-            string StringOfLocation(ChefLocation loc)
-            {
-                return loc switch
-                {
-                    ChefLocation.Station s => s.Name,
-                    ChefLocation.Pantry => "Pantry",
-                    ChefLocation.Window => "Window",
-                    _ => throw new ArgumentException("what")
-                };
-            }
-
-            string StringOfFoodItem(FoodItem foodItem)
-            {
-                return foodItem switch
-                {
-                    FoodItem.Some food => food.Food,
-                    FoodItem.None => "Nothing",
-                    _ => throw new ArgumentException("what")
-                };
-            }
-
             List<ExpValue> EvaluateArguments()
             {
                 List<ExpValue> output = new List<ExpValue>();
@@ -321,7 +321,7 @@ namespace RefactorLang
                     break;
                 case Keyword.GOTO:
                     CheckArguments(1);
-                    ChefLocation location = StringToLocation(args[0].TypeCheckString());
+                    ChefLocation location = StringToLocation(args[0].TypeCheckString(), this.State);
                     State.ChefLocation = location;
                     RecordAction(new UnityAction.ChefMove(location), $"chef moves to {StringOfLocation(location)}");
                     break;
@@ -362,7 +362,7 @@ namespace RefactorLang
                         CheckArguments(2);
 
                         if (State.ChefLocation is ChefLocation.Station stationLoc)
-                            station = StringToStation(stationLoc.Name);
+                            station = StringToStation(stationLoc.Name, this.State);
                         else
                             throw new ArgumentException("can't place, chef isn't at a workstation");
 
@@ -386,7 +386,7 @@ namespace RefactorLang
                         Station station;
 
                         if (State.ChefLocation is ChefLocation.Station stationLoc)
-                            station = StringToStation(stationLoc.Name);
+                            station = StringToStation(stationLoc.Name, this.State);
                         else
                             throw new ArgumentException("can't activate, chef isn't at a workstation");
 
@@ -405,7 +405,7 @@ namespace RefactorLang
                         Station station;
 
                         if (State.ChefLocation is ChefLocation.Station stationLoc)
-                            station = StringToStation(stationLoc.Name);
+                            station = StringToStation(stationLoc.Name, this.State);
                         else
                             throw new ArgumentException("can't activate, chef isn't at a workstation");
 

@@ -22,7 +22,7 @@ public class ScriptCompiler : MonoBehaviour
 
         try
         {
-            Interpreter interpreter = new Interpreter(new List<string> { "Potato Soup" }, new List<string> { "Broth", "Broth", "Potato", "Tomato" });
+            Interpreter interpreter = new Interpreter(new List<string> { "Potato Soup" }, new List<string> { "Broth", "Broth", "Potato", "Tomato" }, new List<Station> { new Station("Station 1", new List<Module> { new SoupMaker("A", true) })});
             interpreter.Interpret(prog);
 
             return interpreter.OutputLog;

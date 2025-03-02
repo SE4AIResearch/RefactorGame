@@ -7,13 +7,13 @@ namespace RefactorLang
 {
     public class KitchenState
     {
-        List<Station> Stations { get; set; }
-        int NumStations { get; }
+        public List<Station> Stations { get; set; }
+        public int NumStations { get; }
 
-        public KitchenState(List<StationSignature> stations, int numStations)
+        public KitchenState(Puzzle puzzle)
         {
-            Stations = stations.Select(x => x.ConvertToStation()).ToList();
-            NumStations = numStations;
+            Stations = puzzle.Stations.Select(x => x.ConvertToStation()).ToList();
+            NumStations = puzzle.NumOfStations;
 
             if (Stations.Count != NumStations)
                 throw new ArgumentException("mismatch between parameters");
@@ -25,17 +25,6 @@ namespace RefactorLang
                 throw new ArgumentOutOfRangeException("index was out of range");
 
             Stations[index].Name = newName;
-        }
-
-        public void RenameModule(int stationIndex, int moduleIndex, string newName)
-        {
-            if (stationIndex < 0 || stationIndex >= NumStations)
-                throw new ArgumentOutOfRangeException("station index was out of range");
-
-            if (moduleIndex < 0 || moduleIndex > Stations[stationIndex].Modules.Count)
-                throw new ArgumentOutOfRangeException("module index was out of range");
-
-            Stations[stationIndex].Modules[moduleIndex].Name = newName;
         }
     }
 }
