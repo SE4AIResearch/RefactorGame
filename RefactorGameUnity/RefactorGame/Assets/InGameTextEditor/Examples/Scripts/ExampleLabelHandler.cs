@@ -3,7 +3,7 @@
 /// <summary>
 /// Example to demonstrate the annotation functionality of the text editor.
 /// </summary>
-public class LabelHandler : MonoBehaviour
+public class ExampleLabelHandler : MonoBehaviour
 {
     /// <summary>
     /// The text editor.

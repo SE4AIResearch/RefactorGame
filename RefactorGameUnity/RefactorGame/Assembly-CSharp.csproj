@@ -84,7 +84,8 @@
     <Compile Include="Assets/DisplayStation.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/History/Milestone.cs" />
     <Compile Include="Assets/LoadPuzzle.cs" />
-    <Compile Include="Assets/InGameTextEditor/Examples/Scripts/LabelHandler.cs" />
+    <Compile Include="Assets/InGameTextEditor/Examples/Scripts/ExampleLabelHandler.cs" />
+    <Compile Include="Assets/LabelHandler.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/Operations/DeleteOperation.cs" />
     <Compile Include="Assets/SyntaxHighlighter.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/History/Delete.cs" />
