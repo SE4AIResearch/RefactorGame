@@ -6,6 +6,7 @@ using UnityEngine;
 public class LoadPuzzle : MonoBehaviour
 {
     public CurrentKitchenState kitchenState;
+    public InGameTextEditor.TextEditor editor;
 
     // Start is called before the first frame update
     void Start()
@@ -27,5 +28,9 @@ public class LoadPuzzle : MonoBehaviour
     void Load(Puzzle puzzle)
     {
         kitchenState.KitchenState = new KitchenState(puzzle);
+
+        editor.Text = puzzle.StarterCode;
+
+        kitchenState.LoadedPuzzle = puzzle;
     }
 }

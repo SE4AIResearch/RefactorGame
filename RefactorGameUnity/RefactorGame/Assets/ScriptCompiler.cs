@@ -11,8 +11,9 @@ using C5;
 
 public class ScriptCompiler : MonoBehaviour
 {
+    public CurrentKitchenState kitchenState;
 
-    public static List<UnityPackage> Compile(string input)
+    public List<UnityPackage> Compile(string input)
     {
         List<Token> tokens = Tokenizer.TokenizeLine(input);
 
@@ -22,7 +23,11 @@ public class ScriptCompiler : MonoBehaviour
 
         try
         {
-            Interpreter interpreter = new Interpreter(new List<string> { "Potato Soup" }, new List<string> { "Broth", "Broth", "Potato", "Tomato" }, new List<Station> { new Station("Station 1", new List<Module> { new SoupMaker("A", true) })});
+            var testCases = kitchenState.LoadedPuzzle.TestCases;
+            var pantry = kitchenState.LoadedPuzzle.StarterPantry;
+            var stations = kitchenState.KitchenState.Stations;
+
+            Interpreter interpreter = new Interpreter(testCases[0], pantry, stations);
             interpreter.Interpret(prog);
 
             return interpreter.OutputLog;

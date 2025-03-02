@@ -13,12 +13,13 @@ public class SubmitText : MonoBehaviour
 {
     public InGameTextEditor.TextEditor textEditor;
     public GameObject chef;
+    public ScriptCompiler compiler;
 
     public void OnSubmit()
     {
         string text = textEditor.Text;
 
-        List<UnityPackage> outputLog = ScriptCompiler.Compile(text);
+        List<UnityPackage> outputLog = compiler.Compile(text);
 
         chef.GetComponent<ChefExecute>().Execute(outputLog);
     }

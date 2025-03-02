@@ -20,4 +20,6 @@ public class CurrentKitchenState : ScriptableObject
             OnStateChanged.Invoke(value);
         }
     }
+
+    public Puzzle LoadedPuzzle;
 }
