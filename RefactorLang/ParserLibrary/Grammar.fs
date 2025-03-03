@@ -12,6 +12,8 @@ module Grammar =
     | TokenSymbol of Symbol
     | TokenKeyword of Keyword
 
+    type prec = int
+
     type binop =
     | Add of exp * exp
     | Sub of exp * exp

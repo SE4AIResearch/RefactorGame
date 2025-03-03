@@ -133,6 +133,18 @@ module Parser =
                     rest (f acc v)) <|> returnP acc
         p >>= rest
 
+    let rec chainl1prec (p: parser<'a>) (op: parser<prec * ('a -> 'a -> 'a)>) (minPrecedence: prec) : parser<'a> =
+        let rec rest (acc: 'a) : parser<'a> =
+            (op >>= fun (precedence, f) ->
+                if precedence >= minPrecedence then
+                    chainl1prec p op precedence >>= fun v ->
+                        rest (f acc v)
+                else
+                    p >>= fun _ ->
+                        chainl1prec p op minPrecedence >>= rest) // Continue parsing with the original minPrecedence
+            <|> returnP acc
+        p >>= rest
+
     let prefix1 (p: parser<'a>) (op: parser<'a -> 'a>) : parser<'a> =
         let rec rest () =
             (op >>= fun f -> rest () |>> f) <|> p

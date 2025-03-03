@@ -1,0 +1,34 @@
+{
+  "name": "Future Recipes",
+  "difficulty": 1,
+  "testCases": [
+    [
+      "Squash Soup"
+    ],
+    [
+      "Tomato Soup"
+    ]
+  ],
+  "starterPantry": [
+    "Broth",
+    "Broth",
+    "Potato",
+    "Squash",
+    "Tomato"
+  ],
+  "starterCode": "GOTO(\"Pantry\")\r\nGET(\"Broth\")\r\nGOTO(\"Station 1\")\r\nPLACE(\"A\", 0)\r\n\r\nGOTO(\"Pantry\")\r\n\r\nif (orders[0] == \"Tomato Soup\") {\r\n\r\n\tGET(\"Tomato\")\r\n\r\n}\r\n\r\nelse if (orders[0] == \"Potato Soup\") {\r\n\r\n\tGET(\"Potato\")\r\n\r\n}\r\n\r\nelse {\r\n\r\n\tGET(\"Squash\")\r\n\r\n}\r\n\r\nGOTO(\"Station 1\")\r\nPLACE(\"A\", 1)\r\n\r\nACTIVATE(\"A\")\r\n\r\nTAKE(\"A\")\r\n\r\nGOTO(\"Window\")\r\n\r\nDELIVER()",
+  "numOfStations": 1,
+  "stations": [
+    {
+      "name": "Station 1",
+      "modules": [
+        {
+          "module": "SoupMaker",
+          "name": "A",
+          "locked": true
+        }
+      ]
+    }
+  ],
+  "storyPrompt": "n/a"
+}

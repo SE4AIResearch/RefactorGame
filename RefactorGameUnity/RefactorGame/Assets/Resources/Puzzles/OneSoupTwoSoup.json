@@ -1,0 +1,33 @@
+{
+  "name": "One Soup Two Soup",
+  "difficulty": 1,
+  "testCases": [
+    [
+      "Potato Soup"
+    ],
+    [
+      "Tomato Soup"
+    ]
+  ],
+  "starterPantry": [
+    "Broth",
+    "Broth",
+    "Potato",
+    "Tomato"
+  ],
+  "starterCode": "if (orders[0] == \"Tomato Soup\") {​\n\tGOTO(\"Pantry\")​\n\tGET(\"Broth\")​\n\tGOTO(\"Station 1\")​\n\tPLACE(\"A\", 0)​\n\n\tGOTO(\"Pantry\")​\n\tGET(\"Tomato\")​\n\tGOTO(\"Station 1\")​\n\tPLACE(\"A\", 1)​\n\n}​\nif (orders[0] == \"Potato Soup\") {​\n\tGOTO(\"Pantry\")​\n\tGET(\"Broth\")​\n\tGOTO(\"Station 1\")​\n\tPLACE(\"A\", 0)​\n\n\tGOTO(\"Pantry\")​\n\tGET(\"Potato\")​\n\tGOTO(\"Station 1\")​\n\tPLACE(\"A\", 1)​\n\n}​\n\nGOTO(\"Station 1\")​\nACTIVATE(\"A\")​\n\nTAKE(\"A\")​\n\nGOTO(\"Window\")​\n\nDELIVER()",
+  "numOfStations": 1,
+  "stations": [
+    {
+      "name": "Station 1",
+      "modules": [
+        {
+          "module": "SoupMaker",
+          "name": "A",
+          "locked": true
+        }
+      ]
+    }
+  ],
+  "storyPrompt": "n/a"
+}

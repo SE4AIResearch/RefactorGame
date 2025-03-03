@@ -22,7 +22,7 @@ public class LoadPuzzle : MonoBehaviour
 
     public void LoadSample()
     {
-        Load(Puzzle.Deserialize(@"./Assets/samplePuzzle.json"));
+        Load(Puzzle.Deserialize(@"./Assets/Resources/Puzzles/OneSoupTwoSoup.json"));
     }
 
     void Load(Puzzle puzzle)

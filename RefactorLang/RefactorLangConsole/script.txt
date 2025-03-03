@@ -1,5 +1,41 @@
-﻿GET("Broth")
-GOTO("Station 1")
-PLACE("A", 0)
-ACTIVATE("A")
-TAKE("A")
+﻿func make_a_tomato_soup() {​
+
+  GOTO("Pantry")​
+  GET("Broth")​
+  GOTO("Station 1")​
+  PLACE("A", 0)​
+
+  GOTO("Pantry")​
+
+  GET("Tomato")​
+
+  GOTO("Station 1")​
+  PLACE("A", 1)​
+
+  ACTIVATE("A")​
+
+  TAKE("A")​
+
+  GOTO("Window")​
+
+  DELIVER()​
+
+}​
+
+​
+
+make_a_tomato_soup()​
+
+if (#orders – 1 >= 1) {​
+
+ var i = 0​
+
+  while (i < #orders – 1) {​
+
+    make_a_tomato_soup()​
+
+    i = i + 1​
+
+  }​
+
+}

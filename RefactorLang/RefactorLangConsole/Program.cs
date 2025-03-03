@@ -17,6 +17,11 @@ namespace RefactorLangConsole
     {
         static void Main(string[] args)
         {
+            TestMain();
+        }
+
+        static void TestMain()
+        {
             List<StationSignature> stations = [
                 new ("Station 1", [ new ModuleSignature("Slicer", "A", true) ] )
             ];

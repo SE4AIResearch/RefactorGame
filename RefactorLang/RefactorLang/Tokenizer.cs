@@ -53,6 +53,7 @@ namespace RefactorLang
                 // Numeric Operators
                 { "+", Symbol.PLUS },
                 { "-", Symbol.DASH },
+                { "–", Symbol.DASH }, // recognize endash as dash also
                 { "*", Symbol.STAR },
                 { "/", Symbol.FSLASH },
                 { "%", Symbol.MOD },
