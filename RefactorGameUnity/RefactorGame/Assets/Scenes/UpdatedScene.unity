@@ -1372,7 +1372,7 @@ RectTransform:
   m_GameObject: {fileID: 445391790}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2095352976}
@@ -1387,8 +1387,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 366, y: 0.0000023842}
-  m_SizeDelta: {x: 439.64502, y: 611.12}
+  m_AnchoredPosition: {x: 490.1, y: 0.0000023842}
+  m_SizeDelta: {x: 456.18, y: 611.12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &515670341
 GameObject:
@@ -5252,6 +5252,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TextEditor
       objectReference: {fileID: 0}
+    - target: {fileID: 114662724014931294, guid: d53fd87b7d86a40469735ea1ab29f85c, type: 3}
+      propertyPath: showLineLabelIcons
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 114803381886405840, guid: d53fd87b7d86a40469735ea1ab29f85c, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: InGameTextEditor.TextEditor, Assembly-CSharp
@@ -5368,6 +5372,18 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 224909684747876842, guid: d53fd87b7d86a40469735ea1ab29f85c, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -92
+      objectReference: {fileID: 0}
+    - target: {fileID: 224909684747876842, guid: d53fd87b7d86a40469735ea1ab29f85c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 7128485584377706414, guid: d53fd87b7d86a40469735ea1ab29f85c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5375,6 +5391,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1134388053291424, guid: d53fd87b7d86a40469735ea1ab29f85c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2095352981}
+    - targetCorrespondingSourceObject: {fileID: 1134388053291424, guid: d53fd87b7d86a40469735ea1ab29f85c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2095352983}
   m_SourcePrefab: {fileID: 100100000, guid: d53fd87b7d86a40469735ea1ab29f85c, type: 3}
 --- !u!224 &2095352976 stripped
 RectTransform:
@@ -5413,6 +5432,11 @@ MonoBehaviour:
     overrideFontStyle: 0
     fontColor: {r: 0.2, g: 0.6, b: 0.6, a: 1}
     overrideColor: 1
+  textStyleKCall:
+    fontStyle: 0
+    overrideFontStyle: 0
+    fontColor: {r: 0.58431375, g: 0.29411766, b: 0.7529412, a: 1}
+    overrideColor: 1
 --- !u!114 &2095352982 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114662724014931294, guid: d53fd87b7d86a40469735ea1ab29f85c, type: 3}
@@ -5424,6 +5448,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7805e69d5e4240f29d3f06e26ff5883, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2095352983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1587636843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25d0e0d7423cb4a1cb5c6e608dbcc618, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textEditor: {fileID: 2095352982}
+  underlineSprite: {fileID: 21300000, guid: d91d500937efa4cfcab206507b34c5d9, type: 3}
+  labelIconSprite: {fileID: 21300000, guid: 0393dddae4f40447e8aa33f6786dbf70, type: 3}
 --- !u!1 &2142886122
 GameObject:
   m_ObjectHideFlags: 0

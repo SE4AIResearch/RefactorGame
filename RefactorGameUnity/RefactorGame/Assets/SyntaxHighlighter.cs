@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace InGameTextEditor.Format
 {
@@ -17,20 +18,24 @@ namespace InGameTextEditor.Format
         /// <summary>
         /// Text style for string and characters.
         /// </summary>
-        public TextStyle textStyleString = new TextStyle(new Color(0.9f, 0.4f, 0.1f));
+        public TextStyle textStyleString = new TextStyle(new Color(182f/255f, 73f/255f, 0f/255f));
 
         /// <summary>
         /// Text style for numbers.
         /// </summary>
-        public TextStyle textStyleNumber = new TextStyle(new Color(0.2f, 0.4f, 0.6f));
+        public TextStyle textStyleNumber = new TextStyle(new Color(64f/255f, 110f/255f, 142f/255f));
 
         /// <summary>
         /// Text style for C# keywords
         /// </summary>
-        public TextStyle textStyleKeyword = new TextStyle(new Color(0.2f, 0.6f, 0.6f));
+        public TextStyle textStyleKeyword = new TextStyle(new Color(94f/255f, 109f/255f, 92f/255f));
+
+        public TextStyle textStyleKCall = new TextStyle(new Color(149f/255f, 75f/255f, 192f/255f));
 
         // collection of all C# keywords
         readonly string[] keywords = {"var", "if", "else if", "else", "while", "func"};
+
+        readonly string[] kcalls = {"GOTO", "GET", "PLACE", "TAKE", "ACTIVATE", "DELIVER", "PRINT"};
 
         // indicates if the text formatter has been initialized
         bool initialized = false;
@@ -96,6 +101,12 @@ namespace InGameTextEditor.Format
             regexPattern += @"|(?<keyword>";
             for (int i = 0; i < keywords.Length; i++)
                 regexPattern += "\\b" + keywords[i] + "\\b" + (i < keywords.Length - 1 ? "|" : "");
+            regexPattern += ")";
+
+            // matches a KCall
+            regexPattern += @"|(?<kcall>";
+            for (int i = 0; i < kcalls.Length; i++)
+                regexPattern += "\\b" + kcalls[i] + "\\b" + (i < kcalls.Length - 1 ? "|" : "");
             regexPattern += ")";
 
             // create regex
@@ -200,6 +211,9 @@ namespace InGameTextEditor.Format
                                     break;
                                 case "keyword":
                                     textFormatGroups.Add(new TextFormatGroup(tokenStartIndex, tokenEndIndex, textStyleKeyword));
+                                    break;
+                                case "kcall":
+                                    textFormatGroups.Add(new TextFormatGroup(tokenStartIndex, tokenEndIndex, textStyleKCall));
                                     break;
                             }
                         }
