@@ -11,7 +11,7 @@ public class LoadPuzzle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        LoadSample();
     }
 
     // Update is called once per frame

@@ -20,7 +20,7 @@ public class ChefExecute : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        this.transform.Find("Food").gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -42,6 +42,16 @@ public class ChefExecute : MonoBehaviour
             case UnityAction.ChefMove(ChefLocation loc):
                 Transform target = LocationMap.transform.Find(Interpreter.StringOfLocation(loc));
                 transform.position = target.position;
+
+                Vector3 foodPosition = target.position;
+                foodPosition.y -= 130f;
+                this.transform.Find("Food").gameObject.transform.position = foodPosition;
+                break;
+            case UnityAction.PickUp(FoodItem item):
+                AddFoodItem(item);
+                break;
+            case UnityAction.PutDown:
+                RemoveFoodItem();
                 break;
             default:
                 Debug.Log("(not implemented)");
@@ -65,5 +75,49 @@ public class ChefExecute : MonoBehaviour
         Actions = actions;
         executing = true;
         timer = 1;
+    }
+
+    public void AddFoodItem(FoodItem item)
+    {
+        string assetPath = FoodItemGraphicPath(item);
+        Sprite foodSprite = Resources.Load<Sprite>(assetPath);
+
+        if (foodSprite != null)
+        {
+            this.transform.Find("Food").gameObject.SetActive(true);
+            SpriteRenderer renderer = this.transform.Find("Food").GetComponent<SpriteRenderer>();
+            renderer.sprite = foodSprite;
+            Debug.Log("Loaed sprite: " + assetPath);
+        }
+        else
+        {
+            this.transform.Find("Food").gameObject.SetActive(false);
+            Debug.Log("Failed to load sprite: " + assetPath);
+        }
+    }
+
+    public void RemoveFoodItem()
+    {
+        this.transform.Find("Food").gameObject.SetActive(false);
+        SpriteRenderer renderer = this.transform.Find("Food").GetComponent<SpriteRenderer>();
+        renderer.sprite = null;
+    }
+
+    public string FoodItemGraphicPath(FoodItem item)
+    {
+        string path = "Graphics/Food/";
+
+        switch (item)
+        {
+            case FoodItem.Some(string food):
+                path += food;
+                break;
+            case FoodItem.None:
+                path += "None.png";
+                break;
+
+        }
+
+        return path;
     }
 }
