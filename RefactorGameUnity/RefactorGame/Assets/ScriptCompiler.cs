@@ -26,8 +26,11 @@ public class ScriptCompiler : MonoBehaviour
             var testCases = kitchenState.LoadedPuzzle.TestCases;
             var pantry = kitchenState.LoadedPuzzle.StarterPantry;
             var stations = kitchenState.KitchenState.Stations;
+            
+            var testCaseIndex = kitchenState.KitchenState.SelectedTestCase;
+            var testCase = testCases[testCaseIndex];
 
-            Interpreter interpreter = new Interpreter(testCases[0], pantry, stations);
+            Interpreter interpreter = new Interpreter(testCase, pantry, stations);
             interpreter.Interpret(prog);
 
             return interpreter.OutputLog;

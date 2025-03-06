@@ -95,6 +95,8 @@
     <Compile Include="Assets/InGameTextEditor/Scripts/Operations/SetTextOperation.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/Line.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/Operations/SelectAllOperation.cs" />
+    <Compile Include="Assets/SelectTestCase.cs" />
+    <Compile Include="Assets/DisplayTestCases.cs" />
     <Compile Include="Assets/ChefExecute.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/History/Insert.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/TextPosition.cs" />

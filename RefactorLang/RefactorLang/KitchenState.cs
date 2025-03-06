@@ -8,12 +8,15 @@ namespace RefactorLang
     public class KitchenState
     {
         public List<Station> Stations { get; set; }
+        public List<List<string>> TestCases { get; set; }
+        public int SelectedTestCase { get; set; } = 0;
         public int NumStations { get; }
 
         public KitchenState(Puzzle puzzle)
         {
             Stations = puzzle.Stations.Select(x => x.ConvertToStation()).ToList();
             NumStations = puzzle.NumOfStations;
+            TestCases = puzzle.TestCases;
 
             if (Stations.Count != NumStations)
                 throw new ArgumentException("mismatch between parameters");
