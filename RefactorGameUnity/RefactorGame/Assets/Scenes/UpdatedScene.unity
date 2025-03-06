@@ -805,6 +805,7 @@ GameObject:
   - component: {fileID: 187928930}
   - component: {fileID: 187928932}
   - component: {fileID: 187928931}
+  - component: {fileID: 187928933}
   m_Layer: 5
   m_Name: TestSelector
   m_TagString: Untagged
@@ -875,6 +876,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &187928933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 187928929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725351c37207b4361984f8fe0e6d93d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  kitchen: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
 --- !u!1 &193746688
 GameObject:
   m_ObjectHideFlags: 0
@@ -5908,6 +5922,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LocationMap: {fileID: 571275732}
   ActionDisplay: {fileID: 993938609}
+  Kitchen: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
 --- !u!4 &1786753925
 Transform:
   m_ObjectHideFlags: 0
