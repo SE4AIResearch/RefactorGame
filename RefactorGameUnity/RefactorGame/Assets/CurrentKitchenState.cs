@@ -22,4 +22,11 @@ public class CurrentKitchenState : ScriptableObject
     }
 
     public Puzzle LoadedPuzzle;
+
+    public void UpdateTestCaseStatus(TestStatus status)
+    {
+        int index = KitchenState.SelectedTestCase;
+        KitchenState.TestCaseStatus[index] = status;
+        OnStateChanged.Invoke(KitchenState);
+    }
 }

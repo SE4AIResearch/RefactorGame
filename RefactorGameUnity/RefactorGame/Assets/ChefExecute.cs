@@ -12,6 +12,8 @@ public class ChefExecute : MonoBehaviour
 {
     public GameObject LocationMap;
     public TextMeshProUGUI ActionDisplay;
+    public CurrentKitchenState Kitchen;
+    // public UpdateTestStatus TestStatusHandler;
 
     private List<UnityPackage> Actions;
     private bool executing = false;
@@ -47,12 +49,23 @@ public class ChefExecute : MonoBehaviour
                 foodPosition.y -= 130f;
                 this.transform.Find("Food").gameObject.transform.position = foodPosition;
                 break;
+
             case UnityAction.PickUp(FoodItem item):
                 AddFoodItem(item);
                 break;
+
             case UnityAction.PutDown:
                 RemoveFoodItem();
                 break;
+
+            case UnityAction.Success:
+                Kitchen.UpdateTestCaseStatus(TestStatus.Passed);
+                break;
+
+            case UnityAction.Failure:
+                Kitchen.UpdateTestCaseStatus(TestStatus.Failed);
+                break;
+
             default:
                 Debug.Log("(not implemented)");
                 break;
@@ -68,10 +81,12 @@ public class ChefExecute : MonoBehaviour
     {
         if (actions == null)
         {
+            Kitchen.UpdateTestCaseStatus(TestStatus.Failed);
             Debug.Log("Compilation failed...");
             return;
         }
 
+        Kitchen.UpdateTestCaseStatus(TestStatus.Running);
         Actions = actions;
         executing = true;
         timer = 1;

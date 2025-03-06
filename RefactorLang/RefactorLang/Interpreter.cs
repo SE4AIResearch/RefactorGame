@@ -472,8 +472,8 @@ namespace RefactorLang
             InterpretAllStmts(prog.Item.ToList());
 
             if (Enumerable.SequenceEqual(this.State.Orders, this.State.DeliveredOrders))
-                RecordAction(new UnityAction.NoAction(), "Success!");
-            else RecordAction(new UnityAction.NoAction(), "Failure...");
+                RecordAction(new UnityAction.Success(), "Success!");
+            else RecordAction(new UnityAction.Failure(), "Failure...");
         }
     }
 }

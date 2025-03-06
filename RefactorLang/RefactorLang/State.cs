@@ -59,6 +59,12 @@ namespace RefactorLang
 
         // Default: The chef doesn't do any visible actions.
         public record NoAction() : UnityAction;
+
+        // The chef passes a test
+        public record Success(): UnityAction;
+
+        // The chef fails a test
+        public record Failure(): UnityAction;
     }
 
     /*
