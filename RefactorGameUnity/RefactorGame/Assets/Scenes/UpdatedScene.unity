@@ -3633,6 +3633,7 @@ GameObject:
   - component: {fileID: 717131181}
   - component: {fileID: 717131180}
   - component: {fileID: 717131179}
+  - component: {fileID: 717131182}
   m_Layer: 5
   m_Name: ResetButton
   m_TagString: Untagged
@@ -3755,6 +3756,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 717131177}
   m_CullTransparentMesh: 1
+--- !u!114 &717131182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 717131177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2e0332d733e6467d8ff86722ea31157, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  kitchen: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
+  shouldLock: 1
 --- !u!1 &779600629
 GameObject:
   m_ObjectHideFlags: 0
@@ -4099,6 +4114,7 @@ GameObject:
   - component: {fileID: 933120638}
   - component: {fileID: 933120637}
   - component: {fileID: 933120636}
+  - component: {fileID: 933120639}
   m_Layer: 5
   m_Name: SubmitButton
   m_TagString: Untagged
@@ -4222,6 +4238,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 933120634}
   m_CullTransparentMesh: 1
+--- !u!114 &933120639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 933120634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2e0332d733e6467d8ff86722ea31157, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  kitchen: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
+  shouldLock: 1
 --- !u!1 &933769221
 GameObject:
   m_ObjectHideFlags: 0
@@ -7318,6 +7348,7 @@ GameObject:
   - component: {fileID: 1764888626}
   - component: {fileID: 1764888625}
   - component: {fileID: 1764888624}
+  - component: {fileID: 1764888627}
   m_Layer: 5
   m_Name: PauseButton
   m_TagString: Untagged
@@ -7427,6 +7458,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1764888622}
   m_CullTransparentMesh: 1
+--- !u!114 &1764888627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764888622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2e0332d733e6467d8ff86722ea31157, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  kitchen: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
+  shouldLock: 0
 --- !u!1 &1774163403
 GameObject:
   m_ObjectHideFlags: 0
