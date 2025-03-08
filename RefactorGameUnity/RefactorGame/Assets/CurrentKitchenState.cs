@@ -29,4 +29,21 @@ public class CurrentKitchenState : ScriptableObject
         KitchenState.TestCaseStatus[index] = status;
         OnStateChanged.Invoke(KitchenState);
     }
+
+    public void UpdateCurrentTestCase(int index)
+    {
+        KitchenState.SelectedTestCase = index;
+        OnStateChanged.Invoke(KitchenState);
+    }
+
+    public bool AllTestsPassed() {
+        foreach (var status in KitchenState.TestCaseStatus.Values)
+        {
+            if (status != TestStatus.Passed)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }

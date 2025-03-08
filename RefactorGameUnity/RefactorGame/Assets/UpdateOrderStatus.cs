@@ -4,7 +4,7 @@ using RefactorLang;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UpdateTestStatus : MonoBehaviour
+public class UpdateOrderStatus : MonoBehaviour
 {
     public CurrentKitchenState kitchen;
 
@@ -43,6 +43,6 @@ public class UpdateTestStatus : MonoBehaviour
 
     void UpdateColor(int index, Color color)
     {
-        this.gameObject.transform.Find($"Case {index+1}").GetComponent<Image>().color = color;
+        this.gameObject.transform.Find($"Order {index+1}").GetComponent<Image>().color = color;
     }
 }

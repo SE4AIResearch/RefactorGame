@@ -79,15 +79,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets/InGameTextEditor/Scripts/History/Action.cs" />
+    <Compile Include="Assets/SelectOrder.cs" />
     <Compile Include="Assets/InGameTextEditor/Examples/Scripts/ExampleLabelHandler.cs" />
     <Compile Include="Assets/LabelHandler.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/Operations/DeleteOperation.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/History/Delete.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/Operations/PasteOperation.cs" />
+    <Compile Include="Assets/DisplayOrders.cs" />
+    <Compile Include="Assets/DisplayOrderInfo.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/Operations/UndoOperation.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/Operations/SelectAllOperation.cs" />
-    <Compile Include="Assets/SelectTestCase.cs" />
-    <Compile Include="Assets/DisplayTestCases.cs" />
     <Compile Include="Assets/ScriptCompiler.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/Format/TextFormatGroup.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/Operations/RedoOperation.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Assets/InGameTextEditor/Scripts/Util.cs" />
     <Compile Include="Assets/DisplayStation.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/History/Milestone.cs" />
+    <Compile Include="Assets/UpdateOrderStatus.cs" />
     <Compile Include="Assets/LoadPuzzle.cs" />
     <Compile Include="Assets/SyntaxHighlighter.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/History/State.cs" />
@@ -118,7 +120,6 @@
     <Compile Include="Assets/InGameTextEditor/Examples/Scripts/SimpleSyntaxHighlighter.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/TextEditor.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/Operations/InsertTextOperation.cs" />
-    <Compile Include="Assets/UpdateTestStatus.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/Selection.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/Operations/CutOperation.cs" />
     <Compile Include="Assets/InGameTextEditor/Examples/Scripts/SearchHandler.cs" />
