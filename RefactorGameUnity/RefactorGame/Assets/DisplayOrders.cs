@@ -22,8 +22,8 @@ public class DisplayOrders : MonoBehaviour
 
         this.transform.Find("Order 1").GetComponent<Button>().Select();
 
-        // Color orderColor = this.transform.Find("Order 1").GetComponent<Image>().color;
-        // this.transform.Find("OrderInfo").GetComponent<Image>().color = orderColor;
+        Color orderColor = this.transform.Find("Order 1").GetComponent<Image>().color;
+        this.transform.Find("OrderInfo").GetComponent<Image>().color = orderColor;
     }
 
     // Update is called once per frame
@@ -40,13 +40,16 @@ public class DisplayOrders : MonoBehaviour
 
         int index = newState.SelectedTestCase;
 
+        Color orderColor = this.transform.Find($"Order {index + 1}").GetComponent<Image>().color;
+        this.transform.Find("OrderInfo").GetComponent<Image>().color = orderColor;
+
         if (newState.TestCaseStatus[index] == TestStatus.Running) {
             this.transform.Find("Order 1").GetComponent<Button>().enabled = false;
             this.transform.Find("Order 2").GetComponent<Button>().enabled = false;
             this.transform.Find("Order 3").GetComponent<Button>().enabled = false;
             this.transform.Find("Order 4").GetComponent<Button>().enabled = false;
             this.transform.Find("Order 5").GetComponent<Button>().enabled = false;
-            
+
         } else {
             this.transform.Find("Order 1").GetComponent<Button>().enabled = true;
             this.transform.Find("Order 2").GetComponent<Button>().enabled = true;
@@ -54,9 +57,5 @@ public class DisplayOrders : MonoBehaviour
             this.transform.Find("Order 4").GetComponent<Button>().enabled = true;
             this.transform.Find("Order 5").GetComponent<Button>().enabled = true;
         }
-
-        // int index = newState.SelectedTestCase + 1;
-        // Color orderColor = this.transform.Find($"Order {index}").GetComponent<Image>().color;
-        // this.transform.Find("OrderInfo").GetComponent<Image>().color = orderColor;
     }
 }

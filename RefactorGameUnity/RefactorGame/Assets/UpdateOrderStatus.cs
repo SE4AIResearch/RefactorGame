@@ -25,20 +25,20 @@ public class UpdateOrderStatus : MonoBehaviour
 
         TestStatus status = kitchen.KitchenState.TestCaseStatus[index];
 
-        switch (status) {
-            case TestStatus.NotRun:
-                UpdateColor(index, Color.white);
-                break;
-            case TestStatus.Running:
-                UpdateColor(index, Color.yellow);
-                break;
-            case TestStatus.Failed:
-                UpdateColor(index, Color.red);
-                break;
-            case TestStatus.Passed:
-                UpdateColor(index, Color.green);
-                break;
-        }
+        // switch (status) {
+        //     case TestStatus.NotRun:
+        //         UpdateColor(index, Color.white);
+        //         break;
+        //     case TestStatus.Running:
+        //         UpdateColor(index, Color.yellow);
+        //         break;
+        //     case TestStatus.Failed:
+        //         UpdateColor(index, Color.red);
+        //         break;
+        //     case TestStatus.Passed:
+        //         UpdateColor(index, Color.green);
+        //         break;
+        // }
     }
 
     void UpdateColor(int index, Color color)
