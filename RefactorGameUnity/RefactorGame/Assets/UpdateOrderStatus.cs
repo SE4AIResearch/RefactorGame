@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using RefactorLang;
 using UnityEngine;
 using UnityEngine.UI;
+using Image = UnityEngine.UI.Image;
 
 public class UpdateOrderStatus : MonoBehaviour
 {
@@ -10,7 +11,18 @@ public class UpdateOrderStatus : MonoBehaviour
 
     void Start()
     {
-        kitchen.OnStateChanged += UpdateButtonColor;
+        kitchen.OnStateChanged += UpdateStatusIcon;
+
+        GameObject orderInfo = this.gameObject.transform.Find("OrderInfo").gameObject;
+        Transform status = orderInfo.transform.Find("Status");
+        status.GetComponent<Image>().gameObject.SetActive(false);
+
+        for (int i = 1; i < 6; i++) {
+            GameObject order = this.gameObject.transform.Find($"Order {i}").gameObject;
+            GameObject display = order.transform.Find("Display").gameObject;
+            Image image = display.transform.Find("Status").GetComponent<Image>();
+            image.gameObject.SetActive(false);
+        }
 
     }
 
@@ -19,30 +31,43 @@ public class UpdateOrderStatus : MonoBehaviour
         // kitchen.OnStateChanged += UpdateButtonColor;
     }
 
-    public void UpdateButtonColor(KitchenState newState)
+    public void UpdateStatusIcon(KitchenState newState)
     {
         int index = newState.SelectedTestCase;
 
         TestStatus status = kitchen.KitchenState.TestCaseStatus[index];
+        
+        GameObject order = this.gameObject.transform.Find($"Order {index+1}").gameObject;
+        GameObject display = order.transform.Find("Display").gameObject;
+        Image tabIcon = display.transform.Find("Status").GetComponent<Image>();
 
-        // switch (status) {
-        //     case TestStatus.NotRun:
-        //         UpdateColor(index, Color.white);
-        //         break;
-        //     case TestStatus.Running:
-        //         UpdateColor(index, Color.yellow);
-        //         break;
-        //     case TestStatus.Failed:
-        //         UpdateColor(index, Color.red);
-        //         break;
-        //     case TestStatus.Passed:
-        //         UpdateColor(index, Color.green);
-        //         break;
-        // }
-    }
+        GameObject orderInfo = this.gameObject.transform.Find("OrderInfo").gameObject;
+        Image infoIcon = orderInfo.transform.Find("Status").GetComponent<Image>();
 
-    void UpdateColor(int index, Color color)
-    {
-        this.gameObject.transform.Find($"Order {index+1}").GetComponent<Image>().color = color;
+        if (status == TestStatus.NotRun) {
+            tabIcon.gameObject.SetActive(false);
+            infoIcon.gameObject.SetActive(false);
+            return;
+        }
+
+        string path = "Graphics/Tabs/";
+
+        if (status == TestStatus.Running) {
+            path += "runningIcon";
+
+        } else if (status == TestStatus.Failed) {
+            path += "failedIcon";
+
+        } else if (status == TestStatus.Passed) {
+            path += "passedIcon";
+        }
+
+        Sprite sprite = Resources.Load<Sprite>(path);
+        tabIcon.sprite = sprite;
+        infoIcon.sprite = sprite;
+
+        tabIcon.gameObject.SetActive(true);
+        infoIcon.gameObject.SetActive(true);
+
     }
 }

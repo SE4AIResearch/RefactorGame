@@ -14,11 +14,12 @@ public class DisplayOrderInfo : MonoBehaviour
     void Start()
     {
         kitchen.OnStateChanged += UpdateInfo;
+        GameObject displays = this.transform.Find("Displays").gameObject;
 
-        this.transform.Find("Display 1").gameObject.SetActive(false);
-        this.transform.Find("Display 2").gameObject.SetActive(false);
-        this.transform.Find("Display 3").gameObject.SetActive(false);
-        this.transform.Find("Display 4").gameObject.SetActive(false);
+        displays.transform.Find("Display 1").gameObject.SetActive(false);
+        displays.transform.Find("Display 2").gameObject.SetActive(false);
+        displays.transform.Find("Display 3").gameObject.SetActive(false);
+        displays.transform.Find("Display 4").gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -52,7 +53,8 @@ public class DisplayOrderInfo : MonoBehaviour
     }
 
     void MakeInfo(int index, string food, int count) {
-        GameObject display = this.transform.Find($"Display {index}").gameObject;
+        GameObject displays = this.transform.Find("Displays").gameObject;
+        GameObject display = displays.transform.Find($"Display {index}").gameObject;
         display.transform.Find("Count").GetComponent<TextMeshProUGUI>().text = count.ToString();
         display.transform.Find("Image").GetComponent<UnityEngine.UI.Image>().sprite = GetFoodSprite(food);
         display.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = food;
