@@ -102,7 +102,6 @@ public class ChefExecute : MonoBehaviour
             this.transform.Find("Food").gameObject.SetActive(true);
             SpriteRenderer renderer = this.transform.Find("Food").GetComponent<SpriteRenderer>();
             renderer.sprite = foodSprite;
-            Debug.Log("Loaed sprite: " + assetPath);
         }
         else
         {

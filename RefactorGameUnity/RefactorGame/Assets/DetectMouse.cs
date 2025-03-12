@@ -5,9 +5,6 @@ using UnityEngine.EventSystems;
 
 public class DetectMouse : MonoBehaviour
 {
-    public static bool MouseDown = false;
-    public static bool MouseDownLast = false;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -17,11 +14,7 @@ public class DetectMouse : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MouseDownLast = MouseDown;
 
-        MouseDown = false;
-        if (Input.GetMouseButtonDown(0))
-            MouseDown = true;
     }
 
     public bool DetectHover()
@@ -29,7 +22,7 @@ public class DetectMouse : MonoBehaviour
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
 
-        if (hit.collider == null && hit.collider.gameObject == gameObject)
+        if (hit.collider != null && hit.collider.gameObject == gameObject)
         {
             return true;
         }
