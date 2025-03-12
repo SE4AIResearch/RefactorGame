@@ -43,13 +43,13 @@ module Grammar =
     | Idx of id * exp
 
     type stmt =
-    | FDecl of id * (id list) * block
     | VDecl of id * exp
     | Assn of id * exp
+    | FDecl of id * (id list) * block
+    | FStmt of id * exp list
+    | KStmt of Keyword * exp list
     | IfThenElse of exp * block * (exp * block) list * block option
     | While of exp * block
-    | KCall of Keyword * exp list
-    | FStmt of id * exp list
     | RetVal of exp
     | RetVoid
     and block = stmt list
