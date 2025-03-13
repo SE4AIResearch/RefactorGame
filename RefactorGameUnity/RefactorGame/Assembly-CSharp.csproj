@@ -100,6 +100,7 @@
     <Compile Include="Assets\InGameTextEditor\Scripts\Format\TextStyle.cs" />
     <Compile Include="Assets\CurrentKitchenState.cs" />
     <Compile Include="Assets\LockButton.cs" />
+    <Compile Include="Assets\PantryHandler.cs" />
     <Compile Include="Assets\InGameTextEditor\Scripts\Operations\DeleteTextOperation.cs" />
     <Compile Include="Assets\InGameTextEditor\Scripts\Operations\RebuildLinesOperation.cs" />
     <Compile Include="Assets\InGameTextEditor\Examples\Scripts\CSharpSyntaxHighlighter.cs" />

@@ -5,6 +5,7 @@ using UnityEngine;
 public class ActivateStationContextMenu : MonoBehaviour
 {
     readonly DetectMouse DetectMouse;
+    public StationContextMenu StationContextMenu;
 
     // Start is called before the first frame update
     void Start()
@@ -15,9 +16,11 @@ public class ActivateStationContextMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (DetectMouse.DetectHover())
-        {
+        
+    }
 
-        }
+    private void OnMouseDown()
+    {
+        StationContextMenu.OpenMenu();
     }
 }
