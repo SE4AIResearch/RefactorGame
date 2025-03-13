@@ -9,6 +9,8 @@ public class CurrentKitchenState : ScriptableObject
 {
     private KitchenState _state;
 
+    public bool ContextMenuUp = false;
+
     public event Action<KitchenState> OnStateChanged;
 
     public KitchenState KitchenState
