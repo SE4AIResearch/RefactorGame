@@ -7,6 +7,7 @@ namespace RefactorLang
 {
     public class KitchenState
     {
+        public List<string> Pantry { get; set; }
         public List<Station> Stations { get; set; }
         public int NumStations { get; }
         public List<List<string>> TestCases { get; set; }
@@ -18,6 +19,7 @@ namespace RefactorLang
             Stations = puzzle.Stations.Select(x => x.ConvertToStation()).ToList();
             NumStations = puzzle.NumOfStations;
             TestCases = puzzle.TestCases;
+            Pantry = puzzle.StarterPantry;
 
             if (Stations.Count != NumStations)
                 throw new ArgumentException("mismatch between parameters");

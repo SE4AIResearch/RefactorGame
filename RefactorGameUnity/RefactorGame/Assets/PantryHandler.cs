@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PantryHandler : MonoBehaviour
 {
-    public bool DoorOpen = false;
+    private bool DoorOpen = false;
+    public PantryMenuHandler PantryMenuHandler;
+    public CurrentKitchenState Kitchen;
 
     // Start is called before the first frame update
     void Start()
@@ -18,7 +20,7 @@ public class PantryHandler : MonoBehaviour
         
     }
 
-    private void OnMouseDown()
+    public void ToggleDoor()
     {
         DoorOpen = !DoorOpen;
 
@@ -26,5 +28,17 @@ public class PantryHandler : MonoBehaviour
         SpriteRenderer renderer = this.gameObject.transform.Find("Image").GetComponent<SpriteRenderer>();
 
         renderer.sprite = newSprite;
+
+        if (DoorOpen)
+        {
+            PantryMenuHandler.OpenMenu();
+        }
+    }
+
+    private void OnMouseDown()
+    {
+        if (Kitchen.ContextMenuUp) return;
+
+        ToggleDoor();
     }
 }

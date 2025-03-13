@@ -105,6 +105,7 @@
     <Compile Include="Assets\InGameTextEditor\Scripts\Operations\DeleteTextOperation.cs" />
     <Compile Include="Assets\InGameTextEditor\Scripts\Operations\RebuildLinesOperation.cs" />
     <Compile Include="Assets\InGameTextEditor\Examples\Scripts\CSharpSyntaxHighlighter.cs" />
+    <Compile Include="Assets\HoverableFood.cs" />
     <Compile Include="Assets\InGameTextEditor\Scripts\Util.cs" />
     <Compile Include="Assets\DisplayStation.cs" />
     <Compile Include="Assets\InGameTextEditor\Scripts\History\Milestone.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Assets\InGameTextEditor\Scripts\History\State.cs" />
     <Compile Include="Assets\InGameTextEditor\Scripts\Operations\SetTextOperation.cs" />
     <Compile Include="Assets\InGameTextEditor\Scripts\Line.cs" />
+    <Compile Include="Assets\PantryMenuHandler.cs" />
     <Compile Include="Assets\ChefExecute.cs" />
     <Compile Include="Assets\InGameTextEditor\Scripts\History\Insert.cs" />
     <Compile Include="Assets\InGameTextEditor\Scripts\TextPosition.cs" />

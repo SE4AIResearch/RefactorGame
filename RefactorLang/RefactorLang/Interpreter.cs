@@ -248,8 +248,8 @@ namespace RefactorLang
                     x = InterpretExp(assn.Item2);
                     State.VariableMap[assn.Item1] = x;
                     goto retnone;
-                case Grammar.stmt.KCall kCall:
-                    InterpretKCall(kCall);
+                case Grammar.stmt.KStmt kStmt:
+                    InterpretKCall(kStmt);
                     goto retnone;
                 case Grammar.stmt.IfThenElse ite:
                     InterpretITE(ite);
@@ -295,7 +295,7 @@ namespace RefactorLang
 
         // KCalls are what eventually become our UnityActions. This is where the actual gameplay takes place.
         // TODO: Clean all of this up, this function is a monster :)
-        private void InterpretKCall(Grammar.stmt.KCall stmt)
+        private void InterpretKCall(Grammar.stmt.KStmt stmt)
         {
             void CheckArguments(int num)
             {
