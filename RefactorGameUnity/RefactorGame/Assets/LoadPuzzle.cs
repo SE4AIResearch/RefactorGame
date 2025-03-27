@@ -11,7 +11,7 @@ public class LoadPuzzle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        LoadSample();
+        //LoadSample();
     }
 
     // Update is called once per frame
@@ -20,9 +20,9 @@ public class LoadPuzzle : MonoBehaviour
         
     }
 
-    public void LoadSample()
+    public void LoadPuzzleFromName(string puzzleName)
     {
-        Load(Puzzle.Deserialize(@"./Assets/Resources/Puzzles/OneSoupTwoSoup.json"));
+        Load(Puzzle.Deserialize(@$"./Assets/Resources/Puzzles/{puzzleName}.json"));
     }
 
     void Load(Puzzle puzzle)
