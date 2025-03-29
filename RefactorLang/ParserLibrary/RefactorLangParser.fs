@@ -9,6 +9,8 @@ module RefactorLangParser =
     let parseExp, parseExpRef = createParserForwardedToRef<exp>()
     let parseStmt, parseStmtRef = createParserForwardedToRef<stmt>()
 
+    let mutable stmtCounter = ref 0
+
     parseExpRef.Value <-
         let retBinop (s: Symbol) (e: exp * exp -> binop) (p: prec): parser<prec * (exp -> exp -> exp)> = parseSymbol s >>. returnP (p, (fun x y -> Binop (e (x, y))))
         let retUnop (s: Symbol) (u: exp -> unop): parser<exp -> exp> = parseSymbol s >>. returnP (fun x -> Unop (u (x)))
@@ -57,8 +59,18 @@ module RefactorLangParser =
         let parseVDecl = parseSymbol Symbol.VAR >>. parseAnyIdent .>>. (parseSymbol Symbol.EQ >>. parseExp)
         let parseAssn = parseAnyIdent .>>. (parseSymbol Symbol.EQ >>. parseExp)
         let parseKeywordStmt = parseAnyKeyword .>>. betweenSymbols Symbol.LPAREN (sep parseExp (parseSymbol Symbol.COMMA)) Symbol.RPAREN
+
+        let countKeywordStmt = 
+            betweenNewlines parseKeywordStmt
+            |>> fun (kw, ps) -> 
+                stmtCounter <- ref (stmtCounter.Value + 1)
+                match kw with 
+                | TokenKeyword k -> KStmt(k, ps) 
+                | TokenIdent k -> FStmt(k, ps)
+                | _ -> failwith "this should not be possible"
+
         choice [
-            betweenNewlines parseKeywordStmt |>> fun (kw, ps) -> match kw with TokenKeyword k -> KStmt(k, ps) | TokenIdent k -> FStmt(k, ps)
+            countKeywordStmt
             betweenNewlines parseITE |>> fun (((ie, bl), eiebs), ebl) -> IfThenElse (ie, bl, eiebs, ebl)
             betweenNewlines parseWhile |>> While
             betweenNewlines parseFDecl |>> fun ((id, ids), bl) -> FDecl(id, ids, bl)
@@ -66,7 +78,6 @@ module RefactorLangParser =
             betweenNewlines parseAssn |>> Assn
             betweenNewlines ((parseSymbol Symbol.RETURN) >>. parseExp) |>> RetVal
             betweenNewlines (parseSymbol Symbol.RETURN) |>> fun (_) -> RetVoid
-            
         ]
 
     let parseProg : parser<prog> =
@@ -76,9 +87,9 @@ module RefactorLangParser =
         let result = (run parseProg (convertSymbols tokens))
         sprintf "%s" (printResult result)
 
-    let parseToProg (tokens: List<Token>) : prog =
+    let parseToProg (tokens: List<Token>) : prog * int =
         match (run parseProg (convertSymbols tokens)) with
-        | Success (p, _) -> p
+        | Success (p, _) -> p, stmtCounter.Value / 2
         | Failure (f1, f2) -> failwith "did not compile"
 
     let parseJustExp (tokens: List<Token>) =
