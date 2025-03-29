@@ -7496,7 +7496,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1aef6299b1109ce4d929092ca79c6fc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  kitchenState: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
+  KitchenState: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
+  NumOfStatements: 0
 --- !u!1 &993938607
 GameObject:
   m_ObjectHideFlags: 0

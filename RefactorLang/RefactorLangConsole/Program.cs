@@ -50,7 +50,7 @@ namespace RefactorLangConsole
 
             Tuple<Grammar.prog, int> compilationResult = RefactorLangParser.parseToProg(ListModule.OfSeq(tokens));
 
-            Console.WriteLine("STMT COUNT: " + compilationResult.Item2 / 2);
+            Console.WriteLine("STMT COUNT: " + compilationResult.Item2);
 
             foreach (List<string> testCase in puzzle.TestCases)
             {
