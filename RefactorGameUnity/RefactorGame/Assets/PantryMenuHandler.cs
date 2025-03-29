@@ -9,12 +9,13 @@ public class PantryMenuHandler : MonoBehaviour
     public CurrentKitchenState Kitchen;
     public GameObject HoverableFoodItem;
     public PantryHandler PantryHandler;
+    public GameObject Overlay;
 
     // Start is called before the first frame update
     void Start()
     {
         Kitchen.OnStateChanged += UpdateAppearance;
-
+        Overlay.gameObject.SetActive(false);
         this.gameObject.SetActive(false);
     }
 
@@ -27,14 +28,14 @@ public class PantryMenuHandler : MonoBehaviour
     public void OpenMenu()
     {
         gameObject.SetActive(true);
-
+        Overlay.gameObject.SetActive(true);
         Kitchen.ContextMenuUp = true;
     }    
 
     public void CloseMenu()
     {
         gameObject.SetActive(false);
-
+        Overlay.gameObject.SetActive(false);
         Kitchen.ContextMenuUp = false;
 
         PantryHandler.ToggleDoor();

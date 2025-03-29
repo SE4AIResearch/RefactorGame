@@ -11,7 +11,8 @@ public class PuzzleLoader : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        LoadPuzzleFromName(LevelLoader.GetPuzzleName());
+        //LoadSample();
+        LoadPuzzleFromName("OneSoupTwoSoup");
     }
 
     // Update is called once per frame
