@@ -33,19 +33,27 @@ namespace RefactorLang
         [JsonPropertyName("stations")]
         public List<StationSignature> Stations { get; }
 
+        [JsonPropertyName("modulesLocked")]
+        public bool ModulesLocked { get; }
+
+        public ConstraintSignature Constraints { get; }
+
         [JsonPropertyName("storyPrompt")]
         public string StoryPrompt { get; }
 
-        public Puzzle(string name, int difficulty, int numOfStations, List<StationSignature> stations, List<List<string>> testCases, List<string> starterPantry, string starterCode, string storyPrompt)
+        public Puzzle(string name, int difficulty, int numOfStations, List<StationSignature> stations, bool modulesLocked, List<List<string>> testCases, List<string> starterPantry, 
+            string starterCode, ConstraintSignature constraints, string storyPrompt)
         {
             Name = name;
             Difficulty = difficulty;
             NumOfStations = numOfStations;
             Stations = stations;
+            ModulesLocked = modulesLocked;
             TestCases = testCases;
             StarterPantry = starterPantry;
             StarterCode = starterCode;
             StoryPrompt = storyPrompt;
+            Constraints = constraints;
         }
 
         public static void Serialize(Puzzle puzzle, string fileName = @"./samplePuzzle.json")
@@ -107,29 +115,44 @@ namespace RefactorLang
         [JsonPropertyName("name")]
         public string Name { get; }
 
-        [JsonPropertyName("locked")]
-        public bool Locked { get; }
-
-        public ModuleSignature(string module, string name, bool locked = false)
+        public ModuleSignature(string module, string name)
         {
             Module = module;
             Name = name;
-            Locked = locked;
         }
 
         public Module ConvertToModule()
         {
             return this.Module switch
             {
-                "SoupMaker" => new SoupMaker(Name, Locked),
-                "Slicer" => new Slicer(Name, Locked),
-                "Grinder" => new Grinder(Name, Locked),
-                "Fryer" => new Fryer(Name, Locked),
-                "BarbecueSaucer" => new BarbecueSaucer(Name, Locked),
-                "Griddle" => new Griddle(Name, Locked),
-                "BurgerBuilder" => new BurgerBuilder(Name, Locked),
+                "SoupMaker" => new SoupMaker(Name),
+                "Slicer" => new Slicer(Name),
+                "Grinder" => new Grinder(Name),
+                "Fryer" => new Fryer(Name),
+                "BarbecueSaucer" => new BarbecueSaucer(Name),
+                "Griddle" => new Griddle(Name),
+                "BurgerBuilder" => new BurgerBuilder(Name),
                 _ => throw new ArgumentException("not a module string"),
             };
+        }
+    }
+
+    public class ConstraintSignature
+    {
+        [JsonPropertyName("maxStatements")]
+        public int MaxStatements { get; }
+
+        [JsonPropertyName("maxActions")]
+        public int MaxActions { get; }
+
+        [JsonPropertyName("additionalConstraint")]
+        public string AdditionalConstraint { get; }
+
+        public ConstraintSignature(int maxStatements, int maxActions, string additionalConstraint = "none")
+        {
+            MaxStatements = maxStatements;
+            MaxActions = maxActions;
+            AdditionalConstraint = additionalConstraint;
         }
     }
 }

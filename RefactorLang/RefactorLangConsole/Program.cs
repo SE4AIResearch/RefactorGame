@@ -23,13 +23,14 @@ namespace RefactorLangConsole
         static void TestMain()
         {
             List<StationSignature> stations = [
-                new ("Station 1", [ new ModuleSignature("Slicer", "A", true) ] )
+                new ("Station 1", [ new ModuleSignature("Slicer", "A") ] )
             ];
+            ConstraintSignature constraints = new ConstraintSignature(15, -1);
 
             List<List<string>> testCases = [["Potato Soup"], ["Tomato Soup"]];
             List<string> pantry = ["Broth", "Broth", "Potato", "Tomato"];
 
-            Puzzle puzzle = new Puzzle("One Soup Two Soup", 1, 1, stations, testCases, pantry, File.ReadAllText("script.txt"), "chef go whee");
+            Puzzle puzzle = new Puzzle("One Soup Two Soup", 1, 1, stations, true, testCases, pantry, File.ReadAllText("script.txt"), constraints, "chef go whee");
 
             //Puzzle.Serialize(puzzle);
 

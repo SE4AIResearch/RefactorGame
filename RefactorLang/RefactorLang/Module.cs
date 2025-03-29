@@ -125,7 +125,7 @@ namespace RefactorLang
     {
         public override int Size { get; } = 2;
 
-        public SoupMaker(string name, bool isLocked = false) : base(name, isLocked) { }
+        public SoupMaker(string name) : base(name) { }
 
         public override void Activate()
         {
@@ -142,7 +142,7 @@ namespace RefactorLang
     {
         public override int Size { get; } = 1;
 
-        public Grinder(string name, bool isLocked = false) : base(name, isLocked) { }
+        public Grinder(string name) : base(name) { }
 
         public override void Activate()
         {
@@ -159,7 +159,7 @@ namespace RefactorLang
     {
         public override int Size { get; } = 2;
 
-        public Fryer(string name, bool isLocked = false) : base(name, isLocked) { }
+        public Fryer(string name) : base(name) { }
 
         public override void Activate()
         {
@@ -175,7 +175,7 @@ namespace RefactorLang
     {
         public override int Size { get; } = 3;
 
-        public BarbecueSaucer(string name, bool isLocked = false) : base(name, isLocked) { }
+        public BarbecueSaucer(string name) : base(name) { }
 
         public override void Activate()
         {
@@ -192,7 +192,7 @@ namespace RefactorLang
     {
         public override int Size { get; } = 2;
 
-        public Griddle(string name, bool isLocked = false) : base(name, isLocked) { }
+        public Griddle(string name) : base(name) { }
 
         public override void Activate()
         {
@@ -208,7 +208,7 @@ namespace RefactorLang
     {
         public override int Size { get; } = 4;
 
-        public BurgerBuilder(string name, bool isLocked = false) : base(name, isLocked) { }
+        public BurgerBuilder(string name) : base(name) { }
 
         public override void Activate()
         {

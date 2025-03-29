@@ -19,7 +19,7 @@ public class ScriptCompiler : MonoBehaviour
 
         string result = RefactorLangParser.parseToString(ListModule.OfSeq(tokens));
 
-        Grammar.prog prog = RefactorLangParser.parseToProg(ListModule.OfSeq(tokens));
+        Tuple<Grammar.prog, int> compilationResult = RefactorLangParser.parseToProg(ListModule.OfSeq(tokens));
 
         try
         {
@@ -31,7 +31,7 @@ public class ScriptCompiler : MonoBehaviour
             var testCase = testCases[testCaseIndex];
 
             Interpreter interpreter = new Interpreter(testCase, pantry, stations);
-            interpreter.Interpret(prog);
+            interpreter.Interpret(compilationResult.Item1);
 
             return interpreter.OutputLog;
         }
