@@ -117,6 +117,7 @@
     <Compile Include="Assets/DisplayStation.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/History/Milestone.cs" />
     <Compile Include="Assets/UpdateOrderStatus.cs" />
+    <Compile Include="Assets/ToLevelSelect.cs" />
     <Compile Include="Assets/SyntaxHighlighter.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/History/State.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/Operations/SetTextOperation.cs" />
