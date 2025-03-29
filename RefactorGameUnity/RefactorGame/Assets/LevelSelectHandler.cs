@@ -12,7 +12,7 @@ public class LevelSelectHandler : MonoBehaviour
     public GameObject LevelModuleLocations;
 
     private Vector3 CameraTarget;
-    private float CameraSmoothSpeed = 0.125f;
+    private float CameraSmoothSpeed = (1f / 32f);
 
     public static List<string> puzzleNames = new List<string> {
         "OneSoupTwoSoup",
@@ -34,7 +34,11 @@ public class LevelSelectHandler : MonoBehaviour
 
     void Focus(int levelIndex)
     {
-        CameraTarget = new Vector3(LevelModuleLocations.transform.Find($"Level{levelIndex}").transform.position.x, Camera.transform.position.y, Camera.transform.position.z);
+        Transform target = LevelModuleLocations.transform.Find($"Level{levelIndex}");
+
+        CameraTarget = new Vector3(target.transform.position.x, Camera.transform.position.y, Camera.transform.position.z);
+
+        transform.Find("Selected").position = target.transform.position;
     }
 
     // Start is called before the first frame update
