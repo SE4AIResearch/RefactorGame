@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LoadPuzzle : MonoBehaviour
+public class PuzzleLoader : MonoBehaviour
 {
     public CurrentKitchenState kitchenState;
     public InGameTextEditor.TextEditor editor;
@@ -11,7 +11,7 @@ public class LoadPuzzle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //LoadSample();
+        LoadPuzzleFromName(LevelLoader.GetPuzzleName());
     }
 
     // Update is called once per frame

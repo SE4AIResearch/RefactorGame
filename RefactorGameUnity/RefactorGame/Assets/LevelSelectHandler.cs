@@ -50,14 +50,14 @@ public class LevelSelectHandler : MonoBehaviour
     {
         Camera.transform.position = Vector3.Lerp(Camera.transform.position, CameraTarget, CameraSmoothSpeed);
 
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.RightArrow) && SelectedLevel < puzzleNames.Count)
             SelectedLevel++;
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) && SelectedLevel > 1)
             SelectedLevel--;
 
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            SceneManager.LoadScene("UpdatedScene");
+            LevelLoader.LoadPuzzleScene(puzzleNames[SelectedLevel - 1]);
         }
     }
 }

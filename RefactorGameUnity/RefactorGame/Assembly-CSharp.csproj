@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="Assets\InGameTextEditor\Scripts\History\Action.cs" />
     <Compile Include="Assets\SelectOrder.cs" />
+    <Compile Include="Assets\PuzzleLoader.cs" />
     <Compile Include="Assets\InGameTextEditor\Examples\Scripts\ExampleLabelHandler.cs" />
     <Compile Include="Assets\LabelHandler.cs" />
     <Compile Include="Assets\InGameTextEditor\Scripts\Operations\DeleteOperation.cs" />
@@ -104,13 +105,13 @@
     <Compile Include="Assets\PantryHandler.cs" />
     <Compile Include="Assets\InGameTextEditor\Scripts\Operations\DeleteTextOperation.cs" />
     <Compile Include="Assets\InGameTextEditor\Scripts\Operations\RebuildLinesOperation.cs" />
+    <Compile Include="Assets\LevelLoader.cs" />
     <Compile Include="Assets\InGameTextEditor\Examples\Scripts\CSharpSyntaxHighlighter.cs" />
     <Compile Include="Assets\HoverableFood.cs" />
     <Compile Include="Assets\InGameTextEditor\Scripts\Util.cs" />
     <Compile Include="Assets\DisplayStation.cs" />
     <Compile Include="Assets\InGameTextEditor\Scripts\History\Milestone.cs" />
     <Compile Include="Assets\UpdateOrderStatus.cs" />
-    <Compile Include="Assets\LoadPuzzle.cs" />
     <Compile Include="Assets\SyntaxHighlighter.cs" />
     <Compile Include="Assets\InGameTextEditor\Scripts\History\State.cs" />
     <Compile Include="Assets\InGameTextEditor\Scripts\Operations\SetTextOperation.cs" />
