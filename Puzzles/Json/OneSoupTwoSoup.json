@@ -1,0 +1,37 @@
+{
+  "name": "One Soup Two Soup",
+  "difficulty": 1,
+  "testCases": [
+    [
+      "Potato Soup"
+    ],
+    [
+      "Tomato Soup"
+    ]
+  ],
+  "starterPantry": [
+    "Broth",
+    "Broth",
+    "Potato",
+    "Tomato"
+  ],
+  "starterCode": "OneSoupTwoSoup.txt",
+  "numOfStations": 1,
+  "modulesLocked": true,
+  "stations": [
+    {
+      "name": "Station 1",
+      "modules": [
+        {
+          "module": "SoupMaker",
+          "name": "A"
+        }
+      ]
+    }
+  ],
+  "constraints": { 
+    "maxStatements": 15, 
+    "maxActions": -1
+  },
+  "storyPrompt": "I ask Watson to make me some tomato soup, and then some potato soup. Right away, I see his instruction set is much larger than it needs to be."
+}

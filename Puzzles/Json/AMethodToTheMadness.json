@@ -1,0 +1,48 @@
+{
+  "name": "A Method to the Madness",
+  "difficulty": 1,
+  "testCases": [
+    [
+      "Tomato Soup"
+    ],
+    [
+      "Tomato Soup",
+      "Tomato Soup"
+    ],
+    [
+      "Tomato Soup",
+      "Tomato Soup",
+      "Tomato Soup",
+      "Tomato Soup"
+    ]
+  ],
+  "starterPantry": [
+    "Broth",
+    "Broth",
+    "Broth",
+    "Broth",
+    "Tomato",
+    "Tomato",
+    "Tomato",
+    "Tomato"
+  ],
+  "starterCode": "AgainandAgain.txt",
+  "numOfStations": 1,
+  "modulesLocked": true,
+  "stations": [
+    {
+      "name": "Station 1",
+      "modules": [
+        {
+          "module": "SoupMaker",
+          "name": "A"
+        }
+      ]
+    }
+  ],
+  "constraints": { 
+    "maxStatements": 16,
+    "maxActions": -1
+  },
+  "storyPrompt": "The nation convulses with the tomato soup craze, which sweeps through the masses in a bout of hysteria. Realizing I can’t type fast enough to keep up, I search for a better solution. ​"
+}
