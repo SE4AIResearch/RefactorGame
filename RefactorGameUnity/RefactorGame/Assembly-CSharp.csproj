@@ -134,6 +134,7 @@
     <Compile Include="Assets/InGameTextEditor/Scripts/Operations/CutOperation.cs" />
     <Compile Include="Assets/LevelSelectHandler.cs" />
     <Compile Include="Assets/InGameTextEditor/Examples/Scripts/SearchHandler.cs" />
+    <Compile Include="Assets/StoryPromptHandler.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/Operations/FindOperation.cs" />
     <Compile Include="Assets/InGameTextEditor/Scripts/Operations/InsertCharacterOperation.cs" />
     <Compile Include="Assets/ModuleContextMenuModuleButton.cs" />

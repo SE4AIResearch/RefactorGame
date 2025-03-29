@@ -16,7 +16,7 @@ public class ModuleContextMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CloseMenu();
+        CloseMenu(true);
     }
 
     // Update is called once per frame
@@ -37,10 +37,10 @@ public class ModuleContextMenu : MonoBehaviour
         Kitchen.ContextMenuUp = true;
     }
 
-    public void CloseMenu()
+    public void CloseMenu(bool first = false)
     {
         gameObject.SetActive(false);
-        Overlay.gameObject.SetActive(false);
+        if (!first) Overlay.gameObject.SetActive(false);
         Kitchen.ContextMenuUp = false;
     }
 

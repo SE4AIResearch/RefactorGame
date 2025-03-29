@@ -1,12 +1,14 @@
 using RefactorLang;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PuzzleLoader : MonoBehaviour
 {
     public CurrentKitchenState kitchenState;
     public InGameTextEditor.TextEditor editor;
+    public GameObject StoryPopUp;
 
     // Start is called before the first frame update
     void Start()
@@ -32,5 +34,9 @@ public class PuzzleLoader : MonoBehaviour
         editor.Text = puzzle.StarterCode;
 
         kitchenState.LoadedPuzzle = puzzle;
+
+        StoryPopUp.transform.Find("Title").GetComponent<TextMeshProUGUI>().text = puzzle.Name;
+        StoryPopUp.transform.Find("Description").GetComponent<TextMeshProUGUI>().text = puzzle.StoryPrompt;
+
     }
 }

@@ -15,7 +15,6 @@ public class PantryMenuHandler : MonoBehaviour
     void Start()
     {
         Kitchen.OnStateChanged += UpdateAppearance;
-        Overlay.gameObject.SetActive(false);
         this.gameObject.SetActive(false);
     }
 

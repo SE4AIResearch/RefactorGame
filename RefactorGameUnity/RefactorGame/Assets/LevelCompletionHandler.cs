@@ -13,7 +13,6 @@ public class LevelCompletionHandler : MonoBehaviour
     void Start()
     {
         kitchen.OnStateChanged += UpdateAppearance;
-        overlay.gameObject.SetActive(false);
         this.gameObject.SetActive(false);
     }
 
@@ -34,9 +33,6 @@ public class LevelCompletionHandler : MonoBehaviour
             this.gameObject.SetActive(true);
             overlay.gameObject.SetActive(true);
         
-        } else {
-            this.gameObject.SetActive(false);
-            overlay.gameObject.SetActive(false);
         }
     }
 }
