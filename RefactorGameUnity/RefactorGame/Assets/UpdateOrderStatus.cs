@@ -60,6 +60,9 @@ public class UpdateOrderStatus : MonoBehaviour
 
         } else if (status == TestStatus.Passed) {
             path += "passedIcon";
+        
+        } else if (status == TestStatus.Warning) {
+            path += "cautionIcon";
         }
 
         Sprite sprite = Resources.Load<Sprite>(path);
