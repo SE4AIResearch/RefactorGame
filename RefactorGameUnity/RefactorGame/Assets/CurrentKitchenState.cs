@@ -11,6 +11,8 @@ public class CurrentKitchenState : ScriptableObject
 
     public bool ContextMenuUp = false;
 
+    public bool LevelComplete = false;
+
     public event Action<KitchenState> OnStateChanged;
 
     public KitchenState KitchenState

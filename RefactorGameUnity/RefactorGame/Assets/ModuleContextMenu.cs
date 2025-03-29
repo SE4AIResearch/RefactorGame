@@ -8,6 +8,7 @@ public class ModuleContextMenu : MonoBehaviour
 {
     public ModuleSignature DisplayingModule = null;
     public CurrentKitchenState Kitchen;
+    public GameObject Overlay;
 
     private int StationIndex;
     private int ModuleIndex;
@@ -32,14 +33,14 @@ public class ModuleContextMenu : MonoBehaviour
         ModuleIndex = moduleIndex;
 
         gameObject.SetActive(true);
-
+        Overlay.gameObject.SetActive(true);
         Kitchen.ContextMenuUp = true;
     }
 
     public void CloseMenu()
     {
         gameObject.SetActive(false);
-
+        Overlay.gameObject.SetActive(false);
         Kitchen.ContextMenuUp = false;
     }
 
