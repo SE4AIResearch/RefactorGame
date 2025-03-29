@@ -19,6 +19,8 @@ public class ChefExecute : MonoBehaviour
     private bool executing = false;
     private float timer = 0;
 
+    private int numOfStatements;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -59,11 +61,11 @@ public class ChefExecute : MonoBehaviour
                 break;
 
             case UnityAction.Success:
-                Kitchen.UpdateTestCaseStatus(TestStatus.Passed);
+                Kitchen.FinishTestWithStatus(TestStatus.Passed, numOfStatements);
                 break;
 
             case UnityAction.Failure:
-                Kitchen.UpdateTestCaseStatus(TestStatus.Failed);
+                Kitchen.FinishTestWithStatus(TestStatus.Failed, numOfStatements);
                 break;
 
             default:
@@ -77,7 +79,7 @@ public class ChefExecute : MonoBehaviour
             executing = false;
     }
 
-    public void Execute(List<UnityPackage> actions)
+    public void Execute(List<UnityPackage> actions, int numOfStatements)
     {
         if (actions == null)
         {
@@ -90,6 +92,7 @@ public class ChefExecute : MonoBehaviour
         Actions = actions;
         executing = true;
         timer = 1;
+        this.numOfStatements = numOfStatements;
     }
 
     public void AddFoodItem(FoodItem item)

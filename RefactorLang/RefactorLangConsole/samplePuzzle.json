@@ -1,0 +1,38 @@
+{
+  "name": "One Soup Two Soup",
+  "difficulty": 1,
+  "testCases": [
+    [
+      "Potato Soup"
+    ],
+    [
+      "Tomato Soup"
+    ]
+  ],
+  "starterPantry": [
+    "Broth",
+    "Broth",
+    "Potato",
+    "Tomato"
+  ],
+  "starterCode": "script.txt",
+  "numOfStations": 1,
+  "modulesLocked": true,
+  "stations": [
+    {
+      "name": "Station 1",
+      "modules": [
+        {
+          "module": "SoupMaker",
+          "name": "A"
+        }
+      ]
+    }
+  ],
+  "constraints": { 
+    "maxStatements": 15, 
+    "maxActions": -1,
+    "additionalConstraint": "none"
+  },
+  "storyPrompt": "chef go whee"
+}

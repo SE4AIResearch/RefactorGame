@@ -43,6 +43,7 @@ namespace RefactorLang
         NotRun,
         Running,
         Passed,
-        Failed
+        Failed,
+        Warning
     }
 }

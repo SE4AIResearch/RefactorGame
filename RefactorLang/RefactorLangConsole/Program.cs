@@ -22,7 +22,7 @@ namespace RefactorLangConsole
 
         static void TestMain()
         {
-            List<StationSignature> stations = [
+            /*List<StationSignature> stations = [
                 new ("Station 1", [ new ModuleSignature("Slicer", "A") ] )
             ];
             ConstraintSignature constraints = new ConstraintSignature(15, -1);
@@ -30,11 +30,11 @@ namespace RefactorLangConsole
             List<List<string>> testCases = [["Potato Soup"], ["Tomato Soup"]];
             List<string> pantry = ["Broth", "Broth", "Potato", "Tomato"];
 
-            Puzzle puzzle = new Puzzle("One Soup Two Soup", 1, 1, stations, true, testCases, pantry, File.ReadAllText("script.txt"), constraints, "chef go whee");
+            Puzzle puzzle = new Puzzle("One Soup Two Soup", 1, 1, stations, true, testCases, pantry, File.ReadAllText("script.txt"), constraints, "chef go whee");*/
 
             //Puzzle.Serialize(puzzle);
 
-            //puzzle = Puzzle.Deserialize(@".\samplePuzzle.json");
+            Puzzle puzzle = Puzzle.Deserialize(@".\samplePuzzle.json");
 
             Test(puzzle);
         }
@@ -42,7 +42,7 @@ namespace RefactorLangConsole
 
         static void Test(Puzzle puzzle)
         {
-            string text = puzzle.StarterCode;
+            string text = File.ReadAllText(puzzle.StarterCode);
             List<Token> tokens = Tokenizer.TokenizeLine(text);
 
             string result = RefactorLangParser.parseToString(ListModule.OfSeq(tokens));
@@ -50,7 +50,7 @@ namespace RefactorLangConsole
 
             Tuple<Grammar.prog, int> compilationResult = RefactorLangParser.parseToProg(ListModule.OfSeq(tokens));
 
-            Console.WriteLine("STMT COUNT: " + compilationResult.Item2);
+            Console.WriteLine("STMT COUNT: " + compilationResult.Item2 / 2);
 
             foreach (List<string> testCase in puzzle.TestCases)
             {

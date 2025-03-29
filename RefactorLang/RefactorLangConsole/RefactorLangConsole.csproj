@@ -18,6 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="samplePuzzle.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="script.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

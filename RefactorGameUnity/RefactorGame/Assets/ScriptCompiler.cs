@@ -11,34 +11,35 @@ using C5;
 
 public class ScriptCompiler : MonoBehaviour
 {
-    public CurrentKitchenState kitchenState;
+    public CurrentKitchenState KitchenState;
 
-    public List<UnityPackage> Compile(string input)
+    public List<UnityPackage> OutputLog;
+    public int NumOfStatements;
+
+    public void Compile(string input)
     {
         List<Token> tokens = Tokenizer.TokenizeLine(input);
-
-        string result = RefactorLangParser.parseToString(ListModule.OfSeq(tokens));
 
         Tuple<Grammar.prog, int> compilationResult = RefactorLangParser.parseToProg(ListModule.OfSeq(tokens));
 
         try
         {
-            var testCases = kitchenState.LoadedPuzzle.TestCases;
-            var pantry = kitchenState.LoadedPuzzle.StarterPantry;
-            var stations = kitchenState.KitchenState.Stations;
+            var testCases = KitchenState.LoadedPuzzle.TestCases;
+            var pantry = KitchenState.LoadedPuzzle.StarterPantry;
+            var stations = KitchenState.KitchenState.Stations;
             
-            var testCaseIndex = kitchenState.KitchenState.SelectedTestCase;
+            var testCaseIndex = KitchenState.KitchenState.SelectedTestCase;
             var testCase = testCases[testCaseIndex];
 
             Interpreter interpreter = new Interpreter(testCase, pantry, stations);
             interpreter.Interpret(compilationResult.Item1);
 
-            return interpreter.OutputLog;
+            OutputLog = interpreter.OutputLog;
+            NumOfStatements = compilationResult.Item2;
         }
         catch (ArgumentException ex)
         {
             Debug.Log(ex);
-            return null;
         }
     }
 }

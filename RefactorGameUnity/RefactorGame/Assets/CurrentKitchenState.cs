@@ -25,6 +25,27 @@ public class CurrentKitchenState : ScriptableObject
 
     public Puzzle LoadedPuzzle;
 
+    public void FinishTestWithStatus(TestStatus status, int numOfStatements)
+    {
+        if (!ApplyConstraints(numOfStatements) && status.Equals(TestStatus.Passed))
+        {
+            UpdateTestCaseStatus(TestStatus.Warning);
+            return;
+        }
+
+        UpdateTestCaseStatus(status);
+    }
+
+    private bool ApplyConstraints(int numOfStatements)
+    {
+        if (!(LoadedPuzzle.Constraints.MaxStatements != -1 && LoadedPuzzle.Constraints.MaxStatements >= numOfStatements))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
     public void UpdateTestCaseStatus(TestStatus status)
     {
         int index = KitchenState.SelectedTestCase;

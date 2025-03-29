@@ -25,6 +25,6 @@ public class ModuleContextMenuModuleButton : MonoBehaviour
     {
         if (!Kitchen.ContextMenuUp) return;
 
-        ModuleContextMenu.DisplayModule(new ModuleSignature(this.transform.parent.name, ModuleContextMenu.DisplayingModule.Name, ModuleContextMenu.DisplayingModule.Locked));
+        ModuleContextMenu.DisplayModule(new ModuleSignature(this.transform.parent.name, ModuleContextMenu.DisplayingModule.Name));
     }
 }

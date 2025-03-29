@@ -36,6 +36,7 @@ namespace RefactorLang
         [JsonPropertyName("modulesLocked")]
         public bool ModulesLocked { get; }
 
+        [JsonPropertyName("constraints")]
         public ConstraintSignature Constraints { get; }
 
         [JsonPropertyName("storyPrompt")]
@@ -148,7 +149,7 @@ namespace RefactorLang
         [JsonPropertyName("additionalConstraint")]
         public string AdditionalConstraint { get; }
 
-        public ConstraintSignature(int maxStatements, int maxActions, string additionalConstraint = "none")
+        public ConstraintSignature(int maxStatements, int maxActions, string additionalConstraint)
         {
             MaxStatements = maxStatements;
             MaxActions = maxActions;

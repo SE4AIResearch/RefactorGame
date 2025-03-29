@@ -61,7 +61,7 @@ module RefactorLangParser =
         let parseKeywordStmt = parseAnyKeyword .>>. betweenSymbols Symbol.LPAREN (sep parseExp (parseSymbol Symbol.COMMA)) Symbol.RPAREN
 
         let countKeywordStmt = 
-            betweenNewlines parseKeywordStmt
+            parseKeywordStmt
             |>> fun (kw, ps) -> 
                 stmtCounter <- ref (stmtCounter.Value + 1)
                 match kw with 
@@ -70,9 +70,14 @@ module RefactorLangParser =
                 | _ -> failwith "this should not be possible"
 
         choice [
-            countKeywordStmt
-            betweenNewlines parseITE |>> fun (((ie, bl), eiebs), ebl) -> IfThenElse (ie, bl, eiebs, ebl)
-            betweenNewlines parseWhile |>> While
+            betweenNewlines countKeywordStmt
+            betweenNewlines parseITE |>> fun (((ie, bl), eiebs), ebl) ->
+                stmtCounter <- ref (stmtCounter.Value + 1 + eiebs.Length)
+                match ebl with | Some _ -> stmtCounter <- ref (stmtCounter.Value + 1) | None -> ()
+                IfThenElse (ie, bl, eiebs, ebl)
+            betweenNewlines parseWhile |>> fun (exp, block) ->
+                stmtCounter <- ref (stmtCounter.Value + 1)
+                While(exp, block)
             betweenNewlines parseFDecl |>> fun ((id, ids), bl) -> FDecl(id, ids, bl)
             betweenNewlines parseVDecl |>> VDecl
             betweenNewlines parseAssn |>> Assn
@@ -89,7 +94,7 @@ module RefactorLangParser =
 
     let parseToProg (tokens: List<Token>) : prog * int =
         match (run parseProg (convertSymbols tokens)) with
-        | Success (p, _) -> p, stmtCounter.Value / 2
+        | Success (p, _) -> p, stmtCounter.Value
         | Failure (f1, f2) -> failwith "did not compile"
 
     let parseJustExp (tokens: List<Token>) =

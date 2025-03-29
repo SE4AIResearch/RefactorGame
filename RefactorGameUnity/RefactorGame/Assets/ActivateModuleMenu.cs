@@ -29,7 +29,7 @@ public class ActivateStationContextMenu : MonoBehaviour
         int moduleIndex = (int)char.GetNumericValue(this.name.Last()) - 1;
         Module thisModule = Kitchen.KitchenState.Stations[stationIndex].Modules[moduleIndex];
 
-        ModuleSignature signature = new(thisModule.GetType().Name, thisModule.Name, thisModule.IsLocked);
+        ModuleSignature signature = new(thisModule.GetType().Name, thisModule.Name);
 
         ModuleContextMenu.OpenMenu(signature, stationIndex, moduleIndex);
     }

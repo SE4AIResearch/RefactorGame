@@ -19,8 +19,8 @@ public class SubmitText : MonoBehaviour
     {
         string text = textEditor.Text;
 
-        List<UnityPackage> outputLog = compiler.Compile(text);
+        compiler.Compile(text);
 
-        chef.GetComponent<ChefExecute>().Execute(outputLog);
+        chef.GetComponent<ChefExecute>().Execute(compiler.OutputLog, compiler.NumOfStatements);
     }
 }
