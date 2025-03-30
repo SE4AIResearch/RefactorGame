@@ -1,0 +1,31 @@
+func make_soup(ingredient) { ​
+  GOTO("Pantry") ​
+  GET("Broth") ​
+  GOTO("Station 1") ​
+  PLACE("A", 0) ​
+  GOTO("Pantry") ​
+  GET(ingredient) ​
+  GOTO("Station 1") ​
+  PLACE("A", 1) ​
+  ACTIVATE("A")​
+  TAKE("A")
+  GOTO("Window") ​
+  DELIVER()
+} ​
+
+if (orders[0] == "Tomato Soup" && orders[1] == "Tomato Soup") { ​
+  make_soup("Tomato") ​
+  make_soup("Tomato")
+} ​
+else if (orders[0] == "Tomato Soup" && orders[1] == "Potato Soup") { ​
+  make_soup("Tomato") ​
+  make_soup("Potato")
+} ​
+else if (orders[0] == "Potato Soup" && orders[1] == "Tomato Soup") {​
+  make_soup("Potato") ​
+  make_soup("Tomato")
+} ​
+else { ​
+  make_soup("Potato") ​
+  make_soup("Potato")
+}​

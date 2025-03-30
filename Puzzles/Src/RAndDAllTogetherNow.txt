@@ -1,0 +1,14 @@
+GET("Broth")​
+GOTO("Station 1")​
+PLACE("A", 0)​
+GOTO("Pantry")​
+if (orders[0] == "Mushroom Soup") {​
+  GET("Mushroom") }​
+else {​
+  GET("Potato") }​
+GOTO("Station 1")​
+PLACE("A", 1)​
+ACTIVATE("A")​
+TAKE("A")​
+GOTO("Window")​
+DELIVER()

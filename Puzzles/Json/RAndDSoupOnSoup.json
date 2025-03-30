@@ -1,0 +1,46 @@
+{
+  "name": "R&D: Soup on Soup",
+  "difficulty": 1,
+  "testCases": [
+    [
+      "Mushroom Soup"
+    ],
+    [
+      "Potato Soup"
+    ]
+  ],
+  "starterPantry": [
+    "Broth",
+    "Broth",
+    "Broth",
+    "Broth",
+    "Mushroom",
+    "Mushroom",
+    "Potato",
+    "Potato",
+    "Squash",
+    "Squash",
+    "Tomato",
+    "Tomato"
+  ],
+  "starterCode": "RAndDSoupOnSoup.txt",
+  "numOfStations": 1,
+  "modulesLocked": true,
+  "stations": [
+    {
+      "name": "Station 1",
+      "modules": [
+        {
+          "module": "SoupMaker",
+          "name": "A"
+        }
+      ]
+    }
+  ],
+  "constraints": {
+    "maxStatements": 14,
+    "maxActions": -1,
+    "additionalConstraint": "none"
+  },
+  "storyPrompt": "I'm looking to test a new soup on the menu. How about mushroom? With a glance to the left and right, I scribble it onto the menu. Now, I just need to teach Watson how to make it."
+}

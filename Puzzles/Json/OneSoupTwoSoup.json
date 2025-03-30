@@ -31,7 +31,8 @@
   ],
   "constraints": { 
     "maxStatements": 15, 
-    "maxActions": -1
+    "maxActions": -1,
+    "additionalConstraint": "none"
   },
   "storyPrompt": "I ask Watson to make me some tomato soup, and then some potato soup. Right away, I see his instruction set is much larger than it needs to be."
 }

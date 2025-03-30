@@ -1,0 +1,48 @@
+{
+  "name": "All Over the Place",
+  "difficulty": 1,
+  "testCases": [
+    [
+      "Chicken Tenders"
+    ]
+  ],
+  "starterPantry": [
+    "Loaf of Bread", 
+    "Loaf of Bread", 
+    "Raw Chicken", 
+    "Raw Chicken"
+  ],
+  "starterCode": "AllOverThePlace.txt",
+  "numOfStations": 2,
+  "modulesLocked": false,
+  "stations": [
+    {
+      "name": "Station 1",
+      "modules": [
+        {
+          "module": "LoafSlicer",
+          "name": "A"
+        },
+        {
+          "module": "Grinder",
+          "name": "B"
+        }
+      ]
+    },
+    {
+      "name": "Station 2",
+      "modules": [
+        {
+          "module": "Fryer",
+          "name": "A"
+        }
+      ]
+    }
+  ],
+  "constraints": {
+    "maxStatements": 19,
+    "maxActions": -1,
+    "additionalConstraint": "none"
+  },
+  "storyPrompt": "One day, Watson, in a rush to cross the kitchen, knocks me facedown onto the floor. \"Geez, Watz, you coulda killed me!\" Groaning and staggering to my feet, I realize I haven't been taking advantage of Refactoria's highly configurable kitchen modules."
+}

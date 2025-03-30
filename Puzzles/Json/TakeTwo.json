@@ -1,0 +1,50 @@
+{
+  "name": "Take Two",
+  "difficulty": 2,
+  "testCases": [
+      [
+          "Tomato Soup",
+          "Potato Soup"
+      ],
+      [
+          "Potato Soup",
+          "Tomato Soup"
+      ],
+      [
+          "Potato Soup",
+          "Potato Soup"
+      ],
+      [
+          "Tomato Soup",
+          "Tomato Soup"
+      ]
+  ],
+  "starterPantry": [
+      "Broth",
+      "Broth",
+      "Potato",
+      "Potato",
+      "Tomato",
+      "Tomato"
+  ],
+  "starterCode": "TakeTwo.txt",
+  "numOfStations": 1,
+  "modulesLocked": true,
+  "stations": [
+      {
+          "name": "Station 1",
+          "modules": [
+              {
+                  "module": "SoupMaker",
+                  "name": "A"
+              }
+          ]
+      }
+  ],
+  "constraints": {
+      "maxStatements": 24,
+      "maxActions": -1,
+      "additionalConstraint": "maxOneIfComparison"
+  },
+  "storyPrompt": "\"What do you do if someone orders two different kinds of soup?\" I ask. Watson is incapable of facial expression, and yet he seems to plumb the depths of some unfathomable well of despair. Oh, boy."
+}

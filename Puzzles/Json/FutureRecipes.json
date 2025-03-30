@@ -32,7 +32,8 @@
   ],
   "constraints": { 
     "maxStatements": 15, 
-    "maxActions": -1
+    "maxActions": -1,
+    "additionalConstraint": "none"
   },
   "storyPrompt": "The old owner frequently mentioned that he had intended to put new items on the menu including squash soup (yuck!). That explains why he decided to leave it in the recipe book, but that recipe isn’t going to help us now.​"
 }

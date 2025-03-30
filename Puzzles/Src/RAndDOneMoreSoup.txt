@@ -1,0 +1,34 @@
+func take_order(order) {​
+  if (order == "Tomato Soup") {​
+    make_soup("Tomato") }​
+  else {​
+    make_soup("Squash") }​
+}​
+
+func make_soup(ingredient) {
+  GOTO("Pantry") ​
+  GET("Broth") ​
+  GOTO("Station 1") ​
+  PLACE("A", 0) ​
+  GOTO("Pantry") ​
+  GET(ingredient) ​
+  GOTO("Station 1") ​
+  PLACE("A", 1) ​
+  ACTIVATE("A") ​
+  TAKE("A") ​
+  GOTO("Window") ​
+  DELIVER()​
+} ​
+
+if (orders[0] == "Mushroom Soup") { ​
+  make_soup("Mushroom") ​
+} ​
+else if (orders[0] == "Tomato Soup") { ​
+  make_soup("Tomato") ​
+} ​
+else if (orders[0] == "Potato Soup") { ​
+  make_soup("Potato") ​
+} ​
+else { ​
+  make_soup("Squash") ​
+}

@@ -1,0 +1,28 @@
+func prep_bread() {​
+  GOTO("Pantry")​
+  GET("Loaf of Bread")​
+  GOTO("Station 1")​
+  PLACE("A", 0)​
+  ACTIVATE("A")​
+  TAKE("A")​
+  GOTO("Station 2")​
+  PLACE("C", 1) }​
+
+func prep_chicken() {​
+  GOTO("Pantry")​
+  GET("Raw Chicken")​
+  GOTO("Station 1")​
+  PLACE("B", 0)​
+  ACTIVATE("B")​
+  TAKE("B")​
+  GOTO("Station 2")​
+  PLACE("C", 0) }​​
+
+prep_bread()​
+prep_chicken()​​
+
+GOTO("Station 2")​
+ACTIVATE("C")​
+TAKE("C")​
+GOTO("Window")​
+DELIVER()​
