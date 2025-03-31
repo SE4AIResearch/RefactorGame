@@ -24,6 +24,7 @@ public class ActivateStationContextMenu : MonoBehaviour
     private void OnMouseDown()
     {
         if (Kitchen.ContextMenuUp) return;
+        if (Kitchen.LoadedPuzzle.ModulesLocked) return;
 
         int stationIndex = (int)char.GetNumericValue(this.transform.parent.name.Last()) - 1;
         int moduleIndex = (int)char.GetNumericValue(this.name.Last()) - 1;
