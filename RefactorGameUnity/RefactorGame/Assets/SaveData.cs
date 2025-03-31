@@ -16,13 +16,19 @@ public static class SaveData
     private static readonly string saveFilePath = Application.persistentDataPath + "/save.json";
     public static GameData LoadedGame { get; private set; }
 
+    private readonly static bool DISABLE = false;
+
     public static void SaveGame()
     {
+        if (DISABLE) return;
+
         File.WriteAllText(saveFilePath, JsonConvert.SerializeObject(LoadedGame));
     }
 
     public static void LoadGame()
     {
+        if (DISABLE) { LoadedGame = new GameData(); return; }
+
         if (!File.Exists(saveFilePath))
         {
             LoadedGame = new GameData();

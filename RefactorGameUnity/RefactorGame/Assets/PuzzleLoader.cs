@@ -47,6 +47,12 @@ public class PuzzleLoader : MonoBehaviour
             editor.Text = solution;
             kitchenState.LastSolution = solution;
         }
+        else if (puzzle.Name == "R&D: All Together Now")
+        {
+            string sol = SaveData.LoadedGame.Solutions["R&D: Soup on Soup"];
+            editor.Text = sol;
+            kitchenState.LastSolution = sol;
+        }
         else
         {
             editor.Text = starterCode;
