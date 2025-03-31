@@ -73,4 +73,9 @@ public class UpdateOrderStatus : MonoBehaviour
         infoIcon.gameObject.SetActive(true);
 
     }
+
+    public void OnDestroy()
+    {
+        kitchen.OnStateChanged -= UpdateStatusIcon;
+    }
 }

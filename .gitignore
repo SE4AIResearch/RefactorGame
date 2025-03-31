@@ -9,6 +9,7 @@ obj/
 Library/
 Temp/
 Logs/
+Build/
 UserSettings/
 SwitchIL2CPPCache/
 SwitchIL2CPPStats/

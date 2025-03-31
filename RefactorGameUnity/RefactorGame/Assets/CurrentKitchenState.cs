@@ -13,6 +13,8 @@ public class CurrentKitchenState : ScriptableObject
 
     public bool LevelComplete = false;
 
+    public string LastSolution = "placeholder";
+
     public event Action<KitchenState> OnStateChanged;
 
     public KitchenState KitchenState

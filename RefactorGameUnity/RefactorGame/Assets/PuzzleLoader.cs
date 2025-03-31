@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PuzzleLoader : MonoBehaviour
@@ -16,6 +17,8 @@ public class PuzzleLoader : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SaveData.LoadGame();
+
         LoadPuzzleFromName(LevelLoader.GetPuzzleName() ?? "OneSoupTwoSoup");
     }
 
@@ -39,7 +42,17 @@ public class PuzzleLoader : MonoBehaviour
 
         kitchenState.KitchenState = new KitchenState(puzzle);
 
-        editor.Text = starterCode;
+        if (SaveData.LoadedGame.Solutions.TryGetValue(puzzle.Name, out string solution))
+        {
+            editor.Text = solution;
+            kitchenState.LastSolution = solution;
+        }
+        else
+        {
+            editor.Text = starterCode;
+            kitchenState.LastSolution = starterCode;
+        }
+            
 
         kitchenState.LoadedPuzzle = puzzle;
 

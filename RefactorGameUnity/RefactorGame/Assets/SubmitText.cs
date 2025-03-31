@@ -15,6 +15,7 @@ public class SubmitText : MonoBehaviour
     public GameObject chef;
     public ScriptCompiler compiler;
     public LineCounter Constraints;
+    public CurrentKitchenState Kitchen;
 
     public void OnSubmit()
     {
@@ -25,5 +26,7 @@ public class SubmitText : MonoBehaviour
         chef.GetComponent<ChefExecute>().Execute(compiler.OutputLog, compiler.NumOfStatements);
 
         Constraints.CheckLines();
+
+        Kitchen.LastSolution = text;
     }
 }
