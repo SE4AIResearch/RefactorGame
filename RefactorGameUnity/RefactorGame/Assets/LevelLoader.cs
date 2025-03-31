@@ -11,7 +11,7 @@ public static class LevelLoader
     public static void LoadPuzzleScene(string puzzleFilename)
     {
         _puzzleName = puzzleFilename;
-        SceneManager.LoadScene("UpdatedScene");
+        SceneManager.LoadScene("Level");
     }
 
     public static string GetPuzzleName() { return _puzzleName; }

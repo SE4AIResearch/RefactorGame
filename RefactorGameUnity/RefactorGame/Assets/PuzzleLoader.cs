@@ -2,6 +2,7 @@ using RefactorLang;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 using TMPro;
 using UnityEngine;
 
@@ -26,12 +27,15 @@ public class PuzzleLoader : MonoBehaviour
 
     public void LoadPuzzleFromName(string puzzleName)
     {
-        Load(Puzzle.Deserialize(@$"./Assets/Resources/Puzzles/Json/{puzzleName}.json"));
+        TextAsset json = Resources.Load<TextAsset>(@$"Puzzles/Json/{puzzleName}");
+        Puzzle puzzle = JsonSerializer.Deserialize<Puzzle>(json.text);
+        Load(puzzle);
     }
 
     void Load(Puzzle puzzle)
     {
-        string starterCode = File.ReadAllText($"./Assets/Resources/Puzzles/Src/{puzzle.StarterCode}");
+        string fileName = puzzle.StarterCode.Remove(puzzle.StarterCode.IndexOf(".txt"));
+        string starterCode = Resources.Load<TextAsset>(@$"Puzzles/Src/{fileName}").text;
 
         kitchenState.KitchenState = new KitchenState(puzzle);
 
