@@ -133,6 +133,7 @@ namespace RefactorLang
                 "BarbecueSaucer" => new BarbecueSaucer(Name),
                 "Griddle" => new Griddle(Name),
                 "BurgerBuilder" => new BurgerBuilder(Name),
+                "None" => null,
                 _ => throw new ArgumentException("not a module string"),
             };
         }

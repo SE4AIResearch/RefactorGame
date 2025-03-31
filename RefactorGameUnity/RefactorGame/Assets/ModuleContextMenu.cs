@@ -10,6 +10,8 @@ public class ModuleContextMenu : MonoBehaviour
     public CurrentKitchenState Kitchen;
     public GameObject Overlay;
 
+    private GameObject HowTo;
+
     private int StationIndex;
     private int ModuleIndex;
 
@@ -33,20 +35,24 @@ public class ModuleContextMenu : MonoBehaviour
         ModuleIndex = moduleIndex;
 
         gameObject.SetActive(true);
-        Overlay.gameObject.SetActive(true);
+        Overlay.SetActive(true);
         Kitchen.ContextMenuUp = true;
     }
 
     public void CloseMenu(bool first = false)
     {
         gameObject.SetActive(false);
-        if (!first) Overlay.gameObject.SetActive(false);
+        if (!first) Overlay.SetActive(false);
         Kitchen.ContextMenuUp = false;
     }
 
     public void DisplayModule(ModuleSignature module)
     {
         DisplayingModule = module;
+
+        if (HowTo != null) HowTo.SetActive(false);
+        HowTo = this.transform.Find("ModuleButtons").Find(module.Module).Find("HowTo").gameObject;
+        HowTo.SetActive(true);
 
         this.transform.Find("ModuleName").GetComponent<TextMeshProUGUI>().text = module.Module;
     }
