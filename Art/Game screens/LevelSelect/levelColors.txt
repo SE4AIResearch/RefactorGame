@@ -1,0 +1,4 @@
+Green: #acd8b9
+Yellow: #e3c473
+Orange: #d78544
+Red: #b24b4e
