@@ -1,0 +1,46 @@
+GOTO("Pantry")​
+GET("Loaf of Bread")​
+GOTO("Station 1")​
+PLACE("A", 0)​
+ACTIVATE("A")​
+TAKE("A")​
+GOTO("Station 4")​
+PLACE("A", 0)​
+GOTO("Pantry")​
+GET("Tomato")​
+GOTO("Station 2")​
+PLACE("A", 0)​
+GOTO("Pantry")​
+GET("Sugar")​
+GOTO("Station 2")​
+PLACE("A", 1)​
+GOTO("Pantry")​
+GET("Vinegar")​
+GOTO("Station 2")​
+PLACE("A", 2)​
+GOTO("Station 2")​
+ACTIVATE("A")​
+TAKE("A")​
+GOTO("Station 4")​
+PLACE("A", 1)​
+GOTO("Pantry")​
+GET("Raw Beef")​
+GOTO("Station 3")​
+PLACE("A", 0)​
+ACTIVATE("A")​
+TAKE("A")​
+GOTO("Station 4")​
+PLACE("A", 2)​​
+GOTO("Pantry")​
+GET("Loaf of Bread")​
+GOTO("Station 1")​
+PLACE("A", 0)​
+ACTIVATE("A")​
+TAKE("A")​
+GOTO("Station 4")​
+PLACE("A", 3)​​
+GOTO("Station 4")​
+ACTIVATE("A")​
+TAKE("A")​
+GOTO("Window")​
+DELIVER()

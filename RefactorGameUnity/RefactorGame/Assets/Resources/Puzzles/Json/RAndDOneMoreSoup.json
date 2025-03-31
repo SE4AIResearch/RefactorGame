@@ -1,0 +1,57 @@
+{
+  "name": "R&D: One More Soup",
+  "difficulty": 1,
+  "testCases": [
+    [
+      "Corn Soup"
+    ],
+    [
+      "Mushroom Soup"
+    ],
+    [
+      "Tomato Soup"
+    ],
+    [
+      "Potato Soup"
+    ],
+    [
+      "Squash Soup"
+    ]
+  ],
+  "starterPantry": [
+    "Broth",
+    "Broth",
+    "Broth",
+    "Broth",
+    "Corn",
+    "Corn",
+    "Mushroom",
+    "Mushroom",
+    "Potato",
+    "Potato",
+    "Squash",
+    "Squash",
+    "Tomato",
+    "Tomato"
+  ],
+  "starterCode": "RAndDOneMoreSoup.txt",
+  "numOfStations": 1,
+  "modulesLocked": true,
+  "stations": [
+    {
+      "name": "Station 1",
+      "modules": [
+        {
+          "module": "SoupMaker",
+          "name": "A"
+        }
+      ]
+    }
+  ],
+  "constraints": {
+    "maxStatements": 23,
+    "maxActions": -1,
+    "additionalConstraint": "oneLineInMain"
+  },
+  "storyPrompt": "Watson moves with great efficiency, with a hint of spunk and verve. It nearly brings a tear to my eye. But our patrons insist on one more kind of soup. Can he handle it? I scratched down one idea but we’ll see...​"
+}

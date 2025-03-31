@@ -1,0 +1,46 @@
+func f() {​
+  ACTIVATE("A")​
+  TAKE("A")​
+  GOTO("Window")​
+  DELIVER() }​
+
+func e(ingredient, slot) {​
+ GOTO("Pantry")​
+ GET(ingredient)​
+ GOTO("G")​
+ PLACE("A", slot) }​
+
+func h(take_from, put) {
+  ACTIVATE("A")​
+  TAKE("A")​
+  GOTO("F")​
+  PLACE("A", put) }​
+
+func a(end_slot) {​
+  GOTO("Pantry")​
+  GET("Loaf of Bread")​
+  GOTO("B")​
+  PLACE("A", 0)​
+  h(1, end_slot) }
+
+func d() {
+  GOTO("Pantry")​
+  GET("Raw Beef")​
+  GOTO("C")​
+  PLACE("A", 0)​
+  h(1, 2) }​
+
+
+func i() {
+  e("Tomato", 0)​
+  e("Sugar", 1)​
+  e("Vinegar", 2)​
+  h(3, 1)​
+}​
+
+​
+a(0)​
+i()​
+d()​
+a(3)​
+f()

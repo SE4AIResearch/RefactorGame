@@ -14,6 +14,7 @@ public class SubmitText : MonoBehaviour
     public InGameTextEditor.TextEditor textEditor;
     public GameObject chef;
     public ScriptCompiler compiler;
+    public LineCounter Constraints;
 
     public void OnSubmit()
     {
@@ -22,5 +23,7 @@ public class SubmitText : MonoBehaviour
         compiler.Compile(text);
 
         chef.GetComponent<ChefExecute>().Execute(compiler.OutputLog, compiler.NumOfStatements);
+
+        Constraints.CheckLines();
     }
 }

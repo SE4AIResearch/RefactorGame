@@ -1,0 +1,64 @@
+{
+  "name": "Putting the Pieces Together",
+  "difficulty": 2,
+  "testCases": [
+  [
+      "Barbecue Sauce Burger"
+  ]
+  ],
+  "starterPantry": [
+    "Sugar", 
+    "Vinegar", 
+    "Loaf of Bread", 
+    "Loaf of Bread", 
+    "Tomato", 
+    "Raw Beef"
+  ],
+  "starterCode": "PuttingThePiecesTogether.txt",
+  "numOfStations": 4,
+  "modulesLocked": true,
+  "stations": [
+    {
+      "name": "B",
+      "modules": [
+        {
+          "module": "LoafSlicer",
+          "name": "A"
+        }
+      ]
+    },
+    {
+      "name": "C",
+      "modules": [
+        {
+          "module": "Grinder",
+          "name": "A"
+        }
+      ]
+    },
+    {
+      "name": "F",
+      "modules": [
+        {
+          "module": "BurgerBuilder",
+          "name": "A"
+        }
+      ]
+    },
+    {
+      "name": "G",
+      "modules": [
+        {
+          "module": "Barbecue Saucer",
+          "name": "A"
+        }
+      ]
+    }
+  ],
+  "constraints": {
+    "maxStatements": 31,
+    "maxActions": -1,
+    "additionalConstraint": "renameMethodsRenameStations"
+  },
+  "storyPrompt": "It’s clear the old owner was in a rush when he put together this recipe, but that’s no excuse for por naming conventions. There’s no time for speculation though: I have some renaming to do."
+}

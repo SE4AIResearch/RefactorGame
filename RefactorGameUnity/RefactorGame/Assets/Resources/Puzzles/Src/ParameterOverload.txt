@@ -1,0 +1,21 @@
+func prep_ing(start_loc, ing, end_loc, mod, place_ind1, place_ind2) {​
+  GOTO(start_loc)​
+  GET(ing)​
+  GOTO(end_loc)​
+  PLACE(mod, place_ind1)​
+  ACTIVATE(mod)​
+  TAKE(mod)​
+  PLACE("C", place_ind2) }​
+
+
+func end_protocol(mod) {​
+  ACTIVATE(mod)​
+  TAKE(mod)​
+  GOTO("Window")​
+  DELIVER() }​
+
+
+prep_ing("Pantry", "Loaf of Bread", "Station 1", "A", 0, 1)​
+prep_ing("Pantry", "Raw Chicken", "Station 1", "B", 0, 0)​
+
+end_protocol("C")

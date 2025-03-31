@@ -16,13 +16,22 @@ public class LevelSelectHandler : MonoBehaviour
 
     public static List<string> puzzleNames = new List<string> {
         "OneSoupTwoSoup",
-        "AgainAndAgain",
-        "FutureRecipes"
+        "FutureRecipes",
+        "AMethodToTheMadness",
+        "RAndDSoupOnSoup",
+        "RAndDAllTogetherNow",
+        "RAndDOneMoreSoup",
+        "TakeTwo",
+        "BuildABurger",
+        "PuttingThePiecesTogether",
+        "AllOverThePlace",
+        "ATightShift",
+        "ParameterOverload"
     };
 
     public event Action<int> OnSelectedLevelChanged;
 
-    private int _selectedLevel = 1;
+    private static int _selectedLevel = 1;
     public int SelectedLevel {
         get => _selectedLevel;
         set

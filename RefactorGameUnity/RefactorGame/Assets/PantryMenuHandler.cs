@@ -16,6 +16,8 @@ public class PantryMenuHandler : MonoBehaviour
     {
         Kitchen.OnStateChanged += UpdateAppearance;
         this.gameObject.SetActive(false);
+
+        UpdateAppearance(Kitchen.KitchenState);
     }
 
     // Update is called once per frame

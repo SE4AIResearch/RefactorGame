@@ -1,0 +1,60 @@
+{
+  "name": "A Tight Shift",
+  "difficulty": 1,
+  "testCases": [
+      [
+          "Chicken Tenders"
+      ]
+  ],
+  "starterPantry": [
+      "Loaf of Bread",
+      "Loaf of Bread",
+      "Raw Chicken",
+      "Raw Chicken"
+  ],
+  "starterCode": "script.txt",
+  "numOfStations": 2,
+  "modulesLocked": false,
+  "stations": [
+      {
+          "name": "Station 1",
+          "modules": [
+              {
+                  "module": "Slicer",
+                  "name": "A"
+              },
+              {
+                  "module": "Grinder",
+                  "name": "B"
+              },
+              {
+                  "module": "Fryer",
+                  "name": "C"
+              }
+          ]
+      },
+      {
+          "name": "Station 2",
+          "modules": [
+              {
+                  "module": "Slicer",
+                  "name": "A"
+              },
+              {
+                  "module": "Grinder",
+                  "name": "B"
+              },
+              {
+                  "module": "Fryer",
+                  "name": "C"
+              }
+          ]
+      }
+  ],
+  "constraints": {
+      "maxStatements": 20,
+      "maxActions": -1,
+      "additionalConstraint": "LessModules"
+  },
+  "storyPrompt": "My heart sinks when I see the energy bill at the end of the month. The horror! And then I find the recipe responsible for this bill..."
+}

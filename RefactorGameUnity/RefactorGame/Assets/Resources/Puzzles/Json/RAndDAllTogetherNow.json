@@ -1,0 +1,52 @@
+{
+  "name": "R&D: All Together Now",
+  "difficulty": 1,
+  "testCases": [
+    [
+      "Mushroom Soup"
+    ],
+    [
+      "Tomato Soup"
+    ],
+    [
+      "Potato Soup"
+    ],
+    [
+      "Squash Soup"
+    ]
+  ],
+  "starterPantry": [
+    "Broth",
+    "Broth",
+    "Broth",
+    "Broth",
+    "Mushroom",
+    "Mushroom",
+    "Potato",
+    "Potato",
+    "Squash",
+    "Squash",
+    "Tomato",
+    "Tomato"
+  ],
+  "starterCode": "RAndDAllTogetherNow.txt",
+  "numOfStations": 1,
+  "modulesLocked": true,
+  "stations": [
+    {
+      "name": "Station 1",
+      "modules": [
+        {
+          "module": "SoupMaker",
+          "name": "A"
+        }
+      ]
+    }
+  ],
+  "constraints": {
+    "maxStatements": 20,
+    "maxActions": -1,
+    "additionalConstraint": "none"
+  },
+  "storyPrompt": "With customers finally pouring in, Watson is a nervous wreck. Such cowardice has no place in a well-run kitchen: Watson needs to pull it together. With a click of embarrassment, he recovers and prepares to execute orders.​"
+}
