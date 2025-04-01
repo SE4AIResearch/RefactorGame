@@ -65,6 +65,6 @@ public class PuzzleLoader : MonoBehaviour
         Constraints.CheckLines(starterCode);
 
         StoryPopUp.transform.Find("Title").GetComponent<TextMeshProUGUI>().text = puzzle.Name;
-        StoryPopUp.transform.Find("Description").GetComponent<TextMeshProUGUI>().text = puzzle.StoryPrompt;
+        StoryPopUp.transform.Find("Description").Find("Text").GetComponent<TextMeshProUGUI>().text = puzzle.StoryPrompt;
     }
 }
