@@ -7063,8 +7063,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1444280682}
-        m_TargetAssemblyTypeName: LoadPuzzle, Assembly-CSharp
-        m_MethodName: LoadSample
+        m_TargetAssemblyTypeName: PuzzleLoader, Assembly-CSharp
+        m_MethodName: ResetLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8828,6 +8828,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   KitchenState: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
   NumOfStatements: 0
+  Status: 0
+  Message: 
 --- !u!1 &993938607
 GameObject:
   m_ObjectHideFlags: 0
