@@ -10102,7 +10102,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2113806334}
   m_Father: {fileID: 1828571363}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -16625,14 +16626,14 @@ RectTransform:
   m_GameObject: {fileID: 2113806333}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.608905, y: 1.608905, z: 1.608905}
+  m_LocalScale: {x: 2.2234387, y: 2.2234387, z: 2.2234387}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1169615317}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 558.7098, y: 58.459427}
+  m_AnchoredPosition: {x: 732.79297, y: -599.89124}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2113806335
@@ -16647,7 +16648,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b13d7c9f2337a4f2a9e2edbb95eec55a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Kitchen: {fileID: 0}
+  Kitchen: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -16659,4 +16660,3 @@ SceneRoots:
   - {fileID: 571275733}
   - {fileID: 1786753925}
   - {fileID: 2005813339}
-  - {fileID: 2113806334}
