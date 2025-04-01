@@ -63,14 +63,11 @@ public class CurrentKitchenState : ScriptableObject
         OnStateChanged.Invoke(KitchenState);
     }
 
-    public bool AllTestsPassed() {
-        foreach (var status in KitchenState.TestCaseStatus.Values)
-        {
-            if (status != TestStatus.Passed)
-            {
-                return false;
-            }
+    public void ResetTestCaseStatus()
+    {
+        for (int i = 0; i < KitchenState.TestCases.Count; i++) {
+            KitchenState.TestCaseStatus[i] = TestStatus.NotRun;
         }
-        return true;
+        OnStateChanged.Invoke(KitchenState);
     }
 }
