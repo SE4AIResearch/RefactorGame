@@ -9,37 +9,59 @@ using System;
 using System.IO;
 using C5;
 
+public enum CompilationStatus
+{
+    Success, CompilationError, RuntimeError
+}
+
 public class ScriptCompiler : MonoBehaviour
 {
     public CurrentKitchenState KitchenState;
 
     public List<UnityPackage> OutputLog;
     public int NumOfStatements;
+    public CompilationStatus Status;
+    public string Message;
 
     public void Compile(string input)
     {
         List<Token> tokens = Tokenizer.TokenizeLine(input);
 
-        Tuple<Grammar.prog, int> compilationResult = RefactorLangParser.parseToProg(ListModule.OfSeq(tokens));
+        Tuple<Grammar.prog, int> compilationResult;
 
         try
         {
-            var testCases = KitchenState.LoadedPuzzle.TestCases;
-            var pantry = KitchenState.LoadedPuzzle.StarterPantry;
-            var stations = KitchenState.KitchenState.Stations;
-            
-            var testCaseIndex = KitchenState.KitchenState.SelectedTestCase;
-            var testCase = testCases[testCaseIndex];
+            compilationResult = RefactorLangParser.parseToProg(ListModule.OfSeq(tokens));
+        }
+        catch {
+            Status = CompilationStatus.CompilationError;
+            return;
+        }
 
-            Interpreter interpreter = new Interpreter(testCase, pantry, stations);
+        var testCases = KitchenState.LoadedPuzzle.TestCases;
+        var pantry = KitchenState.LoadedPuzzle.StarterPantry;
+        var stations = KitchenState.KitchenState.Stations;
+
+        var testCaseIndex = KitchenState.KitchenState.SelectedTestCase;
+        var testCase = testCases[testCaseIndex];
+
+        Interpreter interpreter = new Interpreter(testCase, pantry, stations);
+        Message = "OK";
+
+        try
+        {
             interpreter.Interpret(compilationResult.Item1);
-
-            OutputLog = interpreter.OutputLog;
-            NumOfStatements = compilationResult.Item2;
+            Status = CompilationStatus.Success;
+            Message = "Compilation Error!"; // TODO: more verbose (needs to be from compiler itself)
         }
         catch (ArgumentException ex)
         {
+            Status = CompilationStatus.RuntimeError;
             Debug.Log(ex);
+            Message = ex.Message;
         }
+
+        OutputLog = interpreter.OutputLog;
+        NumOfStatements = compilationResult.Item2;
     }
 }

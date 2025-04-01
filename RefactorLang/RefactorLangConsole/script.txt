@@ -1,6 +1,5 @@
 ﻿if (orders[0] == "Tomato Soup") {
 	GOTO("Pantry")
-	GET("Broth")
 	GOTO("Station 1")
 	PLACE("A", 0)
 

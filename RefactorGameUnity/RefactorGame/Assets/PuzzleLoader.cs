@@ -28,6 +28,11 @@ public class PuzzleLoader : MonoBehaviour
         
     }
 
+    public void ResetLevel()
+    {
+        Load(kitchenState.LoadedPuzzle, original:true);
+    }
+
     public void LoadPuzzleFromName(string puzzleName)
     {
         TextAsset json = Resources.Load<TextAsset>(@$"Puzzles/Json/{puzzleName}");
@@ -35,14 +40,14 @@ public class PuzzleLoader : MonoBehaviour
         Load(puzzle);
     }
 
-    void Load(Puzzle puzzle)
+    void Load(Puzzle puzzle, bool original = false)
     {
         string fileName = puzzle.StarterCode.Remove(puzzle.StarterCode.IndexOf(".txt"));
         string starterCode = Resources.Load<TextAsset>(@$"Puzzles/Src/{fileName}").text;
 
         kitchenState.KitchenState = new KitchenState(puzzle);
 
-        if (SaveData.LoadedGame.Solutions.TryGetValue(puzzle.Name, out string solution))
+        if (SaveData.LoadedGame.Solutions.TryGetValue(puzzle.Name, out string solution) && !original)
         {
             editor.Text = solution;
             kitchenState.LastSolution = solution;

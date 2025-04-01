@@ -23,10 +23,19 @@ public class SubmitText : MonoBehaviour
 
         compiler.Compile(text);
 
-        chef.GetComponent<ChefExecute>().Execute(compiler.OutputLog, compiler.NumOfStatements);
-
-        Constraints.CheckLines();
-
-        Kitchen.LastSolution = text;
+        switch (compiler.Status)
+        {
+            case CompilationStatus.CompilationError:
+                this.transform.parent.parent.Find("ActionDisplay").GetComponent<TextMeshProUGUI>().text = compiler.Message;
+                break;
+            case CompilationStatus.RuntimeError:
+                compiler.OutputLog.Add(new UnityPackage(new UnityAction.NoAction(), compiler.Message));
+                goto case CompilationStatus.Success;
+            case CompilationStatus.Success:
+                chef.GetComponent<ChefExecute>().Execute(compiler.OutputLog, compiler.NumOfStatements);
+                Constraints.CheckLines();
+                Kitchen.LastSolution = text;
+                break;
+        }
     }
 }
