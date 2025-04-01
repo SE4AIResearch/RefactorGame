@@ -79,8 +79,12 @@ module RefactorLangParser =
                 stmtCounter <- (stmtCounter + 1)
                 While(exp, block)
             betweenNewlines parseFDecl |>> fun ((id, ids), bl) -> FDecl(id, ids, bl)
-            betweenNewlines parseVDecl |>> VDecl
-            betweenNewlines parseAssn |>> Assn
+            betweenNewlines parseVDecl |>> fun (id, exp) ->
+                stmtCounter <- (stmtCounter + 1)
+                VDecl(id, exp)
+            betweenNewlines parseAssn |>> fun (id, exp) ->
+                stmtCounter <- (stmtCounter + 1)
+                Assn(id, exp)
             betweenNewlines ((parseSymbol Symbol.RETURN) >>. parseExp) |>> RetVal
             betweenNewlines (parseSymbol Symbol.RETURN) |>> fun (_) -> RetVoid
         ]
