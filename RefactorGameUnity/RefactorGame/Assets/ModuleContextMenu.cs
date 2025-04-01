@@ -50,9 +50,12 @@ public class ModuleContextMenu : MonoBehaviour
     {
         DisplayingModule = module;
 
-        if (HowTo != null) HowTo.SetActive(false);
-        HowTo = this.transform.Find("ModuleButtons").Find(module.Module).Find("HowTo").gameObject;
-        HowTo.SetActive(true);
+        if (HowTo != null)
+        {
+            HowTo.SetActive(false);
+            HowTo = this.transform.Find("ModuleButtons").Find(module.Module).Find("HowTo").gameObject;
+            HowTo.SetActive(true);
+        }
 
         this.transform.Find("ModuleName").GetComponent<TextMeshProUGUI>().text = module.Module;
     }

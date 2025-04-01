@@ -38,7 +38,7 @@
     }
   ],
   "constraints": {
-    "maxStatements": 14,
+    "maxStatements": 15,
     "maxActions": -1,
     "additionalConstraint": "none"
   },

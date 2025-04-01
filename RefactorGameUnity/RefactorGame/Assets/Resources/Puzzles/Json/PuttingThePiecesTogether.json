@@ -22,7 +22,7 @@
       "name": "B",
       "modules": [
         {
-          "module": "LoafSlicer",
+          "module": "Slicer",
           "name": "A"
         }
       ]
@@ -60,5 +60,5 @@
     "maxActions": -1,
     "additionalConstraint": "renameMethodsRenameStations"
   },
-  "storyPrompt": "It’s clear the old owner was in a rush when he put together this recipe, but that’s no excuse for por naming conventions. There’s no time for speculation though: I have some renaming to do."
+  "storyPrompt": "It’s clear the old owner was in a rush when he put together this recipe, but that’s no excuse for poor naming conventions. There’s no time for speculation though: I have some renaming to do."
 }

@@ -20,7 +20,7 @@
       "name": "Station 1",
       "modules": [
         {
-          "module": "LoafSlicer",
+          "module": "Slicer",
           "name": "A"
         },
         {
