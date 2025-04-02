@@ -58,4 +58,9 @@ public class DisplayOrders : MonoBehaviour
             this.transform.Find("Order 5").GetComponent<Button>().enabled = true;
         }
     }
+
+    private void OnDestroy()
+    {
+        kitchen.OnStateChanged -= UpdateSelection;
+    }
 }

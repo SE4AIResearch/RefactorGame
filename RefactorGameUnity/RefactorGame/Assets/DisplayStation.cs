@@ -57,4 +57,9 @@ public class DisplayStation : MonoBehaviour
             moduleIndex++;
         }
     }
+
+    private void OnDestroy()
+    {
+        kitchen.OnStateChanged -= UpdateAppearance;
+    }
 }

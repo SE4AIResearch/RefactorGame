@@ -32,4 +32,9 @@ public class LockButton : MonoBehaviour
             this.GetComponent<Button>().enabled = shouldLock;
         }
     }
+
+    private void OnDestroy()
+    {
+        kitchen.OnStateChanged -= ButtonAccess;
+    }
 }

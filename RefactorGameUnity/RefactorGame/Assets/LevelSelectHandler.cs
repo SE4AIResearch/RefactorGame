@@ -24,7 +24,6 @@ public class LevelSelectHandler : MonoBehaviour
         "RAndDOneMoreSoup",
         "TakeTwo",
         "BuildABurger",
-        "PuttingThePiecesTogether",
         "AllOverThePlace",
         "ATightShift",
         "ParameterOverload"

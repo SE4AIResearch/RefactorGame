@@ -66,5 +66,10 @@ public class DisplayOrderInfo : MonoBehaviour
         string path = $"Graphics/Food/{food}";
         return Resources.Load<Sprite>(path);
     }
+
+    private void OnDestroy()
+    {
+        kitchen.OnStateChanged -= UpdateInfo;
+    }
 }
 

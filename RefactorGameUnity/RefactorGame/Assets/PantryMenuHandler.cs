@@ -59,4 +59,9 @@ public class PantryMenuHandler : MonoBehaviour
             HoverableFood.Create(food, child.transform);
         }
     }
+
+    private void OnDestroy()
+    {
+        Kitchen.OnStateChanged -= UpdateAppearance;
+    }
 }
