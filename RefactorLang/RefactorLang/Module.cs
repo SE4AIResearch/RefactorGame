@@ -103,9 +103,25 @@ namespace RefactorLang
         }
     }
 
+    public class None : ArrayModule
+    {
+        public None(string name) : base(name) { }
+        public override int Size { get; } = 1;
+
+        public override void Activate()
+        {
+            throw new ArgumentException("Cannot activate, no module here");
+        }
+
+        public override void Place(FoodItem food, int slot)
+        {
+            throw new ArgumentException("Cannot place, no module here");
+        }
+    }
+
     public class Slicer : ArrayModule
     {
-        public Slicer(string name, bool isLocked = false) : base(name, isLocked) { }
+        public Slicer(string name) : base(name) { }
 
         public override int Size { get; } = 1;
 
