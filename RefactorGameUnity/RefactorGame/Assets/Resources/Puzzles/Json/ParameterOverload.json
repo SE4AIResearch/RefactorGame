@@ -1,10 +1,9 @@
 {
   "name": "Parameter Overload",
   "difficulty": 1,
-  "testCases":
-    [
-      "Chicken Tenders"
-    ],
+  "testCases": [
+    [ "Chicken Tenders" ]
+  ],
   "starterPantry": [
     "Loaf of Bread", 
     "Loaf of Bread", 
