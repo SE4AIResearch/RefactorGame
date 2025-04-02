@@ -103,7 +103,16 @@ namespace RefactorLang
 
         public Station ConvertToStation()
         {
-            return new Station(Name, Modules.Select(x => x.ConvertToModule()).ToList());
+            List<string> defaultNames = new() { "A", "B", "C" };
+
+            Station station = new Station(Name, Modules.Select(x => x.ConvertToModule()).ToList());
+
+            while (station.Modules.Count < 3)
+            {
+                station.Modules.Add(new None(defaultNames[station.Modules.Count - 1]));
+            }
+
+            return station;
         }
     }
 
