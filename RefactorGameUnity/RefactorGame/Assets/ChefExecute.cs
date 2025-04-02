@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 using TMPro;
 using UnityEngine;
-using static UnityEngine.Rendering.ReloadAttribute;
+using TextEditor = InGameTextEditor.TextEditor;
 
 public class ChefExecute : MonoBehaviour
 {
@@ -13,6 +13,7 @@ public class ChefExecute : MonoBehaviour
     public TextMeshProUGUI ActionDisplay;
     public CurrentKitchenState Kitchen;
     // public UpdateTestStatus TestStatusHandler;
+    public TextEditor textEditor;
 
     private List<UnityPackage> Actions;
     private bool executing = false;
@@ -61,10 +62,12 @@ public class ChefExecute : MonoBehaviour
 
             case UnityAction.Success:
                 Kitchen.FinishTestWithStatus(TestStatus.Passed, numOfStatements);
+                textEditor.disableInput = false;
                 break;
 
             case UnityAction.Failure:
                 Kitchen.FinishTestWithStatus(TestStatus.Failed, numOfStatements);
+                textEditor.disableInput = false;
                 break;
 
             default:
@@ -83,6 +86,7 @@ public class ChefExecute : MonoBehaviour
         if (actions == null)
         {
             Kitchen.UpdateTestCaseStatus(TestStatus.Failed);
+            textEditor.disableInput = false;
             Debug.Log("Compilation failed...");
             return;
         }
