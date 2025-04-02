@@ -14375,6 +14375,7 @@ MonoBehaviour:
   LocationMap: {fileID: 571275732}
   ActionDisplay: {fileID: 993938609}
   Kitchen: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
+  textEditor: {fileID: 2095352982}
 --- !u!4 &1786753925
 Transform:
   m_ObjectHideFlags: 0
@@ -16636,7 +16637,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114662724014931294, guid: d53fd87b7d86a40469735ea1ab29f85c, type: 3}
       propertyPath: showLineLabelIcons
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114803381886405840, guid: d53fd87b7d86a40469735ea1ab29f85c, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -16760,11 +16761,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 224909684747876842, guid: d53fd87b7d86a40469735ea1ab29f85c, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -92
+      value: -72
       objectReference: {fileID: 0}
     - target: {fileID: 224909684747876842, guid: d53fd87b7d86a40469735ea1ab29f85c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 80
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 2003278740131439951, guid: d53fd87b7d86a40469735ea1ab29f85c, type: 3}
       propertyPath: m_Layer
@@ -16792,7 +16793,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7128485584377706414, guid: d53fd87b7d86a40469735ea1ab29f85c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7307944477429191656, guid: d53fd87b7d86a40469735ea1ab29f85c, type: 3}
       propertyPath: m_Layer
