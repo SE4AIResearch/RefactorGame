@@ -8,6 +8,7 @@ public class LevelCompletionHandler : MonoBehaviour
 {
     public CurrentKitchenState kitchen;
     public GameObject overlay;
+    private bool bypass = false;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +25,8 @@ public class LevelCompletionHandler : MonoBehaviour
 
     void UpdateAppearance(KitchenState state)
     {
+        if (bypass) { return; }
+
         bool allPassed = state.TestCaseStatus.Values
             .Select(x => x == TestStatus.Passed)
             .Aggregate((x, y) => x && y);
@@ -34,5 +37,16 @@ public class LevelCompletionHandler : MonoBehaviour
             overlay.gameObject.SetActive(true);
         
         }
+    }
+
+    public void Dismiss() {
+        bypass = true;
+        this.gameObject.SetActive(false);
+        overlay.gameObject.SetActive(false);
+    }
+
+    private void OnDestroy()
+    {
+        kitchen.OnStateChanged -= UpdateAppearance;
     }
 }
