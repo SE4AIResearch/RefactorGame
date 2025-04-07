@@ -45,5 +45,6 @@
     "maxActions": -1,
     "additionalConstraint": "none"
   },
-  "storyPrompt": "The nation convulses with the tomato soup craze, which sweeps through the masses in a bout of hysteria. Realizing I can’t type fast enough to keep up, I search for a better solution. ​"
+  "storyPrompt": "The nation convulses with the tomato soup craze, which sweeps through the masses in a bout of hysteria. Realizing I can’t type fast enough to keep up, I search for a better solution. ​",
+  "dictionaryItems": ["duplicateCode", "codeDeletion"]
 }

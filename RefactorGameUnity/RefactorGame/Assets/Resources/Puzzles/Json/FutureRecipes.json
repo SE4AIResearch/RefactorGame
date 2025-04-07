@@ -35,5 +35,6 @@
     "maxActions": -1,
     "additionalConstraint": "none"
   },
-  "storyPrompt": "The old owner frequently mentioned that he had intended to put new items on the menu including squash soup (yuck!). That explains why he decided to leave it in the recipe book, but that recipe isn’t going to help us now.​"
+  "storyPrompt": "The old owner frequently mentioned that he had intended to put new items on the menu including squash soup (yuck!). That explains why he decided to leave it in the recipe book, but that recipe isn’t going to help us now.​",
+  "dictionaryItems": ["speculativeGenerality", "codeDeletion"]
 }
