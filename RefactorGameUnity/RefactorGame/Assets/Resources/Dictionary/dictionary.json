@@ -1,0 +1,57 @@
+{
+  "duplicateCode": {
+    "name": "Duplicate Code",
+    "type": "smell",
+    "details": [
+      "The same code is found in two or more places.",
+      "Can be fixed with Extract Method."
+    ]
+  },
+  "codeDeletion": {
+    "name": "Code Deletion",
+    "type": "refactoring",
+    "details": [
+      "Simply delete the unnecessary code.",
+      "Can be used on Duplicate Code, Speculative Generality."
+    ]
+  },
+  "speculativeGenerality": {
+    "name": "Speculative Generality",
+    "type": "smell",
+    "details": [
+      "There is an unused code segment, usually created in case a new feature is added."
+    ]
+  },
+  "shotgunSurgery": {
+    "name": "Shotgun Surgery",
+    "type": "smell",
+    "details": [
+      "Changing the code requires making many small changes by hand in many places.",
+      "Can be fixed with Extract Method."
+    ]
+  },
+  "extractMethod": {
+    "name": "Extract Method",
+    "type": "refactoring",
+    "details": [
+      "Take similar code that appears more than once and make a new method. Replace this code with calls to the new method.",
+      "Can be used on Long Method, Shotgun Surgery, Switch Statement Misuse."
+    ]
+  },
+  "switchStatementMisuse": {
+    "name": "Switch Statement Misuse",
+    "type": "smell",
+    "details": [
+      "A complex system of if-statements that is hard to understand.",
+      "Can be fixed with Extract Method."
+    ]
+  },
+  "longMethod": {
+    "name": "Long Method",
+    "type": "smell",
+    "details": [
+      "A method that is too long to understand easily.",
+      "Can be fixed with Extract Method."
+    ]
+  }
+}
