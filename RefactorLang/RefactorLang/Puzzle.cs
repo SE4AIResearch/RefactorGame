@@ -42,6 +42,9 @@ namespace RefactorLang
         [JsonPropertyName("storyPrompt")]
         public string StoryPrompt { get; }
 
+        [JsonPropertyName("dictionaryItems")]
+        public List<string> DictionaryItems { get; }
+
         public Puzzle(string name, int difficulty, int numOfStations, List<StationSignature> stations, bool modulesLocked, List<List<string>> testCases, List<string> starterPantry, 
             string starterCode, ConstraintSignature constraints, string storyPrompt)
         {
@@ -164,6 +167,32 @@ namespace RefactorLang
             MaxStatements = maxStatements;
             MaxActions = maxActions;
             AdditionalConstraint = additionalConstraint;
+        }
+    }
+
+    public class DefinitionSignature
+    {
+        [JsonPropertyName("name")]
+        public string Name { get; }
+
+        [JsonPropertyName("type")]
+        public string Type { get; }
+
+        [JsonPropertyName("details")]
+        public List<string> Details { get; }
+
+        public DefinitionSignature(string name, string type, List<string> details)
+        {
+            Name = name;
+            Type = type;
+            Details = details;
+        }
+
+        public static Dictionary<string,DefinitionSignature> GenerateDictionary(string filename)
+        {
+            string text = File.ReadAllText(filename);
+
+            return JsonSerializer.Deserialize<Dictionary<string, DefinitionSignature>>(text);
         }
     }
 }

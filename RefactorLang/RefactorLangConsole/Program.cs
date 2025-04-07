@@ -17,6 +17,7 @@ namespace RefactorLangConsole
     {
         static void Main(string[] args)
         {
+            var x = DefinitionSignature.GenerateDictionary("C:\\Users\\dhvan\\source\\repos\\RefactorGame\\RefactorGameUnity\\RefactorGame\\Assets\\Resources\\Dictionary\\dictionary.json");
             TestMain();
         }
 
