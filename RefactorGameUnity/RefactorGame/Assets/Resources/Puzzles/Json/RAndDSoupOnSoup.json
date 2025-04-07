@@ -42,5 +42,6 @@
     "maxActions": -1,
     "additionalConstraint": "none"
   },
-  "storyPrompt": "I'm looking to test a new soup on the menu. How about mushroom? With a glance to the left and right, I scribble it onto the menu. Now, I just need to teach Watson how to make it."
+  "storyPrompt": "I'm looking to test a new soup on the menu. How about mushroom? With a glance to the left and right, I scribble it onto the menu. Now, I just need to teach Watson how to make it.",
+  "dictionaryItems": ["shotgunSurgery", "extractMethod"]
 }

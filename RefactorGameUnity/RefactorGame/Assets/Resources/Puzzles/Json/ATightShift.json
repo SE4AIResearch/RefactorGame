@@ -56,5 +56,6 @@
       "maxActions": -1,
       "additionalConstraint": "LessModules"
   },
-  "storyPrompt": "My heart sinks when I see the energy bill at the end of the month. The horror! And then I find the recipe responsible for this bill..."
+  "storyPrompt": "My heart sinks when I see the energy bill at the end of the month. The horror! And then I find the recipe responsible for this bill...",
+  "dictionaryItems": []
 }
