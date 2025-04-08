@@ -10985,10 +10985,10 @@ RectTransform:
   - {fileID: 1893209854}
   m_Father: {fileID: 1828571363}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 426.5999, y: 18.7}
-  m_SizeDelta: {x: 391.1536, y: 674.6367}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 1066.5999, y: 18.7}
+  m_SizeDelta: {x: 391.15356, y: 674.6367}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1272281417
 MonoBehaviour:
@@ -13174,6 +13174,7 @@ GameObject:
   - component: {fileID: 1655644042}
   - component: {fileID: 1655644044}
   - component: {fileID: 1655644043}
+  - component: {fileID: 1655644045}
   m_Layer: 5
   m_Name: TintOverlay
   m_TagString: Untagged
@@ -13238,6 +13239,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1655644041}
   m_CullTransparentMesh: 1
+--- !u!114 &1655644045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655644041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a859c5178dd5548198a611c82a448953, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1681174644
 GameObject:
   m_ObjectHideFlags: 0
@@ -16163,6 +16176,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2005813339}
   - component: {fileID: 2005813338}
+  - component: {fileID: 2005813340}
   m_Layer: 0
   m_Name: background
   m_TagString: Untagged
@@ -16237,6 +16251,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2005813340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2005813337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 549012d993590429a91cba6746145736, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LocationMap: {fileID: 571275732}
+  Chef: {fileID: 1786753923}
 --- !u!1 &2013210923
 GameObject:
   m_ObjectHideFlags: 0
