@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RefactorLang;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelCompletionHandler : MonoBehaviour
 {
@@ -35,7 +36,7 @@ public class LevelCompletionHandler : MonoBehaviour
         {
             for (int i = 0; i < kitchen.Definitions.Count; i++)
             {
-                var defHandler = this.transform.Find($"Definition{i+1}").GetComponent<DefinitionHandler>();
+                var defHandler = this.transform.Find("UIContainer").Find("DefinitionContainer").Find($"Definition{i+1}").GetComponent<DefinitionHandler>();
                 defHandler.DisplayDefinition(kitchen.Definitions[i]);
             }
 

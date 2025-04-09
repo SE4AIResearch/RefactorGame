@@ -66,6 +66,6 @@ public class DefinitionHandler : MonoBehaviour
         var details = description.Find("Details").GetComponent<TextMeshProUGUI>();
 
         name.text = definition.Name;
-        details.text = String.Join("\n", definition.Details);
+        details.text = string.Join(" ", definition.Details);
     }
 }
