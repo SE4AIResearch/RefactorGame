@@ -15,6 +15,8 @@ public class CurrentKitchenState : ScriptableObject
 
     public string LastSolution = "placeholder";
 
+    public List<string> Definitions = new List<string>();
+
     public event Action<KitchenState> OnStateChanged;
 
     public KitchenState KitchenState

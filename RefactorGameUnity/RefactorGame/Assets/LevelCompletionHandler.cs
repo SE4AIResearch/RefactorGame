@@ -33,13 +33,20 @@ public class LevelCompletionHandler : MonoBehaviour
 
         if (allPassed)
         {
+            for (int i = 0; i < kitchen.Definitions.Count; i++)
+            {
+                var defHandler = this.transform.Find($"Definition{i+1}").GetComponent<DefinitionHandler>();
+                defHandler.DisplayDefinition(kitchen.Definitions[i]);
+            }
+
             this.gameObject.SetActive(true);
             overlay.gameObject.SetActive(true);
-        
+
         }
     }
 
-    public void Dismiss() {
+    public void Dismiss()
+    {
         bypass = true;
         this.gameObject.SetActive(false);
         overlay.gameObject.SetActive(false);
