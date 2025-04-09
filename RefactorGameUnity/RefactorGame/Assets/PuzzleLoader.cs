@@ -66,6 +66,8 @@ public class PuzzleLoader : MonoBehaviour
 
         kitchenState.LoadedPuzzle = puzzle;
 
+        kitchenState.Definitions = puzzle.DictionaryItems;
+
         Constraints.CheckLines(starterCode);
 
         StoryPopUp.transform.Find("Title").GetComponent<TextMeshProUGUI>().text = puzzle.Name;

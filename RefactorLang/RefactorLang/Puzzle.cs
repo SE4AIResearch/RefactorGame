@@ -46,7 +46,7 @@ namespace RefactorLang
         public List<string> DictionaryItems { get; }
 
         public Puzzle(string name, int difficulty, int numOfStations, List<StationSignature> stations, bool modulesLocked, List<List<string>> testCases, List<string> starterPantry, 
-            string starterCode, ConstraintSignature constraints, string storyPrompt)
+            string starterCode, ConstraintSignature constraints, string storyPrompt, List<string> dictionaryItems)
         {
             Name = name;
             Difficulty = difficulty;
@@ -58,6 +58,7 @@ namespace RefactorLang
             StarterCode = starterCode;
             StoryPrompt = storyPrompt;
             Constraints = constraints;
+            DictionaryItems = dictionaryItems;
         }
 
         public static void Serialize(Puzzle puzzle, string fileName = @"./samplePuzzle.json")

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RefactorLang;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelCompletionHandler : MonoBehaviour
 {
@@ -33,13 +34,20 @@ public class LevelCompletionHandler : MonoBehaviour
 
         if (allPassed)
         {
+            for (int i = 0; i < kitchen.Definitions.Count; i++)
+            {
+                var defHandler = this.transform.Find("UIContainer").Find("DefinitionContainer").Find($"Definition{i+1}").GetComponent<DefinitionHandler>();
+                defHandler.DisplayDefinition(kitchen.Definitions[i]);
+            }
+
             this.gameObject.SetActive(true);
             overlay.gameObject.SetActive(true);
-        
+
         }
     }
 
-    public void Dismiss() {
+    public void Dismiss()
+    {
         bypass = true;
         this.gameObject.SetActive(false);
         overlay.gameObject.SetActive(false);
