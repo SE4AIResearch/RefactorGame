@@ -62,12 +62,10 @@ public class ChefExecute : MonoBehaviour
 
             case UnityAction.Success:
                 Kitchen.FinishTestWithStatus(TestStatus.Passed, numOfStatements);
-                textEditor.disableInput = false;
                 break;
 
             case UnityAction.Failure:
                 Kitchen.FinishTestWithStatus(TestStatus.Failed, numOfStatements);
-                textEditor.disableInput = false;
                 break;
 
             default:

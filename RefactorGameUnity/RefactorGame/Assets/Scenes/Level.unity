@@ -2063,7 +2063,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 725351c37207b4361984f8fe0e6d93d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  kitchen: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
+  Kitchen: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
+  TextEditor: {fileID: 2095352982}
 --- !u!114 &187928934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16641,7 +16642,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LocationMap: {fileID: 571275732}
   Chef: {fileID: 1786753923}
-  OrderSelector: {fileID: 187928929}
 --- !u!1 &2013210923
 GameObject:
   m_ObjectHideFlags: 0

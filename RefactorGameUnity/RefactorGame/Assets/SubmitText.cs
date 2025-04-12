@@ -8,12 +8,11 @@ using RefactorLang;
 using RefactorLib;
 using UnityEngine.UI;
 using System;
-using TextEditor = InGameTextEditor.TextEditor;
 using UnityEditor;
 
 public class SubmitText : MonoBehaviour
 {
-    public TextEditor textEditor;
+    public InGameTextEditor.TextEditor textEditor;
     public GameObject chef;
     public ScriptCompiler compiler;
     public LineCounter Constraints;
@@ -22,7 +21,6 @@ public class SubmitText : MonoBehaviour
     public void OnSubmit()
     {        
         var text = textEditor.Text;
-        textEditor.disableInput = true;
 
         compiler.Compile(text);
 
@@ -30,10 +28,11 @@ public class SubmitText : MonoBehaviour
         {
             case CompilationStatus.CompilationError:
                 this.transform.parent.parent.Find("ActionDisplay").GetComponent<TextMeshProUGUI>().text = compiler.Message;
+                Kitchen.FinishTestWithStatus(TestStatus.Failed, 0);
                 break;
 
-            case CompilationStatus.RuntimeError:
-                compiler.OutputLog.Add(new UnityPackage(new UnityAction.NoAction(), compiler.Message));
+            case CompilationStatus.RuntimeError or CompilationStatus.CompilationError:
+                compiler.OutputLog.Add(new UnityPackage(new UnityAction.Failure(), compiler.Message));
                 goto case CompilationStatus.Success;
 
             case CompilationStatus.Success:

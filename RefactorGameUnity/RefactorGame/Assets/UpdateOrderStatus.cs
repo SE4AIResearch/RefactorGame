@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using RefactorLang;
@@ -7,11 +8,13 @@ using Image = UnityEngine.UI.Image;
 
 public class UpdateOrderStatus : MonoBehaviour
 {
-    public CurrentKitchenState kitchen;
+    public CurrentKitchenState Kitchen;
+    public InGameTextEditor.TextEditor TextEditor;
 
     void Start()
     {
-        kitchen.OnStateChanged += UpdateStatusIcon;
+        Kitchen.OnStateChanged += UpdateStatusIcon;
+        Kitchen.OnStateChanged += LockUnlockTextEditor;
 
         GameObject orderInfo = this.gameObject.transform.Find("OrderInfo").gameObject;
         Transform status = orderInfo.transform.Find("Status");
@@ -29,14 +32,14 @@ public class UpdateOrderStatus : MonoBehaviour
 
     void Update()
     {
-        // kitchen.OnStateChanged += UpdateButtonColor;
+        
     }
 
     public void UpdateStatusIcon(KitchenState newState)
     {
         int index = newState.SelectedTestCase;
 
-        TestStatus status = kitchen.KitchenState.TestCaseStatus[index];
+        TestStatus status = Kitchen.KitchenState.TestCaseStatus[index];
 
         GameObject order = this.gameObject.transform.Find($"Order {index + 1}").gameObject;
         GameObject display = order.transform.Find("Display").gameObject;
@@ -83,8 +86,17 @@ public class UpdateOrderStatus : MonoBehaviour
 
     }
 
+    public void LockUnlockTextEditor(KitchenState newState)
+    {
+        int index = newState.SelectedTestCase;
+        TestStatus status = Kitchen.KitchenState.TestCaseStatus[index];
+
+        TextEditor.disableInput = status == TestStatus.Running;
+    }    
+
     public void OnDestroy()
     {
-        kitchen.OnStateChanged -= UpdateStatusIcon;
+        Kitchen.OnStateChanged -= UpdateStatusIcon;
+        Kitchen.OnStateChanged -= LockUnlockTextEditor;
     }
 }
