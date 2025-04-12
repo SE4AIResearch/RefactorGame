@@ -5,29 +5,17 @@ using UnityEngine.SceneManagement;
 
 public class Navigation : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void LoadScene(string sceneName)
+    static public void LoadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
     }
 
-    public void LoadLevelSelect()
+    static public void LoadLevelSelect()
     {
         LoadScene("LevelSelect");
     }
 
-    public void QuitGame()
+    static public void QuitGame()
     {
 #if (UNITY_EDITOR)
         UnityEditor.EditorApplication.isPlaying = false;
