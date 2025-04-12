@@ -10,6 +10,11 @@ public class Navigation : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
+    static public void LoadMainMenu()
+    {
+        LoadScene("MainMenu");
+    }
+
     static public void LoadLevelSelect()
     {
         LoadScene("LevelSelect");

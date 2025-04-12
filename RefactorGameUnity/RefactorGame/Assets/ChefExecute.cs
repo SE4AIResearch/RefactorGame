@@ -81,14 +81,6 @@ public class ChefExecute : MonoBehaviour
 
     public void Execute(List<UnityPackage> actions, int numOfStatements)
     {
-        if (actions == null)
-        {
-            Kitchen.UpdateTestCaseStatus(TestStatus.Failed);
-            textEditor.disableInput = false;
-            Debug.Log("Compilation failed...");
-            return;
-        }
-
         Kitchen.UpdateTestCaseStatus(TestStatus.Running);
         Actions = actions;
         executing = true;
