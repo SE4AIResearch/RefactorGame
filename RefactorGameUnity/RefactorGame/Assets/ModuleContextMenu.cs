@@ -18,6 +18,18 @@ public class ModuleContextMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        foreach (Transform child in this.transform.Find("ModuleButtons"))
+        {   
+            try
+            {
+                child.Find("HowTo").gameObject.SetActive(false);
+            } 
+            catch
+            {
+                Debug.Log(child.name + "didn't have a HowTo");
+            }
+        }
+
         CloseMenu(true);
     }
 
@@ -53,9 +65,10 @@ public class ModuleContextMenu : MonoBehaviour
         if (HowTo != null)
         {
             HowTo.SetActive(false);
-            HowTo = this.transform.Find("ModuleButtons").Find(module.Module).Find("HowTo").gameObject;
-            HowTo.SetActive(true);
         }
+
+        HowTo = this.transform.Find("ModuleButtons").Find(module.Module).Find("HowTo").gameObject;
+        HowTo.SetActive(true);
 
         this.transform.Find("ModuleName").GetComponent<TextMeshProUGUI>().text = module.Module;
     }

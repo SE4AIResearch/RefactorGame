@@ -18,7 +18,7 @@ public class PuzzleLoader : MonoBehaviour
     void Start()
     {
         SaveData.LoadGame();
-        LoadPuzzleFromName(LevelLoader.GetPuzzleName() ?? "OneSoupTwoSoup");
+        LoadPuzzleFromName(LevelLoader.GetPuzzleName() ?? "AllOverThePlace");
     }
 
     // Update is called once per frame
