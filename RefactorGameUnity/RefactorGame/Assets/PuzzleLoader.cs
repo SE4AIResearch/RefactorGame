@@ -2,6 +2,7 @@ using RefactorLang;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using TMPro;
 using Unity.VisualScripting;
@@ -46,31 +47,30 @@ public class PuzzleLoader : MonoBehaviour
 
         kitchenState.KitchenState = new KitchenState(puzzle);
 
-        if (SaveData.LoadedGame.Solutions.TryGetValue(puzzle.Name, out string solution) && !original)
+        if (SaveData.LoadedGame.Solutions.TryGetValue(puzzle.Name, out Solution solution) && solution != null && !original)
         {
-            editor.Text = solution;
+            editor.Text = solution.Text;
+            kitchenState.KitchenState.Stations = solution.Stations.Select(x => x.ConvertToStation()).ToList();
             kitchenState.LastSolution = solution;
         }
         else if (puzzle.Name == "R&D: All Together Now")
         {
-            string sol = SaveData.LoadedGame.Solutions["R&D: Soup on Soup"];
+            string sol = SaveData.LoadedGame.Solutions["R&D: Soup on Soup"].Text;
             editor.Text = sol;
-            kitchenState.LastSolution = sol;
+            kitchenState.LastSolution.Text = sol;
         }
         else if (puzzle.Name == "R&D: One More Soup")
         {
             string sol = "func take_order(order) {\r\n\tif (order == \"Tomato Soup\") {\r\n\t\tmake_soup(\"Tomato\")\r\n\t}\r\n\telse {\r\n\t\tmake_soup(\"Squash\")\r\n\t}\r\n}\r\n\r\n"
-                + SaveData.LoadedGame.Solutions["R&D: All Together Now"];
+                + SaveData.LoadedGame.Solutions["R&D: All Together Now"].Text;
 
             editor.Text = sol;
-            kitchenState.LastSolution = sol;
+            kitchenState.LastSolution.Text = sol;
         }
         else
         {
             editor.Text = starterCode;
-            kitchenState.LastSolution = starterCode;
         }
-            
 
         kitchenState.LoadedPuzzle = puzzle;
 

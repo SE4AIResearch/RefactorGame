@@ -1,7 +1,9 @@
+using Newtonsoft.Json;
 using RefactorLang;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/CurrentKitchenState")]
@@ -13,7 +15,7 @@ public class CurrentKitchenState : ScriptableObject
 
     public bool LevelComplete = false;
 
-    public string LastSolution = "placeholder";
+    public Solution LastSolution;
 
     public List<string> Definitions = new List<string>();
 
@@ -71,5 +73,24 @@ public class CurrentKitchenState : ScriptableObject
             KitchenState.TestCaseStatus[i] = TestStatus.NotRun;
         }
         OnStateChanged.Invoke(KitchenState);
+    }
+}
+
+public class Solution
+{
+    public string Text { get; set; }
+    public List<StationSignature> Stations { get; set; }
+
+    [JsonConstructor]
+    public Solution(string text, List<StationSignature> stations)
+    {
+        Text = text;
+        Stations = stations;
+    }
+
+    public Solution(string text, List<Station> stations)
+    {
+        Text = text;
+        Stations = stations.Select(x => x.CreateSignature()).ToList();
     }
 }

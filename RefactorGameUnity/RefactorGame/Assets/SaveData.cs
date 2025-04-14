@@ -6,9 +6,9 @@ using Newtonsoft.Json;
 
 public class GameData
 {
-    public int NumLevelsUnlocked = 1;
+    public int NumLevelsUnlocked { get; set; } = 1;
     
-    public Dictionary<string, string> Solutions = new ();
+    public Dictionary<string, Solution> Solutions { get; set; } = new ();
 } 
 
 public static class SaveData
@@ -22,7 +22,7 @@ public static class SaveData
     {
         if (DISABLE) return;
 
-        File.WriteAllText(saveFilePath, JsonConvert.SerializeObject(LoadedGame));
+        File.WriteAllText(saveFilePath, JsonConvert.SerializeObject(LoadedGame, Formatting.Indented));
     }
 
     public static void LoadGame()
