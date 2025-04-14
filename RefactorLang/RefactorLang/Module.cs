@@ -110,7 +110,7 @@ namespace RefactorLang
     public class None : ArrayModule
     {
         public None(string name) : base(name) { }
-        public override int Size { get; } = 1;
+        public override int Size { get; } = 0;
 
         public override void Activate()
         {

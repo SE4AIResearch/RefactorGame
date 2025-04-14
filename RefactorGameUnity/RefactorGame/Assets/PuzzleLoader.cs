@@ -14,6 +14,7 @@ public class PuzzleLoader : MonoBehaviour
     public InGameTextEditor.TextEditor editor;
     public GameObject StoryPopUp;
     public LineCounter Constraints;
+    public AdditionalConstraintCounter AdditionalConstraints;
 
     // Start is called before the first frame update
     void Start()
@@ -77,6 +78,7 @@ public class PuzzleLoader : MonoBehaviour
         kitchenState.Definitions = puzzle.DictionaryItems;
 
         Constraints.CheckLines(starterCode);
+        AdditionalConstraints.DisplayAdditionalConstraint(kitchenState.KitchenState);
 
         StoryPopUp.transform.Find("Title").GetComponent<TextMeshProUGUI>().text = puzzle.Name;
         StoryPopUp.transform.Find("Description").Find("Text").GetComponent<TextMeshProUGUI>().text = puzzle.StoryPrompt;
