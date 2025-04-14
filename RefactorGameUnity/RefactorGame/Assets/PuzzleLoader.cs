@@ -57,6 +57,14 @@ public class PuzzleLoader : MonoBehaviour
             editor.Text = sol;
             kitchenState.LastSolution = sol;
         }
+        else if (puzzle.Name == "R&D: One More Soup")
+        {
+            string sol = "func take_order(order) {\r\n\tif (order == \"Tomato Soup\") {\r\n\t\tmake_soup(\"Tomato\")\r\n\t}\r\n\telse {\r\n\t\tmake_soup(\"Squash\")\r\n\t}\r\n}\r\n\r\n"
+                + SaveData.LoadedGame.Solutions["R&D: All Together Now"];
+
+            editor.Text = sol;
+            kitchenState.LastSolution = sol;
+        }
         else
         {
             editor.Text = starterCode;

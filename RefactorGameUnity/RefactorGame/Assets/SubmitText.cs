@@ -21,6 +21,7 @@ public class SubmitText : MonoBehaviour
     public void OnSubmit()
     {        
         var text = textEditor.Text;
+        Kitchen.LastSolution = text;
 
         compiler.Compile(text);
 
@@ -38,7 +39,6 @@ public class SubmitText : MonoBehaviour
             case CompilationStatus.Success:
                 chef.GetComponent<ChefExecute>().Execute(compiler.OutputLog, compiler.NumOfStatements);
                 Constraints.CheckLines();
-                Kitchen.LastSolution = text;
                 break;
         }
     }

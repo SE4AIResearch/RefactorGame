@@ -23,7 +23,11 @@ public class LevelSelectHandler : MonoBehaviour
         "RAndDAllTogetherNow",
         "RAndDOneMoreSoup",
         "TakeTwo",
-        "BuildABurger"
+        "BuildABurger",
+        "PuttingThePiecesTogether",
+        "AllOverThePlace",
+        "ATightShift",
+        "ParameterOverload"
     };
 
     public event Action<int> OnSelectedLevelChanged;
