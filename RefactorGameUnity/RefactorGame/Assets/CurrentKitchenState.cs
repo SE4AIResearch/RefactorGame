@@ -1,9 +1,11 @@
 using Newtonsoft.Json;
+using ParserLibrary;
 using RefactorLang;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/CurrentKitchenState")]
@@ -33,9 +35,9 @@ public class CurrentKitchenState : ScriptableObject
 
     public Puzzle LoadedPuzzle;
 
-    public void FinishTestWithStatus(TestStatus status, int numOfStatements)
+    public void FinishTestWithStatus(TestStatus status, string text, CompilationStats compilationStats)
     {
-        if ((!ApplyConstraints(numOfStatements) || !ApplyAdditionalConstraints()) && status.Equals(TestStatus.Passed))
+        if ((!ApplyConstraints(compilationStats.NumStmts) || !ApplyAdditionalConstraints(text, compilationStats)) && status.Equals(TestStatus.Passed))
         {
             UpdateTestCaseStatus(TestStatus.Warning);
             return;
@@ -44,7 +46,7 @@ public class CurrentKitchenState : ScriptableObject
         UpdateTestCaseStatus(status);
     }
 
-    private bool ApplyAdditionalConstraints()
+    private bool ApplyAdditionalConstraints(string text, CompilationStats compilationStats)
     {
         switch (LoadedPuzzle.Constraints.AdditionalConstraint)
         {
@@ -54,6 +56,19 @@ public class CurrentKitchenState : ScriptableObject
                 break;
             case "IndustrialKitchen":
                 if (!CurrentKitchenState.ApplyIndustrialKitchen(_state))
+                    return false;
+                break;
+            case "LessParams":
+                if (compilationStats.NumParams > 3)
+                    return false;
+                break;
+            case "maxFiveLinesPerMethodMaxSevenMethods":
+                if (compilationStats.NumFDecls < 6)
+                    return false;
+                break;
+            case "maxOneIfComparison":
+                Regex Regex = new("^(?!.*(\\|\\||&&| and | or )).*$");
+                if (!Regex.IsMatch(text))
                     return false;
                 break;
         }

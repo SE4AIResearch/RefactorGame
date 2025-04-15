@@ -15,6 +15,7 @@ public class PuzzleLoader : MonoBehaviour
     public GameObject StoryPopUp;
     public LineCounter Constraints;
     public AdditionalConstraintCounter AdditionalConstraints;
+    public ScriptCompiler Compiler;
     public GameObject Loader;
 
     // Start is called before the first frame update
@@ -80,8 +81,11 @@ public class PuzzleLoader : MonoBehaviour
         DictionaryState.Current.UnlockDefinitions(puzzle.DictionaryItems);
         Loader.GetComponent<LoadDictionary>().Reload();
 
+        Compiler.Compile(starterCode);
+
         Constraints.CheckLines(starterCode);
         AdditionalConstraints.DisplayAdditionalConstraint(kitchenState.KitchenState);
+        AdditionalConstraints.DisplayAdditionalConstraint(starterCode, Compiler.CompilationStats);
 
         StoryPopUp.transform.Find("Title").GetComponent<TextMeshProUGUI>().text = puzzle.Name;
         StoryPopUp.transform.Find("Description").Find("Text").GetComponent<TextMeshProUGUI>().text = puzzle.StoryPrompt;

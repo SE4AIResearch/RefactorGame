@@ -17,6 +17,7 @@ public class SubmitText : MonoBehaviour
     public GameObject chef;
     public ScriptCompiler compiler;
     public LineCounter Constraints;
+    public AdditionalConstraintCounter AdditionalConstraintCounter;
     public CurrentKitchenState Kitchen;
 
     public void OnSubmit()
@@ -30,7 +31,7 @@ public class SubmitText : MonoBehaviour
         {
             case CompilationStatus.CompilationError:
                 this.transform.parent.parent.Find("ActionDisplay").GetComponent<TextMeshProUGUI>().text = compiler.Message;
-                Kitchen.FinishTestWithStatus(TestStatus.Failed, 0);
+                Kitchen.FinishTestWithStatus(TestStatus.Failed, text, null);
                 break;
 
             case CompilationStatus.RuntimeError or CompilationStatus.CompilationError:
@@ -38,8 +39,9 @@ public class SubmitText : MonoBehaviour
                 goto case CompilationStatus.Success;
 
             case CompilationStatus.Success:
-                chef.GetComponent<ChefExecute>().Execute(compiler.OutputLog, compiler.CompilationStats.NumStmts);
+                chef.GetComponent<ChefExecute>().Execute(compiler.OutputLog, text, compiler.CompilationStats);
                 Constraints.CheckLines();
+                AdditionalConstraintCounter.DisplayAdditionalConstraint(text, compiler.CompilationStats);
                 break;
         }
     }

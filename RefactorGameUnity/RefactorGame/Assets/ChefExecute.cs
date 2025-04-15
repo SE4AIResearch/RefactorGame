@@ -1,3 +1,4 @@
+using ParserLibrary;
 using RefactorLang;
 using System;
 using System.Collections;
@@ -18,8 +19,9 @@ public class ChefExecute : MonoBehaviour
     private List<UnityPackage> Actions;
     private bool executing = false;
     private float timer = 0;
+    private string text;
 
-    private int numOfStatements;
+    private CompilationStats CompilationStats;
 
     // Start is called before the first frame update
     void Start()
@@ -61,11 +63,11 @@ public class ChefExecute : MonoBehaviour
                 break;
 
             case UnityAction.Success:
-                Kitchen.FinishTestWithStatus(TestStatus.Passed, numOfStatements);
+                Kitchen.FinishTestWithStatus(TestStatus.Passed, text, CompilationStats);
                 break;
 
             case UnityAction.Failure:
-                Kitchen.FinishTestWithStatus(TestStatus.Failed, numOfStatements);
+                Kitchen.FinishTestWithStatus(TestStatus.Failed, text, CompilationStats);
                 break;
 
             default:
@@ -79,18 +81,19 @@ public class ChefExecute : MonoBehaviour
             executing = false;
     }
 
-    public void Execute(List<UnityPackage> actions, int numOfStatements)
+    public void Execute(List<UnityPackage> actions, string text, CompilationStats compilationStats)
     {
         Kitchen.UpdateTestCaseStatus(TestStatus.Running);
         Actions = actions;
         executing = true;
         timer = 1;
-        this.numOfStatements = numOfStatements;
+        this.text = text;
+        this.CompilationStats = compilationStats;
     }
 
     public void StopExecution()
     {
-        Kitchen.FinishTestWithStatus(TestStatus.NotRun, numOfStatements);
+        Kitchen.FinishTestWithStatus(TestStatus.NotRun, text, CompilationStats);
         executing = false;
         Actions = null;
     }
