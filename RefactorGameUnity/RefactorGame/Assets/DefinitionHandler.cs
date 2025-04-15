@@ -40,6 +40,12 @@ public class DefinitionHandler : MonoBehaviour
         return dictionary[definition];
     }
 
+    public void DisplayDefinition(DefinitionSignature definition)
+    {
+        SetIcon(definition);
+        SetText(definition);
+    }
+
     public void DisplayDefinition(string key)
     {
         var definition = LoadDefinition(key);
