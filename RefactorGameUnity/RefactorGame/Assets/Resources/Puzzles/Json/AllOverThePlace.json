@@ -45,5 +45,5 @@
     "additionalConstraint": "none"
   },
   "storyPrompt": "One day, Watson, in a rush to cross the kitchen, knocks me facedown onto the floor. \"Geez, Watz, you coulda killed me!\" Groaning and staggering to my feet, I realize I haven't been taking advantage of Refactoria's highly configurable kitchen modules.",
-  "dictionaryItems": []
+  "dictionaryItems": ["featureEnvy", "moveMethod"]
 }

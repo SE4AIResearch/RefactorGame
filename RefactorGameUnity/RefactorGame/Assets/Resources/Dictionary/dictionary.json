@@ -12,7 +12,7 @@
     "type": "refactoring",
     "details": [
       "Simply delete the unnecessary code.",
-      "Can be used on Duplicate Code, Speculative Generality."
+      "Can be used on Duplicate Code, Speculative Generality, Alternative Classes with Different Interfaces, Long Parameter List."
     ]
   },
   "speculativeGenerality": {
@@ -52,6 +52,45 @@
     "details": [
       "A method that is too long to understand easily.",
       "Can be fixed with Extract Method."
+    ]
+  },
+  "featureEnvy": {
+    "name": "Feature Envy",
+    "type": "smell",
+    "details": [
+      "Data changed at the same time is not kept in the same place.",
+      "Can be fixed with Move Method."
+    ]
+  },
+  "moveMethod": {
+    "name": "Move Method",
+    "type": "refactoring",
+    "details": [
+      "Move operations so that similar changes happen in the same place.",
+      "Can be used on Feature Envy." 
+    ]
+  },
+  "alternativeClassesWithDifferentInterfaces": {
+    "name": "Alternative Classes with Different Interfaces",
+    "type": "smell",
+    "details": [
+      "Two classes perform the same function.",
+      "Can be fixed with Add Parameter, Code Deletion." 
+    ]
+  },
+  "addParameter": {
+    "name": "Add Parameter",
+    "type": "refactoring",
+    "details": [
+      "If a method doesn’t have enough data to perform an operation, add a new parameter.", 
+      "Can be used on Alternative Classes with Different Interfaces." 
+    ]
+  },
+  "longParameterList": {
+    "name": "Long Parameter List",
+    "type": "smell",
+    "details": [
+      "A method has too many parameters to be readable."
     ]
   }
 }
