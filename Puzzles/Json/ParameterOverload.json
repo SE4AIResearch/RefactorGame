@@ -38,5 +38,5 @@
     "maxActions": -1,
     "additionalConstraint": "LessParams"
   },
-  "storyPrompt": "Well, I’ll give the old chef one thing. He certainly made attempts to streamline the code. But we went too far with parameterizing this recipe. Perhaps I can salvage it."
+  "storyPrompt": "Well, I’ll give the old chef one thing. He certainly made attempts to streamline the code. But we went too far with parameterizing this recipe. Perhaps I can salvage it. Please reduce the total number of method parameters in the code."
 }
