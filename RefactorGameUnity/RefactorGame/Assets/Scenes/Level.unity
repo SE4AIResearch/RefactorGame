@@ -4370,6 +4370,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Overlay: {fileID: 1655644041}
+  CurrentKitchenState: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
 --- !u!114 &364619838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4519,6 +4520,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Overlay: {fileID: 1655644041}
+  CurrentKitchenState: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
 --- !u!1 &387998280
 GameObject:
   m_ObjectHideFlags: 0
@@ -6000,6 +6002,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Dictionary: {fileID: 1927455529}
   Overlay: {fileID: 1655644041}
+  HideOverlay: 0
+  CurrentKitchenState: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
 --- !u!1 &538197126
 GameObject:
   m_ObjectHideFlags: 0
@@ -11070,7 +11074,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   KitchenState: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
-  NumOfStatements: 0
   Status: 0
   Message: 
 --- !u!1 &993938607
@@ -13150,6 +13153,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Dictionary: {fileID: 1927455529}
   Overlay: {fileID: 1655644041}
+  HideOverlay: 0
+  CurrentKitchenState: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
 --- !u!1 &1158344187
 GameObject:
   m_ObjectHideFlags: 0
@@ -14419,6 +14424,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Overlay: {fileID: 1655644041}
+  CurrentKitchenState: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
 --- !u!1 &1270111830
 GameObject:
   m_ObjectHideFlags: 0

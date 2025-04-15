@@ -38,7 +38,7 @@ public class SubmitText : MonoBehaviour
                 goto case CompilationStatus.Success;
 
             case CompilationStatus.Success:
-                chef.GetComponent<ChefExecute>().Execute(compiler.OutputLog, compiler.NumOfStatements);
+                chef.GetComponent<ChefExecute>().Execute(compiler.OutputLog, compiler.CompilationStats.NumStmts);
                 Constraints.CheckLines();
                 break;
         }

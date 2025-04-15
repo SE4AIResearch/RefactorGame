@@ -19,7 +19,7 @@ public class ScriptCompiler : MonoBehaviour
     public CurrentKitchenState KitchenState;
 
     public List<UnityPackage> OutputLog;
-    public int NumOfStatements;
+    public CompilationStats CompilationStats;
     public CompilationStatus Status;
     public string Message;
 
@@ -27,7 +27,7 @@ public class ScriptCompiler : MonoBehaviour
     {
         List<Token> tokens = Tokenizer.TokenizeLine(input);
 
-        Tuple<Grammar.prog, int> compilationResult;
+        Tuple<Grammar.prog, CompilationStats> compilationResult;
 
         try
         {
@@ -62,6 +62,6 @@ public class ScriptCompiler : MonoBehaviour
         }
 
         OutputLog = interpreter.OutputLog;
-        NumOfStatements = compilationResult.Item2;
+        CompilationStats = compilationResult.Item2;
     }
 }

@@ -36,6 +36,6 @@ public class LineCounter : MonoBehaviour
     {
         Compiler.Compile(text);
 
-        GetComponent<TextMeshProUGUI>().text = Compiler.NumOfStatements + "/" + CurrentKitchenState.LoadedPuzzle.Constraints.MaxStatements;
+        GetComponent<TextMeshProUGUI>().text = Compiler.CompilationStats.NumStmts + "/" + CurrentKitchenState.LoadedPuzzle.Constraints.MaxStatements;
     }
 }

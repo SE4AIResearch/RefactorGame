@@ -8,18 +8,20 @@ using Image = UnityEngine.UI.Image;
 public class StoryPromptHandler : MonoBehaviour
 {
     public GameObject Overlay;
+    public CurrentKitchenState CurrentKitchenState;
 
     // Start is called before the first frame update
     void Start()
     {
         this.gameObject.SetActive(true);
         Overlay.SetActive(true);
+        CurrentKitchenState.ContextMenuUp = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Overlay.activeSelf) CurrentKitchenState.ContextMenuUp = true;
     }
 
     public void OnHover(GameObject Screen)
@@ -43,10 +45,12 @@ public class StoryPromptHandler : MonoBehaviour
 
         Screen.SetActive(true);
         Overlay.SetActive(true);
+        CurrentKitchenState.ContextMenuUp = true;
     }
 
     public void Close(GameObject Screen) {
         Screen.SetActive(false);
         Overlay.SetActive(false);
+        CurrentKitchenState.ContextMenuUp = false;
     }
 }

@@ -8,6 +8,7 @@ public class DictionaryButtonHandler : MonoBehaviour
     public GameObject Dictionary;
     public GameObject Overlay;
     public bool HideOverlay = false;
+    public CurrentKitchenState CurrentKitchenState;
 
     // Start is called before the first frame update
     void Start()
@@ -28,11 +29,13 @@ public class DictionaryButtonHandler : MonoBehaviour
     {
         Dictionary.SetActive(true);
         Overlay.SetActive(true);
+        CurrentKitchenState.ContextMenuUp = true;
     }
 
     public void HideDictionary()
     {
         Dictionary.SetActive(false);
         Overlay.SetActive(false);
+        CurrentKitchenState.ContextMenuUp = false;
     }
 }
