@@ -15,6 +15,7 @@ public class PuzzleLoader : MonoBehaviour
     public GameObject StoryPopUp;
     public LineCounter Constraints;
     public AdditionalConstraintCounter AdditionalConstraints;
+    public GameObject Loader;
 
     // Start is called before the first frame update
     void Start()
@@ -76,6 +77,8 @@ public class PuzzleLoader : MonoBehaviour
         kitchenState.LoadedPuzzle = puzzle;
 
         kitchenState.Definitions = puzzle.DictionaryItems;
+        DictionaryState.Current.UnlockDefinitions(puzzle.DictionaryItems);
+        Loader.GetComponent<LoadDictionary>().Reload();
 
         Constraints.CheckLines(starterCode);
         AdditionalConstraints.DisplayAdditionalConstraint(kitchenState.KitchenState);

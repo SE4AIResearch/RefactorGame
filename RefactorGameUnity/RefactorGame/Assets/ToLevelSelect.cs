@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using RefactorLang;
+using System.Linq;
 
 public class ToLevelSelect : MonoBehaviour
 {
@@ -18,6 +20,8 @@ public class ToLevelSelect : MonoBehaviour
             SaveData.LoadedGame.Solutions.Add(Kitchen.LoadedPuzzle.Name, Kitchen.LastSolution);
         else
             SaveData.LoadedGame.Solutions[Kitchen.LoadedPuzzle.Name] = Kitchen.LastSolution;
+
+        SaveData.LoadedGame.DefinitionsUnlocked = DictionaryState.Current.UnlockedDefinitions;
 
         SaveData.SaveGame();
 

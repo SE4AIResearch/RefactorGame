@@ -29,13 +29,13 @@ public class DictionaryButtonHandler : MonoBehaviour
     {
         Dictionary.SetActive(true);
         Overlay.SetActive(true);
-        CurrentKitchenState.ContextMenuUp = true;
+        if (CurrentKitchenState != null) { CurrentKitchenState.ContextMenuUp = true; }
     }
 
     public void HideDictionary()
     {
         Dictionary.SetActive(false);
         Overlay.SetActive(false);
-        CurrentKitchenState.ContextMenuUp = false;
+        if (CurrentKitchenState != null) { CurrentKitchenState.ContextMenuUp = false; }
     }
 }

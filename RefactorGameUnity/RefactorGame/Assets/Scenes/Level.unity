@@ -15296,6 +15296,7 @@ MonoBehaviour:
   StoryPopUp: {fileID: 364619835}
   Constraints: {fileID: 1893209855}
   AdditionalConstraints: {fileID: 1906983541}
+  Loader: {fileID: 1927455529}
 --- !u!4 &1444280683
 Transform:
   m_ObjectHideFlags: 0

@@ -9,6 +9,8 @@ public class GameData
     public int NumLevelsUnlocked { get; set; } = 1;
     
     public Dictionary<string, Solution> Solutions { get; set; } = new ();
+
+    public List<string> DefinitionsUnlocked { get; set; } = new ();
 } 
 
 public static class SaveData

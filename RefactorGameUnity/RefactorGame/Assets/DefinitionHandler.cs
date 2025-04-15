@@ -12,16 +12,16 @@ public class DefinitionHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    public static List<DefinitionSignature> LoadAllDefinitions()
+    public static List<DefinitionSignature> LoadDefinitions()
     {
         var json = Resources.Load<TextAsset>("Dictionary/dictionary");
         var dictionary = JsonSerializer.Deserialize<Dictionary<string, DefinitionSignature>>(json.text);
@@ -33,6 +33,18 @@ public class DefinitionHandler : MonoBehaviour
         return definitions;
     }
 
+    public static List<string> DefinitionKeys()
+    {
+        var json = Resources.Load<TextAsset>("Dictionary/dictionary");
+        var dictionary = JsonSerializer.Deserialize<Dictionary<string, DefinitionSignature>>(json.text);
+        var definitions = new List<string>();
+        foreach (var definition in dictionary)
+        {
+            definitions.Add(definition.Key);
+        }
+        return definitions;
+    }
+
     private DefinitionSignature LoadDefinition(string definition)
     {
         var json = Resources.Load<TextAsset>("Dictionary/dictionary");
@@ -40,50 +52,59 @@ public class DefinitionHandler : MonoBehaviour
         return dictionary[definition];
     }
 
-    public void DisplayDefinition(DefinitionSignature definition)
-    {
-        SetIcon(definition);
-        SetText(definition);
-    }
-
     public void DisplayDefinition(string key)
     {
         var definition = LoadDefinition(key);
-        SetIcon(definition);
-        SetText(definition);
+        SetIcon(key, definition.Type);
+        SetText(key, definition);
     }
 
-    private void SetIcon(DefinitionSignature definition)
+    private void SetIcon(string key, string type)
     {
         var image = this.transform.Find("Icon").GetComponent<Image>();
 
         string path = "Graphics/Dictionary/";
-        switch (definition.Type)
+
+        if (DictionaryState.Current.IsLocked(key))
         {
-            case "smell":
-                path += "codeSmellIcon";
-                break;
+            path += "lockedIcon";
 
-            case "refactoring":
-                path += "refactorTechniqueIcon";
-                break;
+        }
+        else if (type.Equals("smell"))
+        {
+            path += "codeSmellIcon";
 
-            default:
-                path += "lockedIcon";
-                break;
+        }
+        else if (type.Equals("refactoring"))
+        {
+            path += "refactorTechniqueIcon";
+
+        }
+        else
+        {
+            path += "lockedIcon";
         }
 
         Sprite icon = Resources.Load<Sprite>(path);
         image.sprite = icon;
     }
 
-    private void SetText(DefinitionSignature definition)
+    private void SetText(string key, DefinitionSignature definition)
     {
         var description = this.transform.Find("Description");
         var name = description.Find("Name").GetComponent<TextMeshProUGUI>();
         var details = description.Find("Details").GetComponent<TextMeshProUGUI>();
 
-        name.text = definition.Name;
-        details.text = string.Join(" ", definition.Details);
+
+        if (DictionaryState.Current.IsLocked(key))
+        {
+            name.text = "???";
+            details.text = "Play more to discover this method.";
+        }
+        else
+        {
+            name.text = definition.Name;
+            details.text = string.Join(" ", definition.Details);
+        }
     }
 }
