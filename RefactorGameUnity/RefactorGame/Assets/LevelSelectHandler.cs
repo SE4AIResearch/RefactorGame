@@ -88,10 +88,10 @@ public class LevelSelectHandler : MonoBehaviour
             case int n when (n >= 0 && n <= 4):
                 return 2f;
 
-            case int n when (n >= 5 && n <= 9):
+            case int n when (n >= 5 && n <= 10):
                 return -2.5f;
 
-            case int n when (n >= 10 && n <= 11):
+            case int n when (n >= 11 && n <= 13):
                 return 2f;
 
             default:
