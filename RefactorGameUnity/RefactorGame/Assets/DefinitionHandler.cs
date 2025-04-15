@@ -21,11 +21,29 @@ public class DefinitionHandler : MonoBehaviour
         
     }
 
+    public static List<DefinitionSignature> LoadAllDefinitions()
+    {
+        var json = Resources.Load<TextAsset>("Dictionary/dictionary");
+        var dictionary = JsonSerializer.Deserialize<Dictionary<string, DefinitionSignature>>(json.text);
+        var definitions = new List<DefinitionSignature>();
+        foreach (var definition in dictionary)
+        {
+            definitions.Add(definition.Value);
+        }
+        return definitions;
+    }
+
     private DefinitionSignature LoadDefinition(string definition)
     {
         var json = Resources.Load<TextAsset>("Dictionary/dictionary");
         var dictionary = JsonSerializer.Deserialize<Dictionary<string, DefinitionSignature>>(json.text);
         return dictionary[definition];
+    }
+
+    public void DisplayDefinition(DefinitionSignature definition)
+    {
+        SetIcon(definition);
+        SetText(definition);
     }
 
     public void DisplayDefinition(string key)

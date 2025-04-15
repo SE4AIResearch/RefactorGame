@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6904844717359589066}
   - component: {fileID: 4558204023489141403}
   - component: {fileID: 8769832944655517779}
-  - component: {fileID: 2145545604245767347}
   m_Layer: 5
   m_Name: Details
   m_TagString: Untagged
@@ -33,10 +32,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 7040468772500933367}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 197.69435, y: -57.844997}
-  m_SizeDelta: {x: 381.3887, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 498.57, y: 99.0611}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4558204023489141403
 CanvasRenderer:
@@ -66,8 +65,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: The same code is found in two or more places. Can be fixed with Extract
-    Method.
+  m_text: Take similar code that appears more than once and make a new method. Replace
+    this code with calls to the new method. Can be used on Long Method, Shotgun Surgery,
+    Switch Statement Misuse.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -136,20 +136,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &2145545604245767347
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1269515491788148724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 0
-  m_VerticalFit: 2
 --- !u!1 &3643622465297012100
 GameObject:
   m_ObjectHideFlags: 0
@@ -161,6 +147,7 @@ GameObject:
   - component: {fileID: 3320622020313927124}
   - component: {fileID: 1525941672563266272}
   - component: {fileID: 8471784133922470217}
+  - component: {fileID: 4587455005533005496}
   m_Layer: 5
   m_Name: Definition
   m_TagString: Untagged
@@ -187,7 +174,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 497.90002, y: 766}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1525941672563266272
 MonoBehaviour:
@@ -219,7 +206,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: 2
+  m_Spacing: 7
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -227,6 +214,20 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
+--- !u!114 &4587455005533005496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3643622465297012100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 1
+  m_VerticalFit: 1
 --- !u!1 &5847455095009035122
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,7 +263,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 498.57, y: 25.955}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5342999053696133937
 CanvasRenderer:
@@ -388,7 +389,7 @@ RectTransform:
   m_GameObject: {fileID: 7348619930929456810}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.75252, y: 0.75252, z: 0.75252}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 3320622020313927124}
@@ -396,7 +397,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 130.7644, y: 130.7644}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2741911925236226691
 CanvasRenderer:
@@ -474,7 +475,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 395.3887, y: 100}
+  m_SizeDelta: {x: 517.0275, y: 130.7644}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6103155362135649279
 CanvasRenderer:
@@ -535,8 +536,8 @@ MonoBehaviour:
   m_Spacing: 0
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
-  m_ChildControlWidth: 1
-  m_ChildControlHeight: 1
-  m_ChildScaleWidth: 1
-  m_ChildScaleHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
