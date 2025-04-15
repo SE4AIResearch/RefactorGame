@@ -36,7 +36,10 @@ public class AdditionalConstraintCounter : MonoBehaviour
         switch (puzzle.Constraints.AdditionalConstraint)
         {
             case "LessModules":
-                CheckNumModules(newState);
+                CheckLessModules(newState);
+                break;
+            case "IndustrialKitchen": //TODO CHECK NAME OF CONSTRAINT
+                CheckIndustrialKitchen(newState);
                 break;
             default:
                 this.gameObject.SetActive(false);
@@ -44,10 +47,17 @@ public class AdditionalConstraintCounter : MonoBehaviour
         }
     }
 
-    private void CheckNumModules(KitchenState state)
+    private void CheckLessModules(KitchenState state)
     {
-        int moduleCount = state.Stations.Aggregate(0, (x, y) => x + y.Modules.Where(x => x.GetType().Name != "None").Count());
+        int moduleCount = CurrentKitchenState.ApplyLessModules(state);
 
-        GetComponent<TextMeshProUGUI>().text = moduleCount.ToString();
+        GetComponent<TextMeshProUGUI>().text = moduleCount + "/3";
+    }
+
+    private void CheckIndustrialKitchen(KitchenState state)
+    {
+        bool stationHasThreeModules = CurrentKitchenState.ApplyIndustrialKitchen(state);
+
+        GetComponent<TextMeshProUGUI>().text = "condition satisfied: " + !stationHasThreeModules;
     }
 }

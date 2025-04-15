@@ -35,13 +35,40 @@ public class CurrentKitchenState : ScriptableObject
 
     public void FinishTestWithStatus(TestStatus status, int numOfStatements)
     {
-        if (!ApplyConstraints(numOfStatements) && status.Equals(TestStatus.Passed))
+        if ((!ApplyConstraints(numOfStatements) || !ApplyAdditionalConstraints()) && status.Equals(TestStatus.Passed))
         {
             UpdateTestCaseStatus(TestStatus.Warning);
             return;
         }
 
         UpdateTestCaseStatus(status);
+    }
+
+    private bool ApplyAdditionalConstraints()
+    {
+        switch (LoadedPuzzle.Constraints.AdditionalConstraint)
+        {
+            case "LessModules":
+                if (CurrentKitchenState.ApplyLessModules(_state) > 3)
+                    return false;
+                break;
+            case "IndustrialKitchen":
+                if (!CurrentKitchenState.ApplyIndustrialKitchen(_state))
+                    return false;
+                break;
+        }
+
+        return true;
+    }
+
+    public static int ApplyLessModules(KitchenState state)
+    {
+        return state.Stations.Aggregate(0, (x, y) => x + y.Modules.Where(x => x.GetType().Name != "None").Count());
+    }
+
+    public static bool ApplyIndustrialKitchen(KitchenState state)
+    {
+        return state.Stations.Aggregate(false, (x, y) => x || y.Modules.Count() > 2);
     }
 
     private bool ApplyConstraints(int numOfStatements)
