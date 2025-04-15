@@ -17,7 +17,6 @@ namespace RefactorLangConsole
     {
         static void Main(string[] args)
         {
-            var x = DefinitionSignature.GenerateDictionary("C:\\Users\\dhvan\\source\\repos\\RefactorGame\\RefactorGameUnity\\RefactorGame\\Assets\\Resources\\Dictionary\\dictionary.json");
             TestMain();
         }
 
@@ -49,7 +48,7 @@ namespace RefactorLangConsole
             string result = RefactorLangParser.parseToString(ListModule.OfSeq(tokens));
             Console.WriteLine(result);
 
-            Tuple<Grammar.prog, int> compilationResult = RefactorLangParser.parseToProg(ListModule.OfSeq(tokens));
+            Tuple<Grammar.prog, CompilationStats> compilationResult = RefactorLangParser.parseToProg(ListModule.OfSeq(tokens));
 
             Console.WriteLine("STMT COUNT: " + compilationResult.Item2);
 

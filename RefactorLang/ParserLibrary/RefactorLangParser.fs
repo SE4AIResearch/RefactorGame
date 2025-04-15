@@ -5,11 +5,19 @@ open Grammar
 open Parser
 open RefactorLangParserLib
 
+type CompilationStats = {
+    NumStmts: int
+    NumParams: int
+    NumFDecls: int
+}
+
 module RefactorLangParser =
     let parseExp, parseExpRef = createParserForwardedToRef<exp>()
     let parseStmt, parseStmtRef = createParserForwardedToRef<stmt>()
 
     let mutable stmtCounter = 0
+    let mutable paramCounter = 0
+    let mutable fDeclCounter = 0
 
     parseExpRef.Value <-
         let retBinop (s: Symbol) (e: exp * exp -> binop) (p: prec): parser<prec * (exp -> exp -> exp)> = parseSymbol s >>. returnP (p, (fun x y -> Binop (e (x, y))))
@@ -78,7 +86,10 @@ module RefactorLangParser =
             betweenNewlines parseWhile |>> fun (exp, block) ->
                 stmtCounter <- (stmtCounter + 1)
                 While(exp, block)
-            betweenNewlines parseFDecl |>> fun ((id, ids), bl) -> FDecl(id, ids, bl)
+            betweenNewlines parseFDecl |>> fun ((id, ids), bl) -> 
+                fDeclCounter <- (fDeclCounter + 1)
+                paramCounter <- (paramCounter + ids.Length)
+                FDecl(id, ids, bl)
             betweenNewlines parseVDecl |>> fun (id, exp) ->
                 stmtCounter <- (stmtCounter + 1)
                 VDecl(id, exp)
@@ -94,14 +105,19 @@ module RefactorLangParser =
 
     let parseToString (tokens: List<Token>) : string = 
         stmtCounter <- 0
+        paramCounter <- 0
+        fDeclCounter <- 0
         let result = (run parseProg (convertSymbols tokens))
         sprintf "%s" (printResult result)
 
-    let parseToProg (tokens: List<Token>) : prog * int =
+    let parseToProg (tokens: List<Token>) : prog * CompilationStats =
         stmtCounter <- 0
+        paramCounter <- 0
+        fDeclCounter <- 0
         let result = (run parseProg (convertSymbols tokens))
+        let stats: CompilationStats = { NumStmts = stmtCounter; NumParams = paramCounter; NumFDecls = fDeclCounter }
         match (result) with
-        | Success (p, _) -> p, stmtCounter
+        | Success (p, _) -> p, stats
         | Failure (f1, f2) -> failwith "did not compile"
 
     let parseJustExp (tokens: List<Token>) =
