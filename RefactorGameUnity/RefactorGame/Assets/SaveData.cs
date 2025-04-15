@@ -20,6 +20,12 @@ public static class SaveData
 
     private readonly static bool DISABLE = false;
 
+    public static void DeleteSave()
+    {
+        File.Delete(saveFilePath);
+        LoadGame();
+    }
+
     public static void SaveGame()
     {
         if (DISABLE) return;
