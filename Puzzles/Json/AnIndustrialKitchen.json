@@ -1,0 +1,76 @@
+{
+  "name": "An Industrial Kitchen",
+  "difficulty": 3,
+  "testCases": [
+    [
+      "Chicken Tenders"
+    ],
+    [
+      "Chicken Tenders", 
+      "Chicken Tenders"
+    ],
+    [
+      "Barbecue Sauce Burger"
+    ],
+    [
+      "Fried Egg Burger"
+    ]
+  ],
+  "starterPantry": [
+    "Egg", 
+    "Loaf of Bread", 
+    "Loaf of Bread", 
+    "Pepper", 
+    "Raw Beef", 
+    "Raw Chicken", 
+    "Raw Chicken", 
+    "Sugar", 
+    "Tomato", 
+    "Vinegar"
+  ],
+  "starterCode": "AnIndustrialKitchen.txt",
+  "numOfStations": 2,
+  "modulesLocked": false,
+  "stations": [
+    {
+      "name": "Station 1",
+      "modules": [
+        {
+          "module": "Slicer",
+          "name": "A"
+        },
+        {
+          "module": "Grinder",
+          "name": "B"
+        },
+        {
+          "module": "BarbecueSaucer",
+          "name": "C"
+        }
+      ]
+    },
+    {
+      "name": "Station 2",
+      "modules": [
+        {
+          "module": "BurgerBuilder",
+          "name": "A"
+        },
+        {
+          "module": "Griddle",
+          "name": "B"
+        },
+        {
+          "module": "Fryer",
+          "name": "C"
+        }
+      ]
+    }
+  ],
+  "constraints": {
+    "maxStatements": 99,
+    "maxActions": -1,
+    "additionalConstraint": "maxTwoModulesPerStation"
+  },
+  "storyPrompt": "I'm really proud of Watson. Without his hard work, we never would have reached this point. I survey the kitchen and realize that he has an awful lot on his plate. I need to think of ways to break down and simplify his instructions.​"
+}

@@ -24,7 +24,6 @@ public class LevelSelectHandler : MonoBehaviour
         "RAndDOneMoreSoup",
         "TakeTwo",
         "BuildABurger",
-        "PuttingThePiecesTogether",
         "AllOverThePlace",
         "ATightShift",
         "ParameterOverload"
@@ -75,12 +74,11 @@ public class LevelSelectHandler : MonoBehaviour
     void Update()
     {
         Camera.transform.position = Vector3.Lerp(Camera.transform.position, CameraTarget, CameraSmoothSpeed);
+    }
 
-        //TODO: make this a click-menu thing
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            LevelLoader.LoadPuzzleScene(puzzleNames[SelectedLevel - 1]);
-        }
+    public void LoadSelectedLevel()
+    {
+        LevelLoader.LoadPuzzleScene(puzzleNames[SelectedLevel - 1]);
     }
 
     private float UpdateFactor(int index)

@@ -88,6 +88,13 @@ public class ChefExecute : MonoBehaviour
         this.numOfStatements = numOfStatements;
     }
 
+    public void StopExecution()
+    {
+        Kitchen.FinishTestWithStatus(TestStatus.NotRun, numOfStatements);
+        executing = false;
+        Actions = null;
+    }
+
     public void AddFoodItem(FoodItem item)
     {
         string assetPath = FoodItemGraphicPath(item);

@@ -20,7 +20,7 @@ public class CodeChangeHandler : MonoBehaviour
     void Update()
     {
         TextEditor editor = this.gameObject.transform.Find("TextEditor").GetComponent<TextEditor>();
-        if (kitchen.LastSolution.Equals(editor.Text))
+        if (kitchen.LastSolution != null && kitchen.LastSolution.Text.Equals(editor.Text))
         {
             return;
         }

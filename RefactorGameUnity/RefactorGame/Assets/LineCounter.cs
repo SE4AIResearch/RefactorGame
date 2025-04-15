@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using RefactorLang;
 
 public class LineCounter : MonoBehaviour
 {
@@ -14,6 +16,8 @@ public class LineCounter : MonoBehaviour
     {
         
     }
+
+    
 
     // Update is called once per frame
     void Update()

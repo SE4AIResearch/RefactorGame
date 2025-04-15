@@ -1,4 +1,4 @@
-﻿def pre_proc(ing, sta, mod) {​
+def pre_proc(ing, sta, mod) {​
   GOTO("Pantry")​
   GET(ing)​
   GOTO(sta)​

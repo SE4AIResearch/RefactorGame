@@ -72,12 +72,10 @@ namespace RefactorLang
                     File.Delete(fileName);
                 }
 
-                using (StreamWriter sw = File.CreateText(fileName))
-                {
-                    sw.Write(json);
+                using StreamWriter sw = File.CreateText(fileName);
+                sw.Write(json);
 
-                    Console.WriteLine($"Json file written to {fileName}");
-                }
+                Console.WriteLine($"Json file written to {fileName}");
             }
             catch (Exception Ex)
             {

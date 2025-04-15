@@ -1,7 +1,9 @@
+using Newtonsoft.Json;
 using RefactorLang;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/CurrentKitchenState")]
@@ -13,7 +15,7 @@ public class CurrentKitchenState : ScriptableObject
 
     public bool LevelComplete = false;
 
-    public string LastSolution = "placeholder";
+    public Solution LastSolution;
 
     public List<string> Definitions = new List<string>();
 
@@ -33,13 +35,40 @@ public class CurrentKitchenState : ScriptableObject
 
     public void FinishTestWithStatus(TestStatus status, int numOfStatements)
     {
-        if (!ApplyConstraints(numOfStatements) && status.Equals(TestStatus.Passed))
+        if ((!ApplyConstraints(numOfStatements) || !ApplyAdditionalConstraints()) && status.Equals(TestStatus.Passed))
         {
             UpdateTestCaseStatus(TestStatus.Warning);
             return;
         }
 
         UpdateTestCaseStatus(status);
+    }
+
+    private bool ApplyAdditionalConstraints()
+    {
+        switch (LoadedPuzzle.Constraints.AdditionalConstraint)
+        {
+            case "LessModules":
+                if (CurrentKitchenState.ApplyLessModules(_state) > 3)
+                    return false;
+                break;
+            case "IndustrialKitchen":
+                if (!CurrentKitchenState.ApplyIndustrialKitchen(_state))
+                    return false;
+                break;
+        }
+
+        return true;
+    }
+
+    public static int ApplyLessModules(KitchenState state)
+    {
+        return state.Stations.Aggregate(0, (x, y) => x + y.Modules.Where(x => x.GetType().Name != "None").Count());
+    }
+
+    public static bool ApplyIndustrialKitchen(KitchenState state)
+    {
+        return state.Stations.Aggregate(false, (x, y) => x || y.Modules.Count() > 2);
     }
 
     private bool ApplyConstraints(int numOfStatements)
@@ -71,5 +100,24 @@ public class CurrentKitchenState : ScriptableObject
             KitchenState.TestCaseStatus[i] = TestStatus.NotRun;
         }
         OnStateChanged.Invoke(KitchenState);
+    }
+}
+
+public class Solution
+{
+    public string Text { get; set; }
+    public List<StationSignature> Stations { get; set; }
+
+    [JsonConstructor]
+    public Solution(string text, List<StationSignature> stations)
+    {
+        Text = text;
+        Stations = stations;
+    }
+
+    public Solution(string text, List<Station> stations)
+    {
+        Text = text;
+        Stations = stations.Select(x => x.CreateSignature()).ToList();
     }
 }

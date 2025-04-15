@@ -17,6 +17,11 @@ namespace RefactorLang
             Name = name;
             Modules = modules;
         }
+
+        public StationSignature CreateSignature()
+        {
+            return new StationSignature(this.Name, this.Modules.Select(x => x.CreateSignature()).Where(x => x != null).ToList());
+        }
     }
 
     public abstract class Module
@@ -27,9 +32,9 @@ namespace RefactorLang
         public string Name { get; set; }
         public abstract int Size { get; }
 
-        public bool IsLocked { get; set; }
-
         public abstract void Activate();
+
+        public abstract ModuleSignature CreateSignature();
 
         public abstract void Place(FoodItem food, int slot);
 
@@ -95,18 +100,17 @@ namespace RefactorLang
             _slots = new FoodItem[Size];
         }
 
-        public ArrayModule(string name, bool isLocked = false)
+        public ArrayModule(string name)
         {
             _slots = new FoodItem[Size];
             Name = name;
-            IsLocked = isLocked;
         }
     }
 
     public class None : ArrayModule
     {
         public None(string name) : base(name) { }
-        public override int Size { get; } = 1;
+        public override int Size { get; } = 0;
 
         public override void Activate()
         {
@@ -116,6 +120,11 @@ namespace RefactorLang
         public override void Place(FoodItem food, int slot)
         {
             throw new ArgumentException("Cannot place, no module here");
+        }
+
+        public override ModuleSignature CreateSignature()
+        {
+            return null;
         }
     }
 
@@ -135,6 +144,11 @@ namespace RefactorLang
 
             Empty();
         }
+
+        public override ModuleSignature CreateSignature()
+        {
+            return new ModuleSignature("Slicer", Name);
+        }
     }
 
     public class SoupMaker : ArrayModule
@@ -151,6 +165,11 @@ namespace RefactorLang
 
             Output = new FoodItem.Some(food.Food + " Soup");
             Empty();
+        }
+
+        public override ModuleSignature CreateSignature()
+        {
+            return new ModuleSignature("SoupMaker", Name);
         }
     }
 
@@ -169,6 +188,11 @@ namespace RefactorLang
             Output = new FoodItem.Some(food.Food.Replace("Raw ", "Ground "));
             Empty();
         }
+
+        public override ModuleSignature CreateSignature()
+        {
+            return new ModuleSignature("Grinder", Name);
+        }
     }
 
     public class Fryer : ArrayModule
@@ -184,6 +208,11 @@ namespace RefactorLang
 
             Output = new FoodItem.Some("Chicken Tenders");
             Empty();
+        }
+
+        public override ModuleSignature CreateSignature()
+        {
+            return new ModuleSignature("Fryer", Name);
         }
     }
 
@@ -202,6 +231,11 @@ namespace RefactorLang
             Output = new FoodItem.Some("Barbecue Sauce");
             Empty();
         }
+
+        public override ModuleSignature CreateSignature()
+        {
+            return new ModuleSignature("BarbecueSaucer", Name);
+        }
     }
 
     public class Griddle : ArrayModule
@@ -217,6 +251,11 @@ namespace RefactorLang
 
             Output = new FoodItem.Some("Fried Egg");
             Empty();
+        }
+
+        public override ModuleSignature CreateSignature()
+        {
+            return new ModuleSignature("Griddle", Name);
         }
     }
 
@@ -235,6 +274,11 @@ namespace RefactorLang
 
             Output = new FoodItem.Some(food.Food + " Burger");
             Empty();
+        }
+
+        public override ModuleSignature CreateSignature()
+        {
+            return new ModuleSignature("BurgerBuilder", Name);
         }
     }
 }

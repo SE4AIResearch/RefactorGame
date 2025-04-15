@@ -9,6 +9,7 @@ using RefactorLib;
 using UnityEngine.UI;
 using System;
 using UnityEditor;
+using Unity.VisualScripting;
 
 public class SubmitText : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class SubmitText : MonoBehaviour
     public void OnSubmit()
     {        
         var text = textEditor.Text;
-        Kitchen.LastSolution = text;
+        Kitchen.LastSolution = new Solution(text, Kitchen.KitchenState.Stations);
 
         compiler.Compile(text);
 
