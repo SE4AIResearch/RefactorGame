@@ -16,14 +16,21 @@ public class ToLevelSelect : MonoBehaviour
 
     private void SaveAndQuit()
     {
-        if (!SaveData.LoadedGame.Solutions.ContainsKey(Kitchen.LoadedPuzzle.Name))
-            SaveData.LoadedGame.Solutions.Add(Kitchen.LoadedPuzzle.Name, Kitchen.LastSolution);
-        else
-            SaveData.LoadedGame.Solutions[Kitchen.LoadedPuzzle.Name] = Kitchen.LastSolution;
+        try
+        {
+            if (!SaveData.LoadedGame.Solutions.ContainsKey(Kitchen.LoadedPuzzle.Name))
+                SaveData.LoadedGame.Solutions.Add(Kitchen.LoadedPuzzle.Name, Kitchen.LastSolution);
+            else
+                SaveData.LoadedGame.Solutions[Kitchen.LoadedPuzzle.Name] = Kitchen.LastSolution;
 
-        SaveData.LoadedGame.DefinitionsUnlocked = DictionaryState.Current.UnlockedDefinitions;
+            SaveData.LoadedGame.DefinitionsUnlocked = DictionaryState.Current.UnlockedDefinitions;
 
-        SaveData.SaveGame();
+            SaveData.SaveGame();
+        }
+        catch
+        {
+            Debug.Log("something in the saving process went wrong");
+        }
 
         SceneManager.LoadScene("LevelSelect");
     }
