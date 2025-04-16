@@ -36,29 +36,46 @@ public class DisplayOrderInfo : MonoBehaviour
         int index = newState.SelectedTestCase;
 
         // Determine how many of each food is being order
-        foreach (var order in newState.TestCases[index]) {
-            if (orderCount.ContainsKey(order)) {
+        foreach (var order in newState.TestCases[index])
+        {
+            if (orderCount.ContainsKey(order))
+            {
                 orderCount[order]++;
-            } else {
+            }
+            else
+            {
                 orderCount[order] = 1;
             }
         }
-        
+
         // Make displays reappear, one per unique food
         int displayIndex = 1;
-        foreach (KeyValuePair<string, int> entry in orderCount) {
+        foreach (KeyValuePair<string, int> entry in orderCount)
+        {
             MakeInfo(displayIndex, entry.Key, entry.Value);
             displayIndex++;
         }
+        HideUnusedDisplays(displayIndex);
     }
 
-    void MakeInfo(int index, string food, int count) {
+    void MakeInfo(int index, string food, int count)
+    {
         GameObject displays = this.transform.Find("Displays").gameObject;
         GameObject display = displays.transform.Find($"Display {index}").gameObject;
         display.transform.Find("Count").GetComponent<TextMeshProUGUI>().text = count.ToString();
         display.transform.Find("Image").GetComponent<UnityEngine.UI.Image>().sprite = GetFoodSprite(food);
         display.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = food;
         display.SetActive(true);
+    }
+
+    void HideUnusedDisplays(int startIndex)
+    {
+        for (int i = startIndex; i <= 4; i++)
+        {
+            GameObject displays = this.transform.Find("Displays").gameObject;
+            GameObject display = displays.transform.Find($"Display {i}").gameObject;
+            display.SetActive(false);
+        }
     }
 
     Sprite GetFoodSprite(string food)
