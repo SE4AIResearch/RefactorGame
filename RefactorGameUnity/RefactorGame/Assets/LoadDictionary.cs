@@ -51,11 +51,13 @@ public class LoadDictionary : MonoBehaviour
             handler.DisplayDefinition(definitions[i]);
 
             // RectTransform rectTransform = prefab.GetComponent<RectTransform>();
+            // rectTransform.localScale = new Vector3(1, 1, 1);
             // rectTransform.anchorMin = new Vector2(0.5f, 1);
             // rectTransform.anchorMax = new Vector2(0.5f, 1);
             // rectTransform.pivot = new Vector2(0.5f, 1);
 
             prefab.transform.SetParent(defContainer);
+            defContainer.Find($"Definition{i + 1}").GetComponent<RectTransform>().localScale = new Vector3(0.9f, 0.9f, 0.9f);
         }
 
         var defRect = defContainer.gameObject.GetComponent<RectTransform>();
