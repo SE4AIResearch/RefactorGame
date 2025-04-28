@@ -22001,6 +22001,10 @@ PrefabInstance:
       propertyPath: showLineLabelIcons
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114662724014931294, guid: d53fd87b7d86a40469735ea1ab29f85c, type: 3}
+      propertyPath: lineNumberFontStyle
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 114803381886405840, guid: d53fd87b7d86a40469735ea1ab29f85c, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: InGameTextEditor.TextEditor, Assembly-CSharp
