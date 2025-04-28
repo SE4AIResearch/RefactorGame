@@ -651,7 +651,7 @@ namespace InGameTextEditor
                     return;
 
                 // set text
-                SetText(value);
+                SetText(value, true);
             }
         }
 
@@ -2292,6 +2292,12 @@ namespace InGameTextEditor
             }
             else
                 operations.Enqueue(op);
+        }
+
+        public void ClearSelection()
+        {
+            selection = null;
+            UpdateSelectionAndCaret();
         }
 
         // creates a new selection rect from topLeft to bottomRight
