@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 public class GameData
 {
-    public int NumLevelsUnlocked { get; set; } = 1;
+    public List<string> LevelsBeaten { get; } = new List<string>();
     
     public Dictionary<string, Solution> Solutions { get; set; } = new ();
 

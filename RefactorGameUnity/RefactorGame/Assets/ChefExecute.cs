@@ -38,7 +38,7 @@ public class ChefExecute : MonoBehaviour
 
         if (timer > 0) return;
 
-        timer++;
+        timer+=0.01f;
 
         UnityPackage package = Actions[0];
         Actions.RemoveAt(0);
