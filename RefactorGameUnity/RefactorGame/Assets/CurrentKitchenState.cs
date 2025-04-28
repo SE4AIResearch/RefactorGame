@@ -67,8 +67,8 @@ public class CurrentKitchenState : ScriptableObject
                     return false;
                 break;
             case "maxOneIfComparison":
-                Regex Regex = new("^(?!.*(\\|\\||&&| and | or )).*$");
-                if (!Regex.IsMatch(text))
+                bool match = new Regex("^(?!.*(\\|\\||&&| and | or )).*$").IsMatch(text.Replace("\t", "").Replace("\n", ""));
+                if (!match)
                     return false;
                 break;
         }

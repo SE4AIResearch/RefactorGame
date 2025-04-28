@@ -1,97 +1,21 @@
-﻿func pre_proc(ing, sta, mod) {​
-  GOTO("Pantry")​
-  GET(ing)​
-  GOTO(sta)​
-  PLACE(mod, 0)​
-  ACTIVATE(mod)​
-  TAKE(mod, 1) }
+﻿func place_ing(ingredient, index) {
+	GOTO("Pantry")
+	GET(ingredient)
+	GOTO("Station 1")
+	PLACE("A", index)
+}
 
-func bbq_sauce() {​
-  GOTO("Pantry")​
-  GET("Tomato")​
-  GOTO("Station 1")​
-  PLACE("C", 0)​
-  GOTO("Pantry")​
-  GET("Sugar")​
-  GOTO("Station 1")​
-  PLACE("C", 1)​
-  GOTO("Pantry")​
-  GET("Vinegar")​
-  GOTO("Station 1")​
-  PLACE("C", 2)​
-  ACTIVATE("B")​
-  TAKE("B")
-  GOTO("Station 2")​
-  PLACE("A", 1) }​
+func finish() {
+	ACTIVATE("A")
+	TAKE("A")
+	GOTO("Window")
+	DELIVER()
+}
 
-func burg_meat() {​
-  GOTO("Pantry")​
-  GET("Raw Beef")
-  GOTO("Station 1")​
-  PLACE("B", 0)​
-  ACTIVATE("B")​
-  TAKE("B")​
-  GOTO("Station 2")​
-  PLACE("A", 2) }​​
-
-func fried_egg() {​
-  GOTO("Pantry")​
-  GET("Egg")​
-  GOTO("Station 2")​
-  PLACE("C", 0)​
-  GOTO("Pantry")​
-  GET("Pepper")​
-  GOTO("Station 2")​
-  PLACE("C", 1)​
-  ACTIVATE("C")​
-  TAKE("B")​
-  GOTO("Station 2")​
-  PLACE("A", 1) }​​
-
-func tenders() {​
-    pre_proc("Loaf of Bread", "Station 1", "A")​
-    GOTO("Station 2")​
-    PLACE("C", 1)​
-    pre_proc("Raw Chicken", "Station 1", "B")​
-    GOTO("Station 2")​
-    PLACE("C", 0) }​
-
-func take_order(orders) {​
-  if (orders == ["Chicken Tenders"]) {​
-    tenders()​
-    GOTO("Window")​
-    DELIVER() }​
-  else if (orders == ["Chicken Tenders", "Chicken Tenders"]) {​
-    tenders()​
-    GOTO("Window")​
-    DELIVER()​
-    tenders()​
-    GOTO("Window")​
-    DELIVER()}​
-  else if (orders == ["Fried Egg Burger"]) {​
-    pre_proc("Loaf of Bread", "Station 1", "A")​
-    GOTO("Station 2")​
-    PLACE("A", 0)​
-    pre_proc("Loaf of Bread", "Station 1", "A")​
-    GOTO("Station 2")​
-    PLACE("A", 0)​
-    burg_meat()​
-    fried_egg()​
-    ACTIVATE("A")​
-    GOTO("Window")​
-    DELIVER() }​
-  else {​
-    pre_proc("Loaf of Bread", "Station 1", "A")​
-    GOTO("Station 2")​
-    PLACE("A", 0)​
-    pre_proc("Loaf of Bread", "Station 1", "A")​
-    GOTO("Station 2")​
-    PLACE("A", 0)​
-    burg_meat()​
-    fried_egg()​
-    ACTIVATE("A")​
-    GOTO("Window")​
-    DELIVER() } }​
-
-
-take_order(order_list)​
+var i = 0
+while (i < 2) {
+	place_ing("Broth", 0)
+	place_ing("Tomato", 1)
+	finish()
+	i = i + 1
+}

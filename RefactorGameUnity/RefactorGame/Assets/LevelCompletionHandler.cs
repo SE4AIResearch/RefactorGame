@@ -34,6 +34,11 @@ public class LevelCompletionHandler : MonoBehaviour
 
         if (allPassed)
         {
+            if (!SaveData.LoadedGame.LevelsBeaten.Contains(kitchen.LoadedPuzzle.Name))
+            {
+                SaveData.LoadedGame.LevelsBeaten.Add(kitchen.LoadedPuzzle.Name);
+            }
+
             for (int i = 0; i < kitchen.Definitions.Count; i++)
             {
                 var defHandler = this.transform.Find("UIContainer").Find("DefinitionContainer").Find($"Definition{i+1}").GetComponent<DefinitionHandler>();
