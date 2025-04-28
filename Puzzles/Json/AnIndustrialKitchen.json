@@ -72,5 +72,5 @@
     "maxActions": -1,
     "additionalConstraint": "maxTwoModulesPerStation"
   },
-  "storyPrompt": "I'm really proud of Watson. Without his hard work, we never would have reached this point. I survey the kitchen and realize that he has an awful lot on his plate. I need to think of ways to break down and simplify his instructions.​"
+  "storyPrompt": "This is it, we're nearly back to full service. I'm proud of Watson. Without his hard work, we never would have reached this point. I survey the kitchen and realize that he has an awful lot on his plate.  !!! Extra requirement: use a maximum of 2 modules per station. !!!​"
 }

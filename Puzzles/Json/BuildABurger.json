@@ -60,5 +60,5 @@
     "maxActions": -1,
     "additionalConstraint": "maxFiveLinesPerMethodMaxSevenMethods"
   },
-  "storyPrompt": "The first time I ask Watson how he makes a burger, he prints out a main method so long it wrapped around the whole kitchen. Come now, we can do better than this! Please use at least six methods."
+  "storyPrompt": "The first time I ask Watson how he makes a burger, he prints out a main method so long it wrapped around the whole kitchen. Come now, we can do better than this. !!! Extra requirement: use at least six methods !!!"
 }
