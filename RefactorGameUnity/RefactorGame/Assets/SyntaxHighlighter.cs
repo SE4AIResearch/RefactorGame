@@ -18,19 +18,19 @@ namespace InGameTextEditor.Format
         /// <summary>
         /// Text style for string and characters.
         /// </summary>
-        public TextStyle textStyleString = new TextStyle(new Color(182f/255f, 73f/255f, 0f/255f));
+        public TextStyle textStyleString = new TextStyle(new Color(153f/255f, 61f/255f, 0f/255f));
 
         /// <summary>
         /// Text style for numbers.
         /// </summary>
-        public TextStyle textStyleNumber = new TextStyle(new Color(64f/255f, 110f/255f, 142f/255f));
+        public TextStyle textStyleNumber = new TextStyle(new Color(53f/255f, 92f/255f, 119f/255f));
 
         /// <summary>
         /// Text style for C# keywords
         /// </summary>
-        public TextStyle textStyleKeyword = new TextStyle(new Color(94f/255f, 109f/255f, 92f/255f));
+        public TextStyle textStyleKeyword = new TextStyle(new Color(81f/255f, 94f/255f, 79f/255f));
 
-        public TextStyle textStyleKCall = new TextStyle(new Color(149f/255f, 75f/255f, 192f/255f));
+        public TextStyle textStyleKCall = new TextStyle(new Color(118f/255f, 59f/255f, 153f/255f));
 
         // collection of all C# keywords
         readonly string[] keywords = {"var", "if", "else if", "else", "while", "func"};

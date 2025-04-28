@@ -22032,12 +22032,16 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114662724014931294, guid: d53fd87b7d86a40469735ea1ab29f85c, type: 3}
+      propertyPath: mainFontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114662724014931294, guid: d53fd87b7d86a40469735ea1ab29f85c, type: 3}
       propertyPath: characterWidth
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 114662724014931294, guid: d53fd87b7d86a40469735ea1ab29f85c, type: 3}
       propertyPath: characterHeight
-      value: 18
+      value: 16.001
       objectReference: {fileID: 0}
     - target: {fileID: 114662724014931294, guid: d53fd87b7d86a40469735ea1ab29f85c, type: 3}
       propertyPath: showLineLabelIcons
