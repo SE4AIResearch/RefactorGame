@@ -8,6 +8,7 @@ public class ActivateStationContextMenu : MonoBehaviour
 {
     public ModuleContextMenu ModuleContextMenu;
     public CurrentKitchenState Kitchen;
+    public AudioHandler AudioHandler;
 
     // Start is called before the first frame update
     void Start()
@@ -33,5 +34,7 @@ public class ActivateStationContextMenu : MonoBehaviour
         ModuleSignature signature = new(thisModule.GetType().Name, thisModule.Name);
 
         ModuleContextMenu.OpenMenu(signature, stationIndex, moduleIndex);
+
+        AudioHandler.Play("edit_module");
     }
 }

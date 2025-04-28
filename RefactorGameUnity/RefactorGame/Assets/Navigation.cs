@@ -5,6 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class Navigation : MonoBehaviour
 {
+    public void PlayButtonSound()
+    {
+        GetComponent<AudioSource>().Play();
+    }
+
     static public void LoadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);

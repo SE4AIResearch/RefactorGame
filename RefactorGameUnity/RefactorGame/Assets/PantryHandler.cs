@@ -7,6 +7,7 @@ public class PantryHandler : MonoBehaviour
     private bool DoorOpen = false;
     public PantryMenuHandler PantryMenuHandler;
     public CurrentKitchenState Kitchen;
+    public AudioHandler AudioHandler;
 
     // Start is called before the first frame update
     void Start()
@@ -40,5 +41,6 @@ public class PantryHandler : MonoBehaviour
         if (Kitchen.ContextMenuUp) return;
 
         ToggleDoor();
+        AudioHandler.Play("door_open");
     }
 }

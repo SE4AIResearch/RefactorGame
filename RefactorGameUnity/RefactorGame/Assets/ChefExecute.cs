@@ -21,6 +21,9 @@ public class ChefExecute : MonoBehaviour
     private float timer = 0;
     private string text;
 
+    private string currentChefLocation;
+    public AudioHandler AudioHandler;
+
     private CompilationStats CompilationStats;
 
     // Start is called before the first frame update
@@ -38,7 +41,7 @@ public class ChefExecute : MonoBehaviour
 
         if (timer > 0) return;
 
-        timer+=0.01f;
+        timer+=0.7f;
 
         UnityPackage package = Actions[0];
         Actions.RemoveAt(0);
@@ -52,14 +55,21 @@ public class ChefExecute : MonoBehaviour
                 Vector3 foodPosition = target.position;
                 foodPosition.y -= 130f;
                 this.transform.Find("Food").gameObject.transform.position = foodPosition;
+
+                currentChefLocation = loc.ToString();
                 break;
 
             case UnityAction.PickUp(FoodItem item):
+                if (currentChefLocation == "Pantry { }")
+                    AudioHandler.Play("door_open");
                 AddFoodItem(item);
                 break;
 
             case UnityAction.PutDown:
                 RemoveFoodItem();
+
+                if (currentChefLocation == "Window { }")
+                    AudioHandler.Play("deliver");
                 break;
 
             case UnityAction.Success:
