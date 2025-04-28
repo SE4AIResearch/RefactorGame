@@ -1,38 +1,76 @@
 {
-  "name": "One Soup Two Soup",
-  "difficulty": 1,
-  "testCases": [
-    [
-      "Potato Soup"
+    "name": "An Industrial Kitchen",
+    "difficulty": 3,
+    "testCases": [
+        [
+            "Chicken Tenders"
+        ],
+        [
+            "Chicken Tenders",
+            "Chicken Tenders"
+        ],
+        [
+            "Barbecue Sauce Burger"
+        ],
+        [
+            "Fried Egg Burger"
+        ]
     ],
-    [
-      "Tomato Soup"
-    ]
-  ],
-  "starterPantry": [
-    "Broth",
-    "Broth",
-    "Potato",
-    "Tomato"
-  ],
-  "starterCode": "script.txt",
-  "numOfStations": 1,
-  "modulesLocked": true,
-  "stations": [
-    {
-      "name": "Station 1",
-      "modules": [
+    "starterPantry": [
+        "Egg",
+        "Loaf of Bread",
+        "Loaf of Bread",
+        "Pepper",
+        "Raw Beef",
+        "Raw Chicken",
+        "Raw Chicken",
+        "Sugar",
+        "Tomato",
+        "Vinegar"
+    ],
+    "starterCode": "script.txt",
+    "numOfStations": 2,
+    "modulesLocked": false,
+    "stations": [
         {
-          "module": "SoupMaker",
-          "name": "A"
+            "name": "Station 1",
+            "modules": [
+                {
+                    "module": "Slicer",
+                    "name": "A"
+                },
+                {
+                    "module": "Grinder",
+                    "name": "B"
+                },
+                {
+                    "module": "BarbecueSaucer",
+                    "name": "C"
+                }
+            ]
+        },
+        {
+            "name": "Station 2",
+            "modules": [
+                {
+                    "module": "BurgerBuilder",
+                    "name": "A"
+                },
+                {
+                    "module": "Griddle",
+                    "name": "B"
+                },
+                {
+                    "module": "Fryer",
+                    "name": "C"
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "constraints": { 
-    "maxStatements": 15, 
-    "maxActions": -1,
-    "additionalConstraint": "none"
-  },
-  "storyPrompt": "chef go whee"
+    ],
+    "constraints": {
+        "maxStatements": 99,
+        "maxActions": -1,
+        "additionalConstraint": "maxTwoModulesPerStation"
+    },
+    "storyPrompt": "I'm really proud of Watson. Without his hard work, we never would have reached this point. I survey the kitchen and realize that he has an awful lot on his plate. I need to think of ways to break down and simplify his instructions.​"
 }
