@@ -40,7 +40,7 @@ public class AdditionalConstraintCounter : MonoBehaviour
             case "LessModules":
                 CheckLessModules(newState);
                 break;
-            case "IndustrialKitchen": //TODO CHECK NAME OF CONSTRAINT
+            case "maxTwoModulesPerStation": //TODO CHECK NAME OF CONSTRAINT
                 CheckIndustrialKitchen(newState);
                 break;
             case "LessParams" or "maxFiveLinesPerMethodMaxSevenMethods" or "maxOneIfComparison":
@@ -60,7 +60,7 @@ public class AdditionalConstraintCounter : MonoBehaviour
 
         switch (puzzle.Constraints.AdditionalConstraint)
         {
-            case "LessModules" or "IndustrialKitchen":
+            case "LessModules" or "maxTwoModulesPerStation":
                 break;
             case "LessParams":
                 CheckLessParams(compilationStats);

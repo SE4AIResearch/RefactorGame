@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95a47e7d3cab73748871d6c14dfdfb4c, type: 3}
   m_Name: CurrentKitchenState
   m_EditorClassIdentifier: 
+  ContextMenuUp: 0
+  LevelComplete: 0
+  Definitions: []

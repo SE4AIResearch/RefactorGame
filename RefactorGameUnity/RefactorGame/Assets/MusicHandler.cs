@@ -31,6 +31,9 @@ public class MusicHandler : MonoBehaviour
             case "LevelSelect":
                 PlayMusic("Hustle");
                 break;
+            case "Level":
+                PlayMusic("Rollin");
+                break;
         }
     }
 
