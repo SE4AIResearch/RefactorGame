@@ -16,6 +16,7 @@ public class LevelSelectHandler : MonoBehaviour
     private float CameraSmoothSpeed = (1f / 32f);
 
     public static List<string> puzzleNames = new List<string> {
+        "WelcomeToRefactoria",
         "OneSoupTwoSoup",
         "FutureRecipes",
         "AMethodToTheMadness",
@@ -26,7 +27,8 @@ public class LevelSelectHandler : MonoBehaviour
         "BuildABurger",
         "AllOverThePlace",
         "ATightShift",
-        "ParameterOverload"
+        "ParameterOverload",
+        "AnIndustrialKitchen"
     };
 
     public event Action<int> OnSelectedLevelChanged;
