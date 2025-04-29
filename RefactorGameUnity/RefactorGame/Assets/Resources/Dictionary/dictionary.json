@@ -3,8 +3,8 @@
     "name": "Duplicate Code",
     "type": "smell",
     "details": [
-      "The same code is found in two or more places.",
-      "Can be fixed with Extract Method."
+      "The same code is found in two or more places.", 
+      "Can be fixed with Code Deletion, Extract Method."
     ]
   },
   "codeDeletion": {
@@ -90,7 +90,24 @@
     "name": "Long Parameter List",
     "type": "smell",
     "details": [
-      "A method has too many parameters to be readable."
+      "A method has too many parameters to be readable.",
+      "Can be fixed with Code Deletion."
+    ]
+  },
+  "largeClass": {
+    "name": "Large Class",
+    "type": "smell",
+    "details": [
+      "A class trying to do too many things becomes bloated and hard to use and understand.", 
+      "Can be fixed with Extract Class."
+    ]
+  },
+  "extractClass": {
+    "name": "Extract Class",
+    "type": "refactoring",
+    "details": [
+      "Break a class into two parts, so that each performs their own function.", 
+      "Can be used on Large Class."
     ]
   }
 }
