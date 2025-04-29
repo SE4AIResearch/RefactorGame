@@ -57,7 +57,8 @@ public class LoadDictionary : MonoBehaviour
             // rectTransform.pivot = new Vector2(0.5f, 1);
 
             prefab.transform.SetParent(defContainer);
-            defContainer.Find($"Definition{i + 1}").GetComponent<RectTransform>().localScale = new Vector3(0.9f, 0.9f, 0.9f);
+            defContainer.Find($"Definition{i + 1}").GetComponent<RectTransform>()
+                .localScale = new Vector3(0.85f, 0.85f, 0.85f);
         }
 
         var defRect = defContainer.gameObject.GetComponent<RectTransform>();
