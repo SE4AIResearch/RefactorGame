@@ -1,0 +1,37 @@
+{
+  "name": "WelcomeToRefactoria",
+  "difficulty": 1,
+  "testCases": [
+    [
+      "Potato Soup"
+    ],
+    [
+      "Tomato Soup"
+    ]
+  ],
+  "starterPantry": [
+    "Broth",
+    "Tomato"
+  ],
+  "starterCode": "WelcomeToRefactoria.txt",
+  "numOfStations": 1,
+  "modulesLocked": true,
+  "stations": [
+    {
+      "name": "Station 1",
+      "modules": [
+        {
+          "module": "SoupMaker",
+          "name": "A"
+        }
+      ]
+    }
+  ],
+  "constraints": { 
+    "maxStatements": 13,
+    "maxActions": -1,
+    "additionalConstraint": "none"
+  },
+  "storyPrompt": "Watson, how do you make tomato soup? No, not quite. !!! Find the issue with the code, and refactor it to make it shorter and clearer. !!!",
+  "dictionaryItems": ["duplicateCode", "codeDeletion"]
+}
