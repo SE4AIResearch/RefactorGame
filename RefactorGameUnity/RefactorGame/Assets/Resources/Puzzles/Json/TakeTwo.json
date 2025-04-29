@@ -46,6 +46,6 @@
       "maxActions": -1,
       "additionalConstraint": "maxOneIfComparison"
   },
-  "storyPrompt": "\"What do you do if someone orders two different kinds of soup?\" I ask. Watson is incapable of facial expression, and yet he seems to plumb the depths of some unfathomable well of despair. Oh, boy.",
+  "storyPrompt": "\"What do you do if someone orders two different kinds of soup?\" I ask. Watson’s face tells me that he’s feeling bluer than usual. Oh, boy!",
   "dictionaryItems": ["switchStatementMisuse", "extractMethod"]
 }

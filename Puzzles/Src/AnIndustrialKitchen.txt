@@ -1,12 +1,12 @@
-def pre_proc(ing, sta, mod) {​
+func pre_proc(ing, sta, mod) {​
   GOTO("Pantry")​
   GET(ing)​
   GOTO(sta)​
   PLACE(mod, 0)​
   ACTIVATE(mod)​
-  TAKE(mod, 1) }
+  TAKE(mod) }
 
-def bbq_sauce() {​
+func bbq_sauce() {​
   GOTO("Pantry")​
   GET("Tomato")​
   GOTO("Station 1")​
@@ -19,12 +19,12 @@ def bbq_sauce() {​
   GET("Vinegar")​
   GOTO("Station 1")​
   PLACE("C", 2)​
-  ACTIVATE("B")​
-  TAKE("B")
+  ACTIVATE("C")​
+  TAKE("C")
   GOTO("Station 2")​
   PLACE("A", 1) }​
 
-def burg_meat() {​
+func burg_meat() {​
   GOTO("Pantry")​
   GET("Raw Beef")
   GOTO("Station 1")​
@@ -34,50 +34,46 @@ def burg_meat() {​
   GOTO("Station 2")​
   PLACE("A", 2) }​​
 
-def fried_egg() {​
+func fried_egg() {​
   GOTO("Pantry")​
   GET("Egg")​
   GOTO("Station 2")​
-  PLACE("C", 0)​
+  PLACE("B", 0)​
   GOTO("Pantry")​
   GET("Pepper")​
   GOTO("Station 2")​
-  PLACE("C", 1)​
-  ACTIVATE("C")​
+  PLACE("B", 1)​
+  ACTIVATE("B")​
   TAKE("B")​
   GOTO("Station 2")​
-  PLACE("A", 1) }​​
+  PLACE("A", 1)}​​
 
-def tenders() {​
+func tenders() {​
     pre_proc("Loaf of Bread", "Station 1", "A")​
     GOTO("Station 2")​
     PLACE("C", 1)​
     pre_proc("Raw Chicken", "Station 1", "B")​
     GOTO("Station 2")​
-    PLACE("C", 0) }​
+    PLACE("C", 0)
+    ACTIVATE("C")
+    TAKE("C") }​
 
-def take_order(orders) {​
-  if (orders == ["Chicken Tenders"]) {​
+func take_order(order) {​
+  if (order == "Chicken Tenders") {​
     tenders()​
     GOTO("Window")​
     DELIVER() }​
-  else if (orders == ["Chicken Tenders", "Chicken Tenders"]) {​
-    tenders()​
-    GOTO("Window")​
-    DELIVER()​
-    tenders()​
-    GOTO("Window")​
-    DELIVER()}​
-  else if (orders == ["Fried Egg Burger"]) {​
+  else if (order == "Fried Egg Burger") {​
     pre_proc("Loaf of Bread", "Station 1", "A")​
     GOTO("Station 2")​
     PLACE("A", 0)​
     pre_proc("Loaf of Bread", "Station 1", "A")​
     GOTO("Station 2")​
-    PLACE("A", 0)​
+    PLACE("A", 3)​
     burg_meat()​
     fried_egg()​
     ACTIVATE("A")​
+    TAKE("A")
     GOTO("Window")​
     DELIVER() }​
   else {​
@@ -86,12 +82,17 @@ def take_order(orders) {​
     PLACE("A", 0)​
     pre_proc("Loaf of Bread", "Station 1", "A")​
     GOTO("Station 2")​
-    PLACE("A", 0)​
+    PLACE("A", 3)​
     burg_meat()​
-    fried_egg()​
+    bbq_sauce()​
     ACTIVATE("A")​
+    TAKE("A")
     GOTO("Window")​
     DELIVER() } }​
+​
 
-
-take_order(order_list)​
+var i = 0 ​
+while (i < #orders) {
+  take_order(orders[i])​
+  i = i + 1 ​
+}

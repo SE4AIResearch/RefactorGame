@@ -53,6 +53,6 @@
     "maxActions": -1,
     "additionalConstraint": "oneLineInMain"
   },
-  "storyPrompt": "Watson moves with great efficiency, with a hint of spunk and verve. It nearly brings a tear to my eye. But our patrons insist on one more kind of soup. Can he handle it? I scratched down one idea but we’ll see...​",
+  "storyPrompt": "Watson moves in a symphony of slicing and boiling. It nearly brings a tear to my eye. But our patrons insist on one more kind of soup. Can he handle it? I scratched down one idea, but we’ll see...​",
   "dictionaryItems": ["shotgunSurgery", "extractMethod"]
 }

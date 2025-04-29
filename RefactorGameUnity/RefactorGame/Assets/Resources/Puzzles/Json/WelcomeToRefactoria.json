@@ -1,32 +1,19 @@
 {
-  "name": "A Method to the Madness",
+  "name": "WelcomeToRefactoria",
   "difficulty": 1,
   "testCases": [
     [
-      "Tomato Soup"
+      "Potato Soup"
     ],
     [
-      "Tomato Soup",
-      "Tomato Soup"
-    ],
-    [
-      "Tomato Soup",
-      "Tomato Soup",
-      "Tomato Soup",
       "Tomato Soup"
     ]
   ],
   "starterPantry": [
     "Broth",
-    "Broth",
-    "Broth",
-    "Broth",
-    "Tomato",
-    "Tomato",
-    "Tomato",
     "Tomato"
   ],
-  "starterCode": "AMethodToTheMadness.txt",
+  "starterCode": "WelcomeToRefactoria.txt",
   "numOfStations": 1,
   "modulesLocked": true,
   "stations": [
@@ -41,10 +28,10 @@
     }
   ],
   "constraints": { 
-    "maxStatements": 16,
+    "maxStatements": 13,
     "maxActions": -1,
     "additionalConstraint": "none"
   },
-  "storyPrompt": "A tomato soup craze sweeps the nation. Realizing I can’t type fast enough to keep up, I search for a better solution.​",
+  "storyPrompt": "Watson, how do you make tomato soup? No, not quite. !!! Find the issue with the code, and refactor it to make it shorter and clearer. !!!",
   "dictionaryItems": ["duplicateCode", "codeDeletion"]
 }

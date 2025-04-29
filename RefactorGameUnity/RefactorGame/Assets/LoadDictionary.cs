@@ -34,7 +34,13 @@ public class LoadDictionary : MonoBehaviour
     {
         var definitions = DefinitionHandler.DefinitionKeys();
         var prefabRef = Resources.Load<Object>("Prefab/Definition");
-        var defContainer = this.transform.Find("Viewport").Find("Content").Find("DefinitionContainer");
+        var defContainer = this.transform
+            .Find("Viewport").Find("Content").Find("DefinitionContainer");
+
+        while (defContainer.childCount > 0)
+        {
+            DestroyImmediate(defContainer.GetChild(0).gameObject);
+        }
 
         for (int i = 0; i < definitions.Count; i++)
         {
@@ -44,12 +50,18 @@ public class LoadDictionary : MonoBehaviour
             var handler = prefab.GetComponent<DefinitionHandler>();
             handler.DisplayDefinition(definitions[i]);
 
-            RectTransform rectTransform = prefab.GetComponent<RectTransform>();
-            rectTransform.anchorMin = new Vector2(0.5f, 1);
-            rectTransform.anchorMax = new Vector2(0.5f, 1);
-            rectTransform.pivot = new Vector2(0.5f, 1);
+            // RectTransform rectTransform = prefab.GetComponent<RectTransform>();
+            // rectTransform.localScale = new Vector3(1, 1, 1);
+            // rectTransform.anchorMin = new Vector2(0.5f, 1);
+            // rectTransform.anchorMax = new Vector2(0.5f, 1);
+            // rectTransform.pivot = new Vector2(0.5f, 1);
 
             prefab.transform.SetParent(defContainer);
+            defContainer.Find($"Definition{i + 1}").GetComponent<RectTransform>()
+                .localScale = new Vector3(0.85f, 0.85f, 0.85f);
         }
+
+        var defRect = defContainer.gameObject.GetComponent<RectTransform>();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(defRect);
     }
 }

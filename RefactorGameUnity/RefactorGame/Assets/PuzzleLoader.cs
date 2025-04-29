@@ -48,6 +48,8 @@ public class PuzzleLoader : MonoBehaviour
         string fileName = puzzle.StarterCode.Remove(puzzle.StarterCode.IndexOf(".txt"));
         string starterCode = Resources.Load<TextAsset>(@$"Puzzles/Src/{fileName}").text;
 
+        editor.ClearSelection();
+
         kitchenState.KitchenState = new KitchenState(puzzle);
 
         if (SaveData.LoadedGame.Solutions.TryGetValue(puzzle.Name, out Solution solution) && solution != null && !original)
