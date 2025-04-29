@@ -88,7 +88,7 @@ public class LevelSelectHandler : MonoBehaviour
         switch (index)
         {
             case int n when (n >= 0 && n <= 4):
-                return 2f;
+                return 2.5f;
 
             case int n when (n >= 5 && n <= 10):
                 return -2.5f;
