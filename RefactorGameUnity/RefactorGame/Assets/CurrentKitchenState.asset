@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ContextMenuUp: 0
   LevelComplete: 0
-  Definitions: []
+  Definitions:
+  - featureEnvy
+  - moveMethod

@@ -17,6 +17,7 @@ public class PuzzleLoader : MonoBehaviour
     public AdditionalConstraintCounter AdditionalConstraints;
     public ScriptCompiler Compiler;
     public GameObject Loader;
+    public GameObject Tutorial;
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +42,9 @@ public class PuzzleLoader : MonoBehaviour
         TextAsset json = Resources.Load<TextAsset>(@$"Puzzles/Json/{puzzleName}");
         Puzzle puzzle = JsonSerializer.Deserialize<Puzzle>(json.text);
         Load(puzzle);
+
+        if (puzzleName != "WelcomeToRefactoria")
+            Tutorial.SetActive(false);
     }
 
     void Load(Puzzle puzzle, bool original = false)

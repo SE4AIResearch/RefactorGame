@@ -3,6 +3,7 @@ using RefactorLang;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Security;
 using System.Threading;
 using TMPro;
 using UnityEngine;
@@ -15,6 +16,7 @@ public class ChefExecute : MonoBehaviour
     public CurrentKitchenState Kitchen;
     // public UpdateTestStatus TestStatusHandler;
     public TextEditor textEditor;
+    public GameObject Tutorial;
 
     private List<UnityPackage> Actions;
     private bool executing = false;
@@ -35,6 +37,14 @@ public class ChefExecute : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!executing)
+        {
+            if (Kitchen.LoadedPuzzle.Name == "Welcome To Refactoria")
+                Tutorial.SetActive(true);
+        }
+        else
+            Tutorial.SetActive(false);
+
         if (!executing) return;
 
         timer -= Time.deltaTime;
