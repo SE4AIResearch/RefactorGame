@@ -89,6 +89,6 @@
     "maxActions": -1,
     "additionalConstraint": "maxTwoModulesPerStation"
   },
-  "storyPrompt": "This is it, we're nearly back to full service. I'm proud of Watson. Without his hard work, we never would have reached this point. I survey the kitchen and realize that he has an awful lot on his plate.\n\n<b>Extra requirement: Use a maximum of 2 modules per station.",
+  "storyPrompt": "This is it, we're nearly back to full service. I'm proud of Watson. Without his hard work, we never would have reached this point. I survey the kitchen and realize that he has an awful lot on his plate.\n<b>Extra requirement: Use a maximum of 2 modules per station.",
   "dictionaryItems": ["largeClass", "extractClass"]
 }

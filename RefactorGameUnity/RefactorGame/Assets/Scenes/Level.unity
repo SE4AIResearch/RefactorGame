@@ -3440,6 +3440,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ModuleContextMenu: {fileID: 1544821117}
   Kitchen: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
+  AudioHandler: {fileID: 268173704}
 --- !u!1 &310557173
 GameObject:
   m_ObjectHideFlags: 0
@@ -4818,6 +4819,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ModuleContextMenu: {fileID: 1544821117}
   Kitchen: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
+  AudioHandler: {fileID: 268173704}
 --- !u!1 &415217828
 GameObject:
   m_ObjectHideFlags: 0
@@ -7513,6 +7515,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ModuleContextMenu: {fileID: 1544821117}
   Kitchen: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
+  AudioHandler: {fileID: 268173704}
 --- !u!61 &647756603
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -12153,6 +12156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ModuleContextMenu: {fileID: 1544821117}
   Kitchen: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
+  AudioHandler: {fileID: 268173704}
 --- !u!1 &1053732805
 GameObject:
   m_ObjectHideFlags: 0
@@ -13365,6 +13369,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ModuleContextMenu: {fileID: 1544821117}
   Kitchen: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
+  AudioHandler: {fileID: 268173704}
 --- !u!1 &1169615316
 GameObject:
   m_ObjectHideFlags: 0
@@ -13966,6 +13971,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ModuleContextMenu: {fileID: 1544821117}
   Kitchen: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
+  AudioHandler: {fileID: 268173704}
 --- !u!1 &1213223774
 GameObject:
   m_ObjectHideFlags: 0
@@ -14410,7 +14416,7 @@ PrefabInstance:
     - target: {fileID: 406704668306177648, guid: 234565258b8218e46bd4928077ecae5b, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 42f2d8196741bae4486eedd6eeb488cf, type: 3}
+      objectReference: {fileID: 21300000, guid: 2ebd9d99ee385dc48b3ce4c19451b451, type: 3}
     - target: {fileID: 1153498338935874567, guid: 234565258b8218e46bd4928077ecae5b, type: 3}
       propertyPath: m_Name
       value: HoverableFoodItem
@@ -15131,7 +15137,7 @@ PrefabInstance:
     - target: {fileID: 406704668306177648, guid: 234565258b8218e46bd4928077ecae5b, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 42f2d8196741bae4486eedd6eeb488cf, type: 3}
+      objectReference: {fileID: 21300000, guid: daf6cc4797939564ea59e8fab22cb94c, type: 3}
     - target: {fileID: 1153498338935874567, guid: 234565258b8218e46bd4928077ecae5b, type: 3}
       propertyPath: m_Name
       value: HoverableFoodItem
@@ -15331,6 +15337,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ModuleContextMenu: {fileID: 1544821117}
   Kitchen: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
+  AudioHandler: {fileID: 268173704}
 --- !u!1 &1372996635
 GameObject:
   m_ObjectHideFlags: 0
@@ -15534,6 +15541,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ModuleContextMenu: {fileID: 1544821117}
   Kitchen: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
+  AudioHandler: {fileID: 268173704}
 --- !u!1 &1432870158
 GameObject:
   m_ObjectHideFlags: 0
@@ -16181,6 +16189,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ModuleContextMenu: {fileID: 1544821117}
   Kitchen: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
+  AudioHandler: {fileID: 268173704}
 --- !u!1 &1531083100
 GameObject:
   m_ObjectHideFlags: 0
@@ -17321,7 +17330,7 @@ PrefabInstance:
     - target: {fileID: 406704668306177648, guid: 234565258b8218e46bd4928077ecae5b, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 42f2d8196741bae4486eedd6eeb488cf, type: 3}
+      objectReference: {fileID: 21300000, guid: 749c0fda9c225bf418a3b75324d03e3a, type: 3}
     - target: {fileID: 1153498338935874567, guid: 234565258b8218e46bd4928077ecae5b, type: 3}
       propertyPath: m_Name
       value: HoverableFoodItem
@@ -19752,6 +19761,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ModuleContextMenu: {fileID: 1544821117}
   Kitchen: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
+  AudioHandler: {fileID: 268173704}
 --- !u!1001 &1883422947
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20736,7 +20746,7 @@ PrefabInstance:
     - target: {fileID: 406704668306177648, guid: 234565258b8218e46bd4928077ecae5b, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: bf599738a11ea40948af9ef2dbe149b1, type: 3}
+      objectReference: {fileID: 21300000, guid: 2ec7e9ee745792f488f33b49406a01a2, type: 3}
     - target: {fileID: 1153498338935874567, guid: 234565258b8218e46bd4928077ecae5b, type: 3}
       propertyPath: m_Name
       value: HoverableFoodItem
@@ -21095,6 +21105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ModuleContextMenu: {fileID: 1544821117}
   Kitchen: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
+  AudioHandler: {fileID: 268173704}
 --- !u!61 &1997494233
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -21975,6 +21986,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ModuleContextMenu: {fileID: 1544821117}
   Kitchen: {fileID: 11400000, guid: 60f54367e8a67e94686e4f101eadc912, type: 2}
+  AudioHandler: {fileID: 268173704}
 --- !u!1001 &2095352975
 PrefabInstance:
   m_ObjectHideFlags: 0

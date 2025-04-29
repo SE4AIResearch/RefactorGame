@@ -94,7 +94,7 @@ public class LevelSelectHandler : MonoBehaviour
                 return -2.5f;
 
             case int n when (n >= 11 && n <= 13):
-                return 2f;
+                return 3f;
 
             default:
                 throw new ArgumentException("Invalid level index");
