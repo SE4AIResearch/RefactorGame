@@ -651,7 +651,7 @@ namespace InGameTextEditor
                     return;
 
                 // set text
-                SetText(value, true);
+                SetText(value);
             }
         }
 
