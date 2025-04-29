@@ -1,10 +1,7 @@
 {
-  "name": "WelcomeToRefactoria",
+  "name": "Welcome To Refactoria",
   "difficulty": 1,
   "testCases": [
-    [
-      "Potato Soup"
-    ],
     [
       "Tomato Soup"
     ]
@@ -32,6 +29,6 @@
     "maxActions": -1,
     "additionalConstraint": "none"
   },
-  "storyPrompt": "Watson, how do you make tomato soup? No, not quite. !!! Find the issue with the code, and refactor it to make it shorter and clearer. !!!",
+  "storyPrompt": "Watson, how do you make tomato soup? No, not quite.\n\n<b>Task: Find the issue with the code, and refactor it to make it shorter and clearer.",
   "dictionaryItems": ["duplicateCode", "codeDeletion"]
 }

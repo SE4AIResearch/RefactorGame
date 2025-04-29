@@ -48,6 +48,6 @@
     "maxActions": -1,
     "additionalConstraint": "none"
   },
-  "storyPrompt": "With customers finally pouring in, Watson is super nervous. Such cowardice has no place in a well-run kitchen: Watson needs to pull it together. With a click of embarrassment, he recovers and prepares to execute orders.​",
+  "storyPrompt": "With customers finally pouring in, Watson is super nervous. Such cowardice has no place in a well-run kitchen: Watson needs to pull it together. With a click of embarrassment, he recovers and prepares to execute orders.",
   "dictionaryItems": ["shotgunSurgery", "extractMethod"]
 }

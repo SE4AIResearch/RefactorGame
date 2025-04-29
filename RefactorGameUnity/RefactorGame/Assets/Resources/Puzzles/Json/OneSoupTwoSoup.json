@@ -34,6 +34,6 @@
     "maxActions": -1,
     "additionalConstraint": "none"
   },
-  "storyPrompt": "I ask Watson to make me some tomato soup. Next, potato soup. Right away, I see his instruction set is much larger than it needs to be.",
+  "storyPrompt": "I ask Watson to make me some tomato soup. Next, potato soup. Right away, I see his instruction set is much larger than it needs to be.\n\n<b>Tip: The same code must be used for all orders!",
   "dictionaryItems": ["duplicateCode", "codeDeletion"]
 }
