@@ -71,16 +71,34 @@ public class ChefExecute : MonoBehaviour
                 break;
 
             case UnityAction.PickUp(FoodItem item):
-                if (currentChefLocation == "Pantry { }")
-                    AudioHandler.Play("door_open");
+                switch (currentChefLocation)
+                {
+                    case "Pantry { }":
+                        AudioHandler.Play("door_open");
+                        break;
+                    case "Window { }":
+                        break;
+                    default:
+                        AudioHandler.Play("pick_up");
+                        break;
+                }
                 AddFoodItem(item);
                 break;
 
             case UnityAction.PutDown:
-                RemoveFoodItem();
+                switch (currentChefLocation)
+                {
+                    case "Pantry { }":
+                        break;
+                    case "Window { }":
+                        AudioHandler.Play("deliver");
+                        break;
+                    default:
+                        AudioHandler.Play("put_down");
+                        break;
+                }
 
-                if (currentChefLocation == "Window { }")
-                    AudioHandler.Play("deliver");
+                RemoveFoodItem();
                 break;
 
             case UnityAction.Success:

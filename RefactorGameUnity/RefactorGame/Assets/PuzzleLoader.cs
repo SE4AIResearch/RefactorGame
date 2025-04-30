@@ -66,7 +66,7 @@ public class PuzzleLoader : MonoBehaviour
         {
             string sol = SaveData.LoadedGame.Solutions["R&D: Soup on Soup"].Text;
             editor.Text = sol;
-            kitchenState.LastSolution.Text = sol;
+            kitchenState.LastSolution = new Solution(sol, puzzle.Stations.Select(x => x.ConvertToStation()).ToList());
         }
         else if (puzzle.Name == "R&D: One More Soup")
         {
@@ -74,7 +74,7 @@ public class PuzzleLoader : MonoBehaviour
                 + SaveData.LoadedGame.Solutions["R&D: All Together Now"].Text;
 
             editor.Text = sol;
-            kitchenState.LastSolution.Text = sol;
+            kitchenState.LastSolution = new Solution(sol, puzzle.Stations.Select(x => x.ConvertToStation()).ToList());
         }
         else
         {
