@@ -67,6 +67,7 @@ public class ChefExecute : MonoBehaviour
                 this.transform.Find("Food").gameObject.transform.position = foodPosition;
 
                 currentChefLocation = loc.ToString();
+                AudioHandler.Play("move");
                 break;
 
             case UnityAction.PickUp(FoodItem item):
@@ -88,6 +89,10 @@ public class ChefExecute : MonoBehaviour
 
             case UnityAction.Failure:
                 Kitchen.FinishTestWithStatus(TestStatus.Failed, text, CompilationStats);
+                break;
+
+            case UnityAction.Use:
+                AudioHandler.Play("activate");
                 break;
 
             default:
