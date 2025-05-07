@@ -76,6 +76,9 @@ public class LevelSelectHandler : MonoBehaviour
     void Update()
     {
         Camera.transform.position = Vector3.Lerp(Camera.transform.position, CameraTarget, CameraSmoothSpeed);
+
+        if (SaveData.LoadedGame.LevelsBeaten.Count + 1 < SelectedLevel)
+            SelectedLevel = SaveData.LoadedGame.LevelsBeaten.Count + 1;
     }
 
     public void LoadSelectedLevel()

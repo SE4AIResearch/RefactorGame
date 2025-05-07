@@ -56,7 +56,8 @@ public class PantryMenuHandler : MonoBehaviour
 
         foreach (string food in state.Pantry)
         {
-            HoverableFood.Create(food, child.transform);
+            GameObject newObject = HoverableFood.Create(food, child.transform);
+            newObject.GetComponent<HoverableFood>().LabelPosition = true;
         }
     }
 

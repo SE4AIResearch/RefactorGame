@@ -44,6 +44,6 @@
     "maxActions": -1,
     "additionalConstraint": "none"
   },
-  "storyPrompt": "Today, Watson, in a rush to cross the kitchen, knocked me onto the floor. After staggering to my feet, I realize I haven't been taking advantage of Refactoria's highly configurable kitchen modules.\n\n<b>Tip: Click on a station’s module to change it.",
+  "storyPrompt": "Today, Watson, in a rush to cross the kitchen, knocked me onto the floor. After staggering to my feet, I realize I haven't been taking advantage of Refactoria's highly configurable kitchen modules.\n<b>Tip: Click on a station’s module to change it.",
   "dictionaryItems": ["featureEnvy", "moveMethod"]
 }

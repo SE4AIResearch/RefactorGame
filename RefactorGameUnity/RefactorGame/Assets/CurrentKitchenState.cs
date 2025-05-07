@@ -6,7 +6,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using UnityEditor.UI;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/CurrentKitchenState")]

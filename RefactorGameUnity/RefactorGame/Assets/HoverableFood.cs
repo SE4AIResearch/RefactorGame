@@ -11,6 +11,7 @@ public class HoverableFood : MonoBehaviour
 {
     public static GameObject _HoverableFoodItem;
     public GameObject HoverableFoodItem;
+    public bool LabelPosition;
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +20,9 @@ public class HoverableFood : MonoBehaviour
         transform.Find("FoodName").gameObject.SetActive(false);
 
         transform.Find("FoodName").gameObject.GetComponent<TextMeshProUGUI>().text = gameObject.GetComponent<Image>().sprite.name;
+
+        if (LabelPosition)
+            transform.Find("FoodName").position += new Vector3(0, -100, 0);
     }
 
     // Update is called once per frame
