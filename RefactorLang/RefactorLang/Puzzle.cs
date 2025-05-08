@@ -111,7 +111,7 @@ namespace RefactorLang
 
             while (station.Modules.Count < 3)
             {
-                station.Modules.Add(new None(defaultNames[station.Modules.Count - 1]));
+                station.Modules.Add(new None(defaultNames[station.Modules.Count]));
             }
 
             return station;
