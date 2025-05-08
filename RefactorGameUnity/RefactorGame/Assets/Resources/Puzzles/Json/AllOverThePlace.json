@@ -26,6 +26,10 @@
         {
           "module": "Grinder",
           "name": "B"
+        },
+        {
+          "module": "None",
+          "name": "C"
         }
       ]
     },
@@ -35,6 +39,14 @@
         {
           "module": "Fryer",
           "name": "A"
+        },
+        {
+          "module": "None",
+          "name": "B"
+        },
+        {
+          "module": "None",
+          "name": "C"
         }
       ]
     }
