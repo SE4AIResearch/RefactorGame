@@ -42,7 +42,6 @@ public class DefinitionHandler : MonoBehaviour
         {
             definitions.Add(definition.Key);
         }
-        Debug.Log(definitions.ToString());
         return definitions;
     }
 
