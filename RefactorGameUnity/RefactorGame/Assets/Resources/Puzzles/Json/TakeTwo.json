@@ -46,6 +46,6 @@
       "maxActions": -1,
       "additionalConstraint": "maxOneIfComparison"
   },
-  "storyPrompt": "\"What do you do if someone orders two different kinds of soup?\" I ask. Watson’s face tells me that he’s feeling bluer than usual. Oh, boy!",
+  "storyPrompt": "\"What do you do if someone orders two different kinds of soup?\" I ask. Watson’s face tells me that he’s feeling bluer than usual. Oh, boy!\n\n<b>Extra requirement: If-statements must have no more than one comparison.",
   "dictionaryItems": ["switchStatementMisuse", "extractMethod"]
 }
